@@ -53,10 +53,12 @@ public class VoterDecisionStrategy extends AbstractAccessDecisionStrategy {
 
     @Override
     protected void doDecision(AuthenticationToken token, Object secur, PermissionDefRegistry registry) throws AccessDeniedException {
+        PermissionDefinition pdef = null;
         if (registry == null) {
-            logger.info("the permissionDef registry is null, VoterDecisionStrategy denied access {}-{} object...", secur.getClass().getName(), secur);
+            logger.info("the permissionDef registry is null, but VoterDecisionStrategy does not denied access {}-{} object...", secur.getClass().getName(), secur);
+        } else {
+            pdef = registry.getPermissionDefinition(secur);
         }
-        PermissionDefinition pdef = registry.getPermissionDefinition(secur);
         if (pdef == null) {
             logger.warn("the registry[{}] does not have permissionDefinition about {}-{}", new Object[]{registry.getName(), secur.getClass().getName(), secur});
         }
@@ -70,5 +72,4 @@ public class VoterDecisionStrategy extends AbstractAccessDecisionStrategy {
             }
         }
     }
-
 }
