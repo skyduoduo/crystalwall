@@ -18,6 +18,7 @@
 package org.crystalwall.permission.def;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * 包含权限信息对象的定义集合
@@ -32,4 +33,29 @@ public interface PermissionDefinition {
     public PermissionDefinition combine(PermissionDefinition pdef);
     
     public boolean contains(PermissionInfo info);
+    
+    /**
+   * 只包含PermissionInfo.allPermissionInfo权限信息的权限定义，使用此权限定义要非常小心，因为
+   * 此权限定义包含的权限没有任何限制！
+   */
+    public static PermissionDefinition  ALL_PERMISSION_DEF = new PermissionDefinition () {
+
+        public Collection<PermissionInfo> getPermissionInfos() {
+            return Collections.singleton(PermissionInfo.ALL_PERMISSION_INFO);
+        }
+
+        public void addPermissionInfo(PermissionInfo pinfo) {
+            //throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public PermissionDefinition combine(PermissionDefinition pdef) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public boolean contains(PermissionInfo info) {
+            if (info == PermissionInfo.ALL_PERMISSION_INFO) 
+                return true;
+            return false;
+        }
+    };
 }

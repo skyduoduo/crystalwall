@@ -17,6 +17,9 @@
 
 package org.crystalwall.permission.def;
 
+import java.security.AllPermission;
+import java.security.Permission;
+
 /**
  * 描述权限信息的对象
  * @author vincent valenlee
@@ -30,6 +33,21 @@ class PermissionInfo {
     //java.security.Permission的Class全称
     private String type;
 
+    
+    private final static Permission allPermission = new AllPermission();
+    
+    /**
+   * 这个权限信息标示AllPermission权限，要小心使用此权限信息，这意味着使用此权限
+   * 信息做的任何操作，没有任何限制！
+   */
+    public final static PermissionInfo ALL_PERMISSION_INFO = new PermissionInfo(allPermission.getName(), allPermission.getActions(), allPermission.getClass().getName());
+
+    public PermissionInfo(String name, String action, String type) {
+        this.name = name;
+        this.action = action;
+        this.type = type;
+    }
+    
     public String getAction() {
         return action;
     }
@@ -54,5 +72,21 @@ class PermissionInfo {
         this.type = type;
     }
     
+    /**
+   * 根据字符串形式的权限信息将其解码成对象，字符串的格式为：
+   * 
+   * @param permissionInfo
+   * @return
+   */
+    public static PermissionInfo decode(String permissionInfo) {
+        return null;
+    }
     
+    /**
+   * @return 将权限信息以指定的编码格式返回
+   */
+    public String toString() {
+        return null;
+    }
+
 }
