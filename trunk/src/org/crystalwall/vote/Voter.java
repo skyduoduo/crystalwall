@@ -17,7 +17,9 @@
 
 package org.crystalwall.vote;
 
+import java.util.List;
 import org.crystalwall.AuthenticationToken;
+import org.crystalwall.permission.PermissionResolver;
 import org.crystalwall.permission.def.PermissionDefinition;
 
 /**
@@ -62,5 +64,6 @@ public interface Voter {
    * @return
    */
     public PermissionDefinition getDefaultPermissionDefinition();
+    
 
 }

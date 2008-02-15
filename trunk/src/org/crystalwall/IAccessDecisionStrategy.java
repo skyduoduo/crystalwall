@@ -34,18 +34,18 @@ public interface IAccessDecisionStrategy {
      */
     public void decidedAccess(AuthenticationToken token, Object secur) throws AccessDeniedException, AuthenticationTokenInvalid;
     
-    /**
-    * 获取用于解析出Permission权限的解析器
-    * @return
-    */
-     public List<PermissionResolver> getResolvers();
-     
-     /**
-      * 注册能够解析指定
-      * @param securClazz
-      * @param resolver
-      */
-     public void registPermissionResolver(PermissionResolver resolver);
+//    /**
+//    * 获取用于解析出Permission权限的解析器
+//    * @return
+//    */
+//     public List<PermissionResolver> getResolvers();
+//     
+//     /**
+//      * 注册能够解析指定
+//      * @param securClazz
+//      * @param resolver
+//      */
+//     public void registPermissionResolver(PermissionResolver resolver);
     
     /**
      * 在决定之前检查令牌是否有效并预处理令牌。这个职责可以用于支持不同类型的令牌进行处理

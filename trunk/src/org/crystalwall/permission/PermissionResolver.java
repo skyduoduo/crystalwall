@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.crystalwall.permission;
 
 import java.security.Permission;
+import org.crystalwall.permission.def.PermissionDefinition;
 
 /**
  * 用于根据指定安全对象（包括安全对象上的操作）解析出Permission权限的解析器
@@ -28,16 +28,17 @@ public interface PermissionResolver {
     /**
      * 根据指定安全对象解析出访问安全对象应该具有的权限
      * @param secur 要解析权限的安全对象
+     * @param pdef 权限定义
      * @return 返回对安全对象进行保护的权限对象
      * @throws java.lang.IllegalArgumentException 无效的参数异常
      * @throws org.crystalwall.permission.PermissionResolvedException 解析时发生错误，无法解析权限时抛出的异常
      */
-    public Permission resolve(Object secur)  throws IllegalArgumentException, PermissionResolvedException; 
-    
+    public Permission resolve(Object secur, PermissionDefinition pdef) throws IllegalArgumentException, PermissionResolvedException;
+
     /**
-   * 测试此解析器是否支持解析指定的安全对象类型
-   * @param clazz 安全对象类型
-   * @return 如果为true，则resolve方法不会抛出java.lang.IllegalArgumentException异常
-   */
+     * 测试此解析器是否支持解析指定的安全对象类型
+     * @param clazz 安全对象类型
+     * @return 如果为true，则resolve方法不会抛出java.lang.IllegalArgumentException异常
+     */
     public boolean support(Class clazz);
 }

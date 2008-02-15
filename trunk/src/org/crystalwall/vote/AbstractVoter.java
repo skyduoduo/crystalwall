@@ -1,17 +1,29 @@
 
 package org.crystalwall.vote;
 
+import java.util.List;
 import org.crystalwall.AuthenticationToken;
+import org.crystalwall.permission.PermissionResolver;
 import org.crystalwall.permission.def.PermissionDefinition;
 import org.crystalwall.permission.def.PermissionDefinitionFactory;
 
 /**
- * 投票者的抽象类
+ * 投票者的抽象类,他使用内部的权限定义工厂获取默认的权限定义
  * @author vincent valenlee
  */
 public abstract class AbstractVoter implements Voter {
 
     private PermissionDefinitionFactory pdefFactory;
+    
+    private List<PermissionResolver> resolvers;
+     
+    public List<PermissionResolver> getResolvers() {
+        return resolvers;
+    }
+
+    public void setResolvers(List<PermissionResolver> resolvers) {
+        this.resolvers = resolvers;
+    }
 
     public PermissionDefinitionFactory getPdefFactory() {
         return pdefFactory;

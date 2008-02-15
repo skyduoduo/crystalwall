@@ -31,8 +31,6 @@ public abstract class AbstractAccessDecisionStrategy implements IAccessDecisionS
 
     private PermissionDefRegistry permissionDefRegistry;
     
-    private List<PermissionResolver> resolvers;
-    
     public PermissionDefRegistry getPermissionDefRegistry() {
         return permissionDefRegistry;
     }
@@ -41,24 +39,8 @@ public abstract class AbstractAccessDecisionStrategy implements IAccessDecisionS
         this.permissionDefRegistry = permissionDefRegistry;
     }
     
-    public List<PermissionResolver> getResolvers() {
-        return resolvers;
-    }
-
-    public void setResolvers(List<PermissionResolver> resolvers) {
-        this.resolvers = resolvers;
-    }
-
     public void checkAndPretreatment(AuthenticationToken token) throws AuthenticationTokenInvalid {
         //空方法，不执行任何操作，子类可以实现
-    }
-
-    public void registPermissionResolver(PermissionResolver resolver) {
-        if (resolver != null) {
-            if (resolvers == null)
-                resolvers = Lists.newArrayList();
-            resolvers.add(resolver);
-        }
     }
     
     /**

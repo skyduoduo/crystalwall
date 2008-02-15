@@ -17,8 +17,9 @@
 
 package org.crystalwall.vote;
 
-import java.security.Permission;
+import java.util.List;
 import org.crystalwall.AuthenticationToken;
+import org.crystalwall.permission.PermissionResolver;
 import org.crystalwall.permission.def.PermissionDefinition;
 
 /**
