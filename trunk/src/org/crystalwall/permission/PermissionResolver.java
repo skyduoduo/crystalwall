@@ -31,7 +31,7 @@ public interface PermissionResolver {
      * @param pdef 权限定义
      * @return 返回对安全对象进行保护的权限对象
      * @throws java.lang.IllegalArgumentException 无效的参数异常
-     * @throws org.crystalwall.permission.PermissionResolvedException 解析时发生错误，无法解析权限时抛出的异常
+     * @throws org.crystalwall.permission.PermissionResolvedException 解析时发生错误，无法解析权限时抛出的异常,如果抛出此异常，将留给后续解析器机会解析权限
      */
     public Permission resolve(Object secur, PermissionDefinition pdef) throws IllegalArgumentException, PermissionResolvedException;
 

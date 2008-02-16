@@ -29,16 +29,6 @@ import org.crystalwall.permission.def.PermissionDefinition;
 public class ConsensusVoter extends AbstractVoterChain{
 
     private VoterChain parent;
-    
-    private PermissionDefinition permissionDef;
-
-    public PermissionDefinition getPermissionDef() {
-        return permissionDef;
-    }
-
-    public void setPermissionDef(PermissionDefinition permissionDef) {
-        this.permissionDef = permissionDef;
-    }
 
     public ConsensusVoter(VoterChain parent) {
         this.parent = parent;
@@ -80,9 +70,4 @@ public class ConsensusVoter extends AbstractVoterChain{
     public VoterChain getVoterChain() {
        return parent;
     }
-
-    public PermissionDefinition getDefaultPermissionDefinition() {
-        return permissionDef;
-    }
-
 }

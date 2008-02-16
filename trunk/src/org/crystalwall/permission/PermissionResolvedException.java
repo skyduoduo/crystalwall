@@ -23,12 +23,25 @@ package org.crystalwall.permission;
  */
 public class PermissionResolvedException extends RuntimeException{
 
-    public PermissionResolvedException(Throwable cause) {
-        super(cause);
+    //是否允许下一个解析器解析
+    private boolean allowNextResolve = true;
+
+    public boolean isAllowNextResolve() {
+        return allowNextResolve;
     }
 
-    public PermissionResolvedException(String message, Throwable cause) {
+    public void setAllowNextResolve(boolean allowNextResolve) {
+        this.allowNextResolve = allowNextResolve;
+    }
+
+    public PermissionResolvedException(boolean allowNextResolve, Throwable cause) {
+        super(cause);
+        this.allowNextResolve = allowNextResolve;
+    }
+
+    public PermissionResolvedException(String message, boolean allowNextResolve, Throwable cause) {
         super(message, cause);
+        this.allowNextResolve = allowNextResolve;
     }
 
     public PermissionResolvedException(String message) {
