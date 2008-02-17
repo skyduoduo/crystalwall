@@ -15,8 +15,9 @@
  *  under the License.
  */
 
-package org.crystalwall.permission;
+package org.crystalwall.permission.resolve;
 
+import org.crystalwall.permission.*;
 import java.security.AllPermission;
 import java.security.Permission;
 import org.crystalwall.permission.def.PermissionDefinition;

@@ -21,7 +21,7 @@ import com.google.common.collect.Lists;
 import java.security.Permission;
 import java.util.List;
 import org.crystalwall.AuthenticationToken;
-import org.crystalwall.permission.AllPermissionResolver;
+import org.crystalwall.permission.resolve.AllPermissionResolver;
 import org.crystalwall.permission.PermissionResolvedException;
 import org.crystalwall.permission.PermissionResolver;
 import org.crystalwall.permission.def.PermissionDefinition;
