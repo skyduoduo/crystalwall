@@ -34,6 +34,8 @@ public interface PermissionDefinition {
     
     public boolean contains(PermissionInfo info);
     
+    public void removePermissionInfo(PermissionInfo pinfo);
+    
     /**
    * 只包含PermissionInfo.allPermissionInfo权限信息的权限定义，使用此权限定义要非常小心，因为
    * 此权限定义包含的权限没有任何限制！
@@ -56,6 +58,10 @@ public interface PermissionDefinition {
             if (info == PermissionInfo.ALL_PERMISSION_INFO) 
                 return true;
             return false;
+        }
+
+        public void removePermissionInfo(PermissionInfo pinfo) {
+//            throw new UnsupportedOperationException("Not supported yet.");
         }
     };
 }
