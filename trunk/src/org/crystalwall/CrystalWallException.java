@@ -1,5 +1,5 @@
 /*
- *  Copyright 2008 vincent.
+ *  Copyright 2008 author or authors.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,23 +17,23 @@
 
 package org.crystalwall;
 
+import org.apache.commons.lang.exception.NestableRuntimeException;
+
 /**
- * 访问拒绝异常
+ * 根异常
  * @author vincent valenlee
  */
-public class AccessDeniedException extends CrystalWallException {
+public class CrystalWallException extends NestableRuntimeException {
 
-    public AccessDeniedException(Throwable cause) {
-        super(cause);
+    public CrystalWallException(Throwable root) {
+        super(root);
     }
 
-    public AccessDeniedException(String message, Throwable cause) {
-        super(message, cause);
+    public CrystalWallException(String string, Throwable root) {
+        super(string, root);
     }
 
-    public AccessDeniedException(String message) {
-        super(message);
+    public CrystalWallException(String s) {
+        super(s);
     }
-
-    
 }

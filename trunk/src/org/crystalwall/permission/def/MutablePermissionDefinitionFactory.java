@@ -1,5 +1,5 @@
 /*
- *  Copyright 2008 vincent.
+ * Copyright 2008 the original author or authors.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,25 +15,23 @@
  *  under the License.
  */
 
-package org.crystalwall;
+package org.crystalwall.permission.def;
 
 /**
- * 访问拒绝异常
- * @author vincent valenlee
+ * 支持能够动态改变内部存储的权限定义的工厂
+ * @author vincent
  */
-public class AccessDeniedException extends CrystalWallException {
+public interface MutablePermissionDefinitionFactory extends PermissionDefinitionFactory {
 
-    public AccessDeniedException(Throwable cause) {
-        super(cause);
-    }
-
-    public AccessDeniedException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public AccessDeniedException(String message) {
-        super(message);
-    }
-
+    /**
+     * 动态注册一个权限定义到工厂中
+     * @param pdef
+     */
+    public void registryDefinition(PermissionDefinition pdef) ;
     
+    /**
+     * 从工厂中动态注销一个权限定义，如果不存在，此方法不执行任何操作
+     * @param pdef
+     */
+    public void unRegistryDefinition(PermissionDefinition pdef);
 }

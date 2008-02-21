@@ -33,7 +33,7 @@ public interface PermissionDefRegistry  {
      */
     public String getName();
      /**
-    * 获取指定安全对象上定义的权限定义
+    * 获取指定安全对象上匹配的权限定义
     * @param secur
     * @return
     */

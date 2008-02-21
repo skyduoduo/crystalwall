@@ -17,11 +17,13 @@
 
 package org.crystalwall.permission;
 
+import org.crystalwall.CrystalWallException;
+
 /**
  * 解析权限时的异常
  * @author vincent valenlee
  */
-public class PermissionResolvedException extends RuntimeException{
+public class PermissionResolvedException extends CrystalWallException{
 
     //是否允许下一个解析器解析
     private boolean allowNextResolve = true;

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2008 the original athe oruthor or authors.
+ *  Copyright 2008 the original author or authors.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,10 +17,7 @@
 
 package org.crystalwall;
 
-import com.google.common.collect.Lists;
-import java.util.List;
 import org.crystalwall.permission.PermissionDefRegistry;
-import org.crystalwall.permission.PermissionResolver;
 
 /**
  * 访问策略接口的抽象实现，他使用一个权限定义注册表和一个权限解析器列表供子类使用，子类只需要实现
