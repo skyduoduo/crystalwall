@@ -21,8 +21,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import java.util.LinkedList;
 import java.util.List;
-import org.crystalwall.permission.PermissionDefRegistry;
-import org.crystalwall.permission.PermissionResolver;
 
 /**
  * 投票者链的抽象超类，他将使用内部包含的投票者链表进行投票。默认的处理结果的策略是

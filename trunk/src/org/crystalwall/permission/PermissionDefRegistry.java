@@ -32,11 +32,13 @@ public interface PermissionDefRegistry  {
      * @return
      */
     public String getName();
-     /**
-    * 获取指定安全对象上匹配的权限定义
-    * @param secur
-    * @return
-    */
+    /**
+     * 获取指定安全对象上匹配的权限定义。
+     * <p>注意：一般来说，在权限定义注册表中应该根据Class类型获取其上匹配的权限定义对象，但这里
+     * 参数类型并不是Class，这就允许实现者可以实现更多的根据安全对象动态的组装匹配的权限定义的策略
+     * @param secur 安全对象，也可以是安全Class
+     * @return 匹配的权限定义
+     */
      public PermissionDefinition getPermissionDefinition(Object secur) throws IllegalArgumentException;
      
      /**
