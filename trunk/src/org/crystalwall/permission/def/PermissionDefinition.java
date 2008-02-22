@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * 包含权限信息对象的定义集合
+ * 包含权限信息对象的权限定义集合
  * @author vincent valenlee
  */
 public interface PermissionDefinition {
@@ -35,6 +35,14 @@ public interface PermissionDefinition {
     public boolean contains(PermissionInfo info);
     
     public void removePermissionInfo(PermissionInfo pinfo);
+    
+    /**
+     * 获取匹配指定名字和指定类型的权限信息对象集合。如果名字为null或者名字中没有匹配
+     * 的权限，则返回指定类型的全部权限集合
+     * @param name 权限信息对象的名字，具体由实现解析
+     * @param type 权限类型全名
+     */
+    public Collection<PermissionInfo> getPermissionInfos(String name, String type);
     
     /**
    * 只包含PermissionInfo.allPermissionInfo权限信息的权限定义，使用此权限定义要非常小心，因为
@@ -62,6 +70,17 @@ public interface PermissionDefinition {
 
         public void removePermissionInfo(PermissionInfo pinfo) {
 //            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public Collection<PermissionInfo> getPermissionInfos(String name, String type) {
+            if (name == null) {
+                if (PermissionInfo.ALL_PERMISSION_INFO.getType().equalsIgnoreCase(type)) {
+                    return getPermissionInfos();
+                }
+            } else if (PermissionInfo.ALL_PERMISSION_INFO.getName().equalsIgnoreCase(name)) {
+                return getPermissionInfos();
+            }
+            return Collections.emptyList();
         }
     };
 }
