@@ -57,7 +57,7 @@ public class VoterDecisionStrategy extends AbstractAccessDecisionStrategy {
         if (registry == null) {
             logger.info("the permissionDef registry is null, but VoterDecisionStrategy does not denied access {}-{} object...", secur.getClass().getName(), secur);
         } else {
-            pdef = registry.getPermissionDefinition(secur);
+            pdef = registry.findPermissionDefinition(secur);
         }
         if (pdef == null) {
             logger.warn("the registry[{}] does not have permissionDefinition about {}-{}", new Object[]{registry.getName(), secur.getClass().getName(), secur});

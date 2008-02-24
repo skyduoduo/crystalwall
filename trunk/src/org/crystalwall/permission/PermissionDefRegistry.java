@@ -39,11 +39,19 @@ public interface PermissionDefRegistry  {
      * @param secur 安全对象，也可以是安全Class
      * @return 匹配的权限定义
      */
-     public PermissionDefinition getPermissionDefinition(Object secur) throws IllegalArgumentException;
+     public PermissionDefinition findPermissionDefinition(Object secur) throws IllegalArgumentException;
      
      /**
     * 获取此注册表中的所有权限定义集合的迭代
     * @return
     */
      public Iterator getPermissionDefinitions();
+     
+     /**
+      * 注册能应用到指定安全对象上的权限定义对象。安全对象只是一个方便的参数，
+      * 具体注册表的实现将决定是否使用此参数或不使用此参数
+      * @param secur 安全对象  
+      * @param def 权限信息对象
+      */
+     public void registerPermissionDefinition(Object secur, PermissionDefinition def);
 }
