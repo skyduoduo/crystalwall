@@ -19,6 +19,7 @@ package org.crystalwall.permission.def.support;
 
 import org.crystalwall.permission.def.*;
 import com.google.common.collect.Lists;
+import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang.NullArgumentException;
 
@@ -44,7 +45,8 @@ public class ListPermissionDefinitionFactory implements PermissionDefinitionFact
     
     /**
      * 将合并的结果缓存,并返回。这意味着，第一次调用此方法之后，对集合中的权限定义的修改将无效，
-     * 除非调用了clear方法情况缓存。
+     * 除非调用了clear方法清空缓存。但对返回的权限定义的修改将对缓存影响，在执行清空缓存操作之前，
+     * 返回的权限定义都是最后一次修改后返回的权限定义
      * @return
      */
     public PermissionDefinition getDefinition() {
@@ -60,7 +62,9 @@ public class ListPermissionDefinitionFactory implements PermissionDefinitionFact
     }
     
     public List<PermissionDefinition> getPermissionDefinitions() {
-       return definitions;
+        List<PermissionDefinition> copies = Lists.newArrayListWithExpectedSize(definitions.size());
+        Collections.copy(copies, definitions);
+       return copies;
     }
     
     public void clear() {

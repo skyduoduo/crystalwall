@@ -59,6 +59,11 @@ public interface PermissionDefinition {
     public Collection<PermissionInfo> getPermissionInfos(String name, String type);
     
     /**
+     * @return 克隆此权限定义
+     */
+    public Object clone() throws CloneNotSupportedException;
+    
+    /**
    * 只包含PermissionInfo.allPermissionInfo权限信息的权限定义，使用此权限定义要非常小心，因为
    * 此权限定义包含的权限没有任何限制！
    */
@@ -96,6 +101,11 @@ public interface PermissionDefinition {
                 return getPermissionInfos();
             }
             return Collections.emptyList();
+        }
+        
+        @Override
+        public Object clone() throws CloneNotSupportedException {
+            return super.clone();
         }
     };
 }
