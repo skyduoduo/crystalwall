@@ -19,7 +19,6 @@ package org.crystalwall.permission.def.support;
 
 import org.crystalwall.permission.def.*;
 import com.google.common.collect.Lists;
-import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang.NullArgumentException;
 
@@ -61,11 +60,12 @@ public class ListPermissionDefinitionFactory implements PermissionDefinitionFact
         return cache;
     }
     
-    public List<PermissionDefinition> getPermissionDefinitions() {
-        List<PermissionDefinition> copies = Lists.newArrayListWithExpectedSize(definitions.size());
-        Collections.copy(copies, definitions);
-       return copies;
-    }
+//    public List<PermissionDefinition> getPermissionDefinitions() {
+//        List<PermissionDefinition> copies = Lists.newArrayListWithExpectedSize(definitions.size());
+//        //拷贝权限定义列表的副本
+//        Collections.copy(copies, definitions);
+//        return copies;
+//    }
     
     public void clear() {
         cache = null;
