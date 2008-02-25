@@ -37,9 +37,9 @@ public interface PermissionDefRegistry  {
      * <p>注意：一般来说，在权限定义注册表中应该根据Class类型获取其上匹配的权限定义对象，但这里
      * 参数类型并不是Class，这就允许实现者可以实现更多的根据安全对象动态的组装匹配的权限定义的策略
      * @param secur 安全对象，也可以是安全Class
-     * @return 匹配的权限定义
+     * @return 匹配的权限定义，如果没有匹配的权限定义，则返回null
      */
-     public PermissionDefinition findPermissionDefinition(Object secur) throws IllegalArgumentException;
+     public PermissionDefinition findPermissionDefinition(Object secur) throws PermissionDefinitionException;
      
      /**
     * 获取此注册表中的所有权限定义集合的迭代
@@ -52,6 +52,8 @@ public interface PermissionDefRegistry  {
       * 具体注册表的实现将决定是否使用此参数或不使用此参数
       * @param secur 安全对象  
       * @param def 权限信息对象
+      * @throws PermissionDefinitionException 如果是联合异常，则抛出CombineException异常，否则抛出PermissionDefinitionException，其他的运行
+      * 时异常除UnsupportedOperationException将封装到此异常中外，均直接抛出
       */
-     public void registerPermissionDefinition(Object secur, PermissionDefinition def);
+     public void registerPermissionDefinition(Object secur, PermissionDefinition def) throws PermissionDefinitionException;
 }

@@ -23,36 +23,36 @@ import org.crystalwall.CrystalWallException;
  * 在工厂中注册或反注册时发生的异常
  * @author vincent valenlee
  */
-public class RegistPermissionDefinitionException extends CrystalWallException {
+public class RegisterPermissionDefinitionFactoryException extends CrystalWallException {
 
-    private boolean registry = true;
+    private boolean unregister = false;
     
     /**
      * Creates a new instance of <code>RegistryDefinitionException</code> without detail message.
      */
-    public RegistPermissionDefinitionException(boolean registry, String msg) {
+    public RegisterPermissionDefinitionFactoryException(boolean unregister, String msg) {
         super(msg);
-        this.registry = registry;
+        this.unregister = unregister;
     }
 
     /**
      * Constructs an instance of <code>RegistryDefinitionException</code> with the specified detail message.
      * @param msg the detail message.
      */
-    public RegistPermissionDefinitionException(String msg) {
+    public RegisterPermissionDefinitionFactoryException(String msg) {
         super(msg);
     }
     
-    public RegistPermissionDefinitionException(String message, Throwable cause) {
+    public RegisterPermissionDefinitionFactoryException(String message, Throwable cause) {
         super(message, cause);
     }
     
-    public RegistPermissionDefinitionException(boolean registry, String message, Throwable cause) {
+    public RegisterPermissionDefinitionFactoryException(boolean unregister, String message, Throwable cause) {
         super(message, cause);
-        this.registry = registry;
+        this.unregister = unregister;
     }
     
-    public boolean isRegistry() {
-        return registry;
+    public boolean isUnregister() {
+        return unregister;
     }
 }

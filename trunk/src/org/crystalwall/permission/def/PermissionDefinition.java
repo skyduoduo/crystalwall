@@ -17,6 +17,7 @@
 
 package org.crystalwall.permission.def;
 
+import org.crystalwall.permission.PermissionDefinitionException;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -28,13 +29,26 @@ public interface PermissionDefinition {
 
     public Collection<PermissionInfo> getPermissionInfos();
     
-    public void addPermissionInfo(PermissionInfo pinfo);
+    /**
+     * 在权限定义中添加新的权限信息对象
+     * @param pinfo 新权限信息对象
+     * @throws org.crystalwall.permission.PermissionDefinitionException 如果是联合异常，则抛出CombineException异常，
+     * 否则抛出PermissionDefinitionException，其他的运行时异常除UnsupportedOperationException将封装到此异常中外，均直接抛出
+     */
+    public void addPermissionInfo(PermissionInfo pinfo) throws PermissionDefinitionException;
     
-    public PermissionDefinition combine(PermissionDefinition pdef);
+    /**
+     * 联合其他权限定义
+     * @param pdef 其他权限定义  
+     * @return 联合之后的新权限定义
+     * @throws org.crystalwall.permission.PermissionDefinitionException 如果是联合异常，则抛出CombineException异常，
+     * 否则抛出PermissionDefinitionException，其他的运行时异常除UnsupportedOperationException将封装到此异常中外，均直接抛出
+     */
+    public PermissionDefinition combine(PermissionDefinition pdef) throws PermissionDefinitionException;
     
     public boolean contains(PermissionInfo info);
     
-    public void removePermissionInfo(PermissionInfo pinfo);
+    public void removePermissionInfo(PermissionInfo pinfo) throws PermissionDefinitionException;
     
     /**
      * 获取匹配指定名字和指定类型的权限信息对象集合。如果名字为null或者名字中没有匹配
@@ -59,7 +73,8 @@ public interface PermissionDefinition {
         }
 
         public PermissionDefinition combine(PermissionDefinition pdef) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new CombineException(new UnsupportedOperationException(
+                    "the ALL_PERMISSION_DEF do not support combine another permission definition."));
         }
 
         public boolean contains(PermissionInfo info) {
