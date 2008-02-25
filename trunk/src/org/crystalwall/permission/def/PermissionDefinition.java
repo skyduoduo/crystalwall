@@ -39,7 +39,7 @@ public interface PermissionDefinition {
     
     /**
      * 联合其他权限定义
-     * @param pdef 其他权限定义  
+     * @param pdef 其他权限定义
      * @return 联合之后的新权限定义
      * @throws org.crystalwall.permission.PermissionDefinitionException 如果是联合异常，则抛出CombineException异常，
      * 否则抛出PermissionDefinitionException，其他的运行时异常除UnsupportedOperationException将封装到此异常中外，均直接抛出

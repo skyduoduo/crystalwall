@@ -15,8 +15,9 @@
  *  under the License.
  */
 
-package org.crystalwall.permission.def;
+package org.crystalwall.permission.def.support;
 
+import org.crystalwall.permission.def.*;
 import com.google.common.collect.Lists;
 import java.util.List;
 import org.apache.commons.lang.NullArgumentException;
