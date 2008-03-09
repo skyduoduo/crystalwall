@@ -21,7 +21,7 @@ import org.crystalwall.permission.PermissionDefinitionException;
 
 /**
  * 提供加载权限信息对象的提供者，例如：从XML配置文件中或从数据库中加载。
- * 此接口可以被工厂方法使用以便构造权限定义对象
+ * 此接口可以被PermissionDefinitionFactory使用以便构造权限定义对象
  * @author vincent valenlee
  */
 public interface PermissionDefProvider {
@@ -38,8 +38,7 @@ public interface PermissionDefProvider {
     public void init(PermissionDefinition pdef) throws PermissionDefinitionException;
 
     /**
-     * 加载所有的包
-     * @throws ConfigurationException
+     * 加载所有的权限定义
      */
     public void loadPermissionInfos() throws PermissionDefinitionException;
 
