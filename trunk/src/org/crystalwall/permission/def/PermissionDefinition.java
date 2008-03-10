@@ -30,6 +30,16 @@ public interface PermissionDefinition {
     public Collection<PermissionInfo> getPermissionInfos();
     
     /**
+     * @return 返回一个新的未初始化的权限定义
+     */
+    public PermissionDefinition forNew();
+    
+    /**
+     * @return 如果此权限定义已经被初始化，则返回true
+     */
+    public boolean isInit();
+    
+    /**
      * 在权限定义中添加新的权限信息对象
      * @param pinfo 新权限信息对象
      * @throws org.crystalwall.permission.PermissionDefinitionException 如果是联合异常，则抛出CombineException异常，
@@ -106,6 +116,17 @@ public interface PermissionDefinition {
         @Override
         public Object clone() throws CloneNotSupportedException {
             return super.clone();
+        }
+
+        public PermissionDefinition forNew() {
+            return PermissionDefinition.ALL_PERMISSION_DEF;
+        }
+
+        /**
+         * ALL_PERMISSION_DEF始终是初始化的
+         */
+        public boolean isInit() {
+            return true;
         }
     };
 }

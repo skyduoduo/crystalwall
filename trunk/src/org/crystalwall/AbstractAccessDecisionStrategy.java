@@ -20,8 +20,7 @@ package org.crystalwall;
 import org.crystalwall.permission.PermissionDefRegistry;
 
 /**
- * 访问策略接口的抽象实现，他使用一个权限定义注册表和一个权限解析器列表供子类使用，子类只需要实现
- * doDecision抽象方法执行认证即可
+ * 访问策略接口的抽象实现，他使用一个权限定义注册表供子类使用，子类只需要实现doDecision抽象方法执行权限控制即可
  * @author vincent valenlee
  */
 public abstract class AbstractAccessDecisionStrategy implements IAccessDecisionStrategy{

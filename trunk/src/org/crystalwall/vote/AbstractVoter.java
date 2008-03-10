@@ -67,7 +67,7 @@ public abstract class AbstractVoter implements Voter {
      * <p>子类可以重写此方法，默认返回列表中第一个支持的解析器
      * @param secur 安全对象
      */
-    protected PermissionResolver getResolveAbility(Object secur) {
+    protected PermissionResolver getResolveable(Object secur) {
         if (getResolvers() != null) {
             for (PermissionResolver resolver : getResolvers()) {
                 if (resolver.support(secur.getClass())) {

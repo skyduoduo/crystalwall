@@ -46,7 +46,7 @@ public class ListPermissionDefinitionFactory implements PermissionDefinitionFact
      * 将合并的结果缓存,并返回。这意味着，第一次调用此方法之后，对集合中的权限定义的修改将无效，
      * 除非调用了clear方法清空缓存。但对返回的权限定义的修改将对缓存影响，在执行清空缓存操作之前，
      * 返回的权限定义都是最后一次修改后返回的权限定义
-     * @return
+     * @return 返回此工厂中存储的list所有权限定义的合并
      */
     public PermissionDefinition getDefinition() {
         if (cache == null) {

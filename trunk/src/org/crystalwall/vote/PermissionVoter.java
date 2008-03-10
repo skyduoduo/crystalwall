@@ -38,7 +38,7 @@ public class PermissionVoter extends AbstractVoter {
     
     @Override
     protected int doVote(AuthenticationToken token, Object secur, PermissionDefinition pdef) {
-        PermissionResolver resolver = getResolveAbility(secur);
+        PermissionResolver resolver = getResolveable(secur);
         if (resolver == null) {
             resolver = new AllPermissionResolver();//使用AllPermission权限解析器
         }
