@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QJSoft.ECBC.Authority
+namespace CodePlex.CrystalWall
 {
     /// <summary>
     /// 授权信息集的提供者，权限框架可以根据此身份提供者获取对应身份名的授权信息。例如可以根据以下配置文件获取授权信息;

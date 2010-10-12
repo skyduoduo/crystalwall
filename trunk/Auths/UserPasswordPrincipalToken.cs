@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QJSoft.ECBC.Authority.Auths
+namespace CodePlex.CrystalWall.Auths
 {
     /// <summary>
     /// 使用用户名和密码的身份令牌实现

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using QJSoft.ECBC.Authority;
 
-namespace QJSoft.ECBC.Authority
+namespace CodePlex.CrystalWall
 {
     /// <summary>
     /// 抽象身份令牌的实现，他使用一个授权提供者获取授权的信息

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QJSoft.ECBC.Authority
+namespace CodePlex.CrystalWall
 {
     /// <summary>
     /// 根据字符权限信息构造权限对象的工厂

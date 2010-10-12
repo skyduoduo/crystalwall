@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QJSoft.ECBC.Authority.Web
+namespace CodePlex.CrystalWall.Web
 {
     /// <summary>
     /// 用于web控件的权限信息对象

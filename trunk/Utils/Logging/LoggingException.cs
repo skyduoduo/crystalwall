@@ -4,29 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace CodePlex.CrystalWall
+namespace CodePlex.CrystalWall.Logging
 {
     /// <summary>
-    /// 权限信息操作时抛出的异常
+    /// 日志异常
     /// </summary>
-    public class PermissionInfoException: ApplicationException
+    [Serializable()]
+    public class LoggingException : Exception
     {
-         public PermissionInfoException()
+        public LoggingException()
             : base()
         {
         }
 
-        public PermissionInfoException(string message)
+        public LoggingException(string message)
             : base(message)
         {
         }
 
-        public PermissionInfoException(string message, Exception innerException)
+        public LoggingException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
-        protected PermissionInfoException(SerializationInfo info, StreamingContext context)
+        protected LoggingException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }

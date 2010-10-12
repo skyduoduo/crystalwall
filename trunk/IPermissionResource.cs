@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QJSoft.ECBC.Authority
+namespace CodePlex.CrystalWall
 {
     /// <summary>
     /// 资源对象是权限点的清单，在这份清单中，他能够根据权限的名称和action解析权限信息
     /// </summary>
-    public interface IResource
+    public interface IPermissionResource
     {
         string UniqueIdentifier
         {

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
-using QJSoft.ECBC.Authority.Web;
 
-namespace QJSoft.ECBC.Authority
+namespace CodePlex.CrystalWall
 {
     public delegate void MyHandler(object sender, AccessExceptionEventArgs args);
 

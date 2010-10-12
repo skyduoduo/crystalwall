@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.UI;
 
-namespace QJSoft.ECBC.Authority.Web
+namespace CodePlex.CrystalWall.Web
 {
     /// <summary>
     /// 定义页面中控件的权限点.

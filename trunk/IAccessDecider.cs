@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QJSoft.ECBC.Authority
+namespace CodePlex.CrystalWall
 {
     /// <summary>
     /// 访问决定者，用于判断访问权限的核心接口

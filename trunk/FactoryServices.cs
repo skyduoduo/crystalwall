@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using QJSoft.ECBC.Authority.Auths;
+using CodePlex.CrystalWall.Auths;
 
-namespace QJSoft.ECBC.Authority
+namespace CodePlex.CrystalWall
 {
     /// <summary>
     /// 提供各种抽象工厂的服务类，他是系统所有工厂、常数对象的访问入口。外部客户端应该使用此静态服务获取各种需要的工厂接口

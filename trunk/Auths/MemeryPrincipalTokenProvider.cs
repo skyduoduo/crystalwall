@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace QJSoft.ECBC.Authority.Auths
+namespace CodePlex.CrystalWall.Auths
 {
     /// <summary>
     /// 使用内存存储身份令牌的提供者，用于测试的目的

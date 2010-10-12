@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("Authority")]
+[assembly: AssemblyTitle("Logging")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("前景软件")]
-[assembly: AssemblyProduct("Authority")]
-[assembly: AssemblyCopyright("Copyright © 前景软件 2010")]
+[assembly: AssemblyCompany("微软中国")]
+[assembly: AssemblyProduct("Logging")]
+[assembly: AssemblyCopyright("Copyright © 微软中国 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("7da1da87-ed3d-4e79-bac6-4147ab72575e")]
+[assembly: Guid("afae9d15-8191-477b-b966-f3e85011e3dd")]
 
 // 程序集的版本信息由下面四个值组成:
 //

@@ -8,8 +8,8 @@
     <ProjectGuid>{B1CE524D-C43E-4AC1-BFA2-C6A404C81E00}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QJSoft.ECBC.Authority</RootNamespace>
-    <AssemblyName>QJSoft.ECBC.Authority</AssemblyName>
+    <RootNamespace>CodePlex.CrystalWall</RootNamespace>
+    <AssemblyName>CodePlex.CrystalWall</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
@@ -62,11 +62,23 @@
     <Compile Include="Auths\AnonyPrincipalToken.cs" />
     <Compile Include="Auths\MemeryPrincipalTokenProvider.cs" />
     <Compile Include="Auths\UserPasswordPrincipalToken.cs" />
+    <Compile Include="Utils\Debug\DebugTextWriter.cs" />
+    <Compile Include="Utils\Logging\CallbackOnDispose.cs" />
     <Compile Include="Config\ConfigurationException.cs" />
     <Compile Include="Config\XmlConfiguration.cs" />
     <Compile Include="EventTest.cs" />
+    <Compile Include="Utils\FileUtils\FileNameEventHandler.cs" />
+    <Compile Include="Utils\FileUtils\FileUtil.cs" />
     <Compile Include="IConfiguration.cs" />
+    <Compile Include="Utils\Logging\ILoggingService.cs" />
+    <Compile Include="Utils\Message\IMessageService.cs" />
     <Compile Include="IPrincipalToken.cs" />
+    <Compile Include="Utils\IStringTagProvider.cs" />
+    <Compile Include="Utils\Logging\LoggingException.cs" />
+    <Compile Include="Utils\Logging\LoggingService.cs" />
+    <Compile Include="Utils\Logging\TextWriterLoggingService.cs" />
+    <Compile Include="Utils\Message\MessageService.cs" />
+    <Compile Include="Utils\Message\TextWriterMessageService.cs" />
     <Compile Include="PermissionPoint.cs" />
     <Compile Include="FactoryServices.cs" />
     <Compile Include="IAccessDecider.cs" />
@@ -76,7 +88,14 @@
     <Compile Include="PermissionInfo.cs" />
     <Compile Include="PermissionInfoException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resource.cs" />
+    <Compile Include="Utils\Property\Properties.cs" />
+    <Compile Include="Utils\Property\PropertyChangedEventArgs.cs" />
+    <Compile Include="Utils\Property\PropertyService.cs" />
+    <Compile Include="IPermissionResource.cs" />
+    <Compile Include="Utils\ResourceNotFoundException .cs" />
+    <Compile Include="Utils\ResourceService.cs" />
+    <Compile Include="Utils\ServiceManager.cs" />
+    <Compile Include="Utils\StringParser.cs" />
     <Compile Include="Web\ControlPermissionInfo.cs" />
     <Compile Include="Web\ControlPermissionPoint.cs" />
     <Compile Include="Web\PageSecurityContext.cs" />
@@ -89,12 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Logging\Logging.csproj">
-      <Project>{81E65A6E-C673-4C45-8260-12E7205090BE}</Project>
-      <Name>Logging</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

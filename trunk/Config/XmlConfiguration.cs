@@ -6,8 +6,9 @@ using System.Xml;
 using System.Threading;
 using System.Reflection;
 using System.IO;
+using CodePlex.CrystalWall.Utils;
 
-namespace QJSoft.ECBC.Authority.Config
+namespace CodePlex.CrystalWall.Config
 {
     /// <summary>
     /// 使用xml文件实现的配置接口
@@ -18,7 +19,7 @@ namespace QJSoft.ECBC.Authority.Config
 
         private XmlReader childReader;//子树读取器
 
-        private IResource owner;
+        private IPermissionResource owner;
 
         private object parent; 
 
@@ -36,7 +37,7 @@ namespace QJSoft.ECBC.Authority.Config
         /// 此配置元素为资源的直接子元素，xmlreader指向当前对应的元素
         /// </summary>
         /// <param name="parent"></param>
-        public XmlConfiguration(XmlReader reader, IResource parent, int index)
+        public XmlConfiguration(XmlReader reader, IPermissionResource parent, int index)
         {
             if (parent == null)
             {
@@ -121,14 +122,14 @@ namespace QJSoft.ECBC.Authority.Config
             }
         }
 
-        IResource FindResource()
+        IPermissionResource FindResource()
         {
             object p = parent;
-            while (!(p is IResource))
+            while (!(p is IPermissionResource))
             {
                 p = ((IConfiguration)p).Parent;
             }
-            return (IResource)p;
+            return (IPermissionResource)p;
         }
 
         /// <summary>
@@ -188,7 +189,7 @@ namespace QJSoft.ECBC.Authority.Config
             get { return name; }
         }
 
-        public IResource Owner
+        public IPermissionResource Owner
         {
             get { return owner; }
         }

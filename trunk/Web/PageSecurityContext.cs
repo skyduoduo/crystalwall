@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 
-namespace QJSoft.ECBC.Authority.Web
+namespace CodePlex.CrystalWall.Web
 {
 
     //当前用户没有可见权限时执行的处理
