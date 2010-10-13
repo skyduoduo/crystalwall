@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodePlex.CrystalWall
+namespace CrystalWall
 {
     /// <summary>
     /// 无授权时抛出的异常

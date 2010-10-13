@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace CodePlex.CrystalWall.Message
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Message
 {
     public class TextWriterMessageService : IMessageService
     {

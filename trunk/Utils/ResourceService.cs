@@ -7,10 +7,11 @@ using System.Collections;
 using System.Reflection;
 using System.IO;
 using System.Threading;
-using CodePlex.CrystalWall.Logging;
-using CodePlex.CrystalWall.Property;
+using CrystalWall.Logging;
+using CrystalWall.Property;
 
-namespace CodePlex.CrystalWall.Utils
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Utils
 {
     /// <summary>
     /// 此类包含两个ResourceManager资源管理器，他为应用处理字符和图形资源。在此层次上，他也处理本地资源。

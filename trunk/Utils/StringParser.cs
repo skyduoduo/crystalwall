@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Diagnostics;
-using CodePlex.CrystalWall.Property;
-using QJSoft.ECBC.FileUtils;
-using QJSoft.ECBC.Message;
+using CrystalWall.Property;
+using CrystalWall.FileUtils;
+using CrystalWall.Message;
 
-namespace CodePlex.CrystalWall.Utils
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Utils
 {
     /// <summary>
     /// 用于解析系统内部的${xyz}标签的字符解析器类，他能够根据${key:value}的各种类型

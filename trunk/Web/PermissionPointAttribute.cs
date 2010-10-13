@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodePlex.CrystalWall.Web
+namespace CrystalWall.Web
 {
     /// <summary>
     /// 用于定义权限点的元特性

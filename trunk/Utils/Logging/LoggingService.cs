@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CodePlex.CrystalWall.Utils;
+using CrystalWall.Utils;
 
-namespace CodePlex.CrystalWall.Logging
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Logging
 {
     /// <summary>
     /// 委托给ServiceManager.LoggingService的静态实用工具类

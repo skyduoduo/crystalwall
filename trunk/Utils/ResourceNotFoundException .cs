@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
-using CodePlex.CrystalWall.Logging;
+using CrystalWall.Logging;
 
-namespace CodePlex.CrystalWall.Utils
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Utils
 {
     /// <summary>
     /// 当GlobalResource全局资源管理器无法找到请求的资源时发生的异常

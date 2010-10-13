@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodePlex.CrystalWall.Auths
+namespace  CrystalWall.Auths
 {
     /// <summary>
     /// 使用内存存储身份令牌的提供者，用于测试的目的

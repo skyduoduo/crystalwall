@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using QJSoft.ECBC.FileUtils;
 using System.Xml;
-using QJSoft.ECBC.Message;
 using System.Threading;
-using CodePlex.CrystalWall.Logging;
+using CrystalWall.Logging;
+using CrystalWall.FileUtils;
+using CrystalWall.Message;
 
-namespace CodePlex.CrystalWall.Property
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Property
 {
     /// <summary>
     /// 属性服务是从配置目录中指定属性文件加载或将内部Properties所做

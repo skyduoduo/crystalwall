@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace CodePlex.CrystalWall.Logging
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Logging
 {
     /// <summary>
     /// 当类销毁时执行一个ThreadStart线程回调且以线程安全的方式

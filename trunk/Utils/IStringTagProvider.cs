@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodePlex.CrystalWall.Utils
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Utils
 {
     /// <summary>
     /// 字符标签列表提供者接口，能够转换指定标签

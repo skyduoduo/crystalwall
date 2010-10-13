@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using CodePlex.CrystalWall.Logging;
+using CrystalWall.Logging;
 
-namespace QJSoft.ECBC.Logging
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Logging
 {
     /// <summary>
     /// 使用TextWriter记录日志的日志服务实现

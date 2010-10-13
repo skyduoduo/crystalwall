@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodePlex.CrystalWall.Auths
+namespace CrystalWall.Auths
 {
     /// <summary>
     /// 表示一个匿名身份

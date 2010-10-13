@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodePlex.CrystalWall
+namespace CrystalWall
 {
     /// <summary>
     /// 资源注册表接口，用于注册资源对象

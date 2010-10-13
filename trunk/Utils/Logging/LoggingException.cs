@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace CodePlex.CrystalWall.Logging
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Logging
 {
     /// <summary>
     /// 日志异常

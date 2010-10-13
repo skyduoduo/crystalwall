@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodePlex.CrystalWall.FileUtils
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.FileUtils
 {
     public delegate void FileNameEventHandler(object sender, FileNameEventArgs e);
 

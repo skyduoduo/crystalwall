@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodePlex.CrystalWall.Property
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Property
 {
     /// <summary>
     /// 属性改变代理

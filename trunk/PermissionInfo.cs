@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodePlex.CrystalWall
+namespace CrystalWall
 {
     /// <summary>
     /// 封装权限的信息，权限信息具有一个名称以及内容字符。内容字符的格式，由实现决定。

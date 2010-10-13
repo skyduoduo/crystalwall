@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CodePlex.CrystalWall.Message;
-using CodePlex.CrystalWall.Logging;
-using CodePlex.CrystalWall.Debugging;
-using QJSoft.ECBC.Logging;
+using CrystalWall.Message;
+using CrystalWall.Logging;
+using CrystalWall.Debugging;
 
-namespace CodePlex.CrystalWall.Utils
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Utils
 {
     /// <summary>
     /// 维护核心服务接口的实现，包括日志服务ILoggingService与消息服务IMessageService

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodePlex.CrystalWall.Logging
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Logging
 {
     /// <summary>
     /// 日志服务接口，用于记录日志信息，包括格式化的参数

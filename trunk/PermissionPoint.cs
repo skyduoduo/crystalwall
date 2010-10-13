@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodePlex.CrystalWall
+namespace CrystalWall
 {
     /// <summary>
     /// 表示当前系统访问的一个权限点。其组成全部为字符串，方便系统进行配置。
@@ -42,17 +42,17 @@ namespace CodePlex.CrystalWall
 
     public class EmptyPermissionPoint : PermissionPoint
     {
-        public virtual string Name
+        public override string Name
         {
             get { return ""; }
         }
 
-        public virtual string Resource
+        public override string Resource
         {
             get { return ""; }
         }
 
-        public virtual string Action
+        public override string Action
         {
             get { return ""; }
         }

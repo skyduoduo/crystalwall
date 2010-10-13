@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodePlex.CrystalWall.Auths
+namespace CrystalWall.Auths
 {
     /// <summary>
     /// 用于标识对一个授权的决定：允许、拒绝、弃权

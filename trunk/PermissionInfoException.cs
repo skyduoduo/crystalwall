@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace CodePlex.CrystalWall
+namespace CrystalWall
 {
     /// <summary>
     /// 权限信息操作时抛出的异常

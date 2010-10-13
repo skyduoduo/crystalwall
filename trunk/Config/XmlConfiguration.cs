@@ -6,9 +6,9 @@ using System.Xml;
 using System.Threading;
 using System.Reflection;
 using System.IO;
-using CodePlex.CrystalWall.Utils;
+using CrystalWall.Utils;
 
-namespace CodePlex.CrystalWall.Config
+namespace  CrystalWall.Config
 {
     /// <summary>
     /// 使用xml文件实现的配置接口

@@ -8,8 +8,8 @@
     <ProjectGuid>{B1CE524D-C43E-4AC1-BFA2-C6A404C81E00}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CodePlex.CrystalWall</RootNamespace>
-    <AssemblyName>CodePlex.CrystalWall</AssemblyName>
+    <RootNamespace>CrystalWall</RootNamespace>
+    <AssemblyName>CrystalWall</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
@@ -66,7 +66,6 @@
     <Compile Include="Utils\Logging\CallbackOnDispose.cs" />
     <Compile Include="Config\ConfigurationException.cs" />
     <Compile Include="Config\XmlConfiguration.cs" />
-    <Compile Include="EventTest.cs" />
     <Compile Include="Utils\FileUtils\FileNameEventHandler.cs" />
     <Compile Include="Utils\FileUtils\FileUtil.cs" />
     <Compile Include="IConfiguration.cs" />

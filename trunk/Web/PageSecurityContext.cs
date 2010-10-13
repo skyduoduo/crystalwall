@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 
-namespace CodePlex.CrystalWall.Web
+namespace CrystalWall.Web
 {
 
     //当前用户没有可见权限时执行的处理
@@ -64,7 +64,6 @@ namespace CodePlex.CrystalWall.Web
             //principal = GetPrincipal(GetCurrentName());
             this.page.Error += new EventHandler(Page_Error);
             //页面的加载事件中，为控件指定的事件添加权限检查
-            //TODO:测试页面加载的顺序，是否在PreInit事件中添加的控件事件在设计器中定义的事件之前触发！
             this.page.Init += new EventHandler(Page_Init);
             this.page.PreLoad += new EventHandler(Page_PreLoad);
         }
@@ -89,13 +88,13 @@ namespace CodePlex.CrystalWall.Web
                     {
                         Control c = FindControlInContainer(point.Name);
                         EventInfo eventInfo = c.GetType().GetEvent(point.EventName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                        //第一个事件将检查权限！！！！！！！！！！
+                        //加入权限检查事件
                         EventHandler deciderMethod = (s, ee) =>
                         {
                             ControlDecider decider = new ControlDecider(this);
                             decider.Decide(this.Principal, new ControlEventContextObject(point.Name, c, point.EventName));
                         };
-                        //无法创建??
+                        //无法动态创建委托！
                         //Delegate d = Delegate.CreateDelegate(eventInfo.EventHandlerType, deciderMethod.Method);
                         //获取控件中的指定事件对象。无法获取，.NET反射行为非常不一致！(只能通过Events列表属性获取)
                         //Delegate eventObject = (Delegate)eventInfo.DeclaringType.GetField(eventInfo.Name, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static).GetValue(c);
@@ -335,6 +334,7 @@ namespace CodePlex.CrystalWall.Web
         protected override string GetCurrentName()
         {
             //TODO:从MemberShip中获取当前用户名
+
             return "admin";
         }
 

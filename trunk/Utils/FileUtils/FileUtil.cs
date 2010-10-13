@@ -5,12 +5,12 @@ using System.Text;
 using System.IO;
 using Microsoft.Win32;
 using System.Text.RegularExpressions;
-using QJSoft.ECBC.Message;
-using CodePlex.CrystalWall.Utils;
-using CodePlex.CrystalWall.FileUtils;
-using CodePlex.CrystalWall.Message;
+using CrystalWall.Utils;
+using CrystalWall.FileUtils;
+using CrystalWall.Message;
 
-namespace QJSoft.ECBC.FileUtils
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.FileUtils
 {
     /// <summary>
     /// 文件错误策略枚举

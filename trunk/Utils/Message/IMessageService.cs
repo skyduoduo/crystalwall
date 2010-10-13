@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodePlex.CrystalWall.Message
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Message
 {
     /// <summary>
     /// 消息服务器接口，他提供显示异常/警告/询问/显示自定义对话框等服务并将其抽象。

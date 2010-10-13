@@ -8,9 +8,10 @@ using System.Globalization;
 using System.Xml;
 using System.Collections;
 using System.ComponentModel;
-using QJSoft.ECBC.Message;
+using CrystalWall.Message;
 
-namespace CodePlex.CrystalWall.Property
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Property
 {
     /// <summary>
     /// 可记录的接口用于标记对象是可备忘录的。它使用了备忘录模式。用于保存和恢复对象的状态。

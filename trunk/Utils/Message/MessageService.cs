@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CodePlex.CrystalWall.Logging;
-using CodePlex.CrystalWall.Utils;
+using CrystalWall.Logging;
+using CrystalWall.Utils;
 
-namespace QJSoft.ECBC.Message
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Message
 {
     /// <summary>
     /// 包含一个自定义显示异常消息代理的使用<see cref="StringParser"/>

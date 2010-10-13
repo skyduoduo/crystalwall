@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.UI;
 
-namespace CodePlex.CrystalWall.Web
+namespace CrystalWall.Web
 {
     /// <summary>
     /// 定义页面中控件的权限点.

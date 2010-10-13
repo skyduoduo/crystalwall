@@ -5,7 +5,8 @@ using System.Text;
 using System.IO;
 using System.Diagnostics;
 
-namespace CodePlex.CrystalWall.Debugging
+///<remarks>this file is from Sharpdevelop</remarks>
+namespace CrystalWall.Debugging
 {
     /// <summary>
     /// TextWriter的子类，使用Debug类将信息写入跟踪监听器中
