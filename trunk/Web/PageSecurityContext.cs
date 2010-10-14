@@ -30,26 +30,15 @@ namespace CrystalWall.Web
     /// 渲染事件上添加一个事件，这个事件对应action中的原始事件，每次执行原始事件时，都将调用对应的PageControlDecider检测权限
     /// 注意：如果PermissionPoint定义的控件id是在其他容器控件的子控件，请使用$符号分隔，例如panel1$panel2$labelId
     /// </summary>
-    public class PageSecurityContext: AbstractSecurityContext
+    public class PageSecurityContext : AbstractDecider
     {
         //当控件没有可见权限时触发的自定义事件处理
         public event HideControl HiddenControl;
 
         private Page page;
 
-        private  IList<PermissionPoint> points = new List<PermissionPoint>();//页面上各个控件上的权限点缓存
+        private IList<PermissionPoint> points = new List<PermissionPoint>();//页面上各个控件上的权限点缓存
 
-        private IPrincipalToken principal;
-
-        public IPrincipalToken Principal
-        {
-            get
-            {
-                if (principal == null)
-                    principal =  GetPrincipal(GetCurrentName());
-                return principal;
-            }
-        }
 
         //执行自定义隐藏控件的事件，事件参数中的check对象为需要隐藏的控件
         public void OnHideControl(AccessExceptionEventArgs e)
@@ -91,8 +80,7 @@ namespace CrystalWall.Web
                         //加入权限检查事件
                         EventHandler deciderMethod = (s, ee) =>
                         {
-                            ControlDecider decider = new ControlDecider(this);
-                            decider.Decide(this.Principal, new ControlEventContextObject(point.Name, c, point.EventName));
+                            Decide(PrincipalTokenHolder.CurrentPrincipal, new ControlEventContextObject(point.Name, this, c, point.EventName));
                         };
                         //无法动态创建委托！
                         //Delegate d = Delegate.CreateDelegate(eventInfo.EventHandlerType, deciderMethod.Method);
@@ -141,19 +129,18 @@ namespace CrystalWall.Web
                         return true;
                     return false;
                 });
-                ControlDecider decider = new ControlDecider(this);
                 foreach (ControlPermissionPoint point in controlCheckView)
                 {
                     Control c = FindControlInContainer(point.Name);
                     try
                     {
-                        decider.Decide(Principal, new ControlEventContextObject(point.Name, c, point.EventName));
+                        Decide(PrincipalTokenHolder.CurrentPrincipal, new ControlEventContextObject(point.Name, this, c, point.EventName));
                     }
                     catch (AccessException ae)
                     {
                         //当前用户没有控件的可见权限，则默认设置visiable为true
                         c.Visible = false;
-                        OnHideControl(new AccessExceptionEventArgs(Principal, c));
+                        OnHideControl(new AccessExceptionEventArgs(PrincipalTokenHolder.CurrentPrincipal, c));
                     }
                 }
             }
@@ -168,14 +155,14 @@ namespace CrystalWall.Web
             if (page.Server.GetLastError() is AccessException)
             {
                 //执行抛出异常时的事件处理
-                this.OnAccessException(Principal, (page.Server.GetLastError() as AccessException).CheckObject);
+                this.OnAccessException(PrincipalTokenHolder.CurrentPrincipal, (page.Server.GetLastError() as AccessException).CheckObject);
             }
         }
 
         /// <summary>
         /// 如果不存在控件，则首先加载
         /// </summary>
-        private PermissionPoint GetPoint(string controlId, string eventName)
+        internal PermissionPoint GetPoint(string controlId, string eventName)
         {
             try
             {
@@ -224,49 +211,49 @@ namespace CrystalWall.Web
         /// </summary>
         protected virtual void ReLoadPoints()
         {
-                points.Clear();
-                FieldInfo[] fields = page.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                foreach (FieldInfo info in fields)
+            points.Clear();
+            FieldInfo[] fields = page.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            foreach (FieldInfo info in fields)
+            {
+                if (info.FieldType.IsSubclassOf(typeof(Control)) && info.GetCustomAttributes(typeof(PermissionPointAttribute), false).Length != 0)
                 {
-                    if (info.FieldType.IsSubclassOf(typeof(Control)) && info.GetCustomAttributes(typeof(PermissionPointAttribute), false).Length != 0) 
+                    //在控件字段上定义了PermissionPointAttribute元特性(目前只支持一个）
+                    PermissionPointAttribute pattr = (PermissionPointAttribute)info.GetCustomAttributes(typeof(PermissionPointAttribute), false)[0];
+                    if (pattr.Action != null)
                     {
-                        //在控件字段上定义了PermissionPointAttribute元特性(目前只支持一个）
-                       PermissionPointAttribute pattr = (PermissionPointAttribute)info.GetCustomAttributes(typeof(PermissionPointAttribute), false)[0];
-                       if (pattr.Action != null)
-                       {
-                           string[] action;
-                           if (pattr.Action.Contains(","))
-                           {
-                               //TODO:解析以逗号分隔的action列表
-                               action = pattr.Action.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                           }
-                           else
-                           {
-                               //没有逗号，单独一个point action
-                               action = new string[1];
-                               action[0] = pattr.Action;
-                           }
-                           foreach (string act in action)
-                           {
-                               ControlPermissionPoint point;
-                               if (pattr.Type != null)
-                               {
-                                   Type t = Type.GetType(pattr.Type);
-                                   point = (ControlPermissionPoint)t.GetConstructor(new Type[0]).Invoke(new object[0]);
-                               }
-                               else
-                               {
-                                   point = new ControlPermissionPoint();
-                               }
-                               point.Name = pattr.Name.Substring(pattr.Name.LastIndexOf('#') + 1);//控件id
-                               point.Resource = page.Request.Path;//权限点资源对应所在页面的虚拟路径
-                               point.Action = act;//定义的操作
-                               point.Control = FindControlInContainer(pattr.Name);//运行时加入控件实例
-                               points.Add(point);
-                           }
-                       }
+                        string[] action;
+                        if (pattr.Action.Contains(","))
+                        {
+                            //TODO:解析以逗号分隔的action列表
+                            action = pattr.Action.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        }
+                        else
+                        {
+                            //没有逗号，单独一个point action
+                            action = new string[1];
+                            action[0] = pattr.Action;
+                        }
+                        foreach (string act in action)
+                        {
+                            ControlPermissionPoint point;
+                            if (pattr.Type != null)
+                            {
+                                Type t = Type.GetType(pattr.Type);
+                                point = (ControlPermissionPoint)t.GetConstructor(new Type[0]).Invoke(new object[0]);
+                            }
+                            else
+                            {
+                                point = new ControlPermissionPoint();
+                            }
+                            point.Name = pattr.Name.Substring(pattr.Name.LastIndexOf('#') + 1);//控件id
+                            point.Resource = page.Request.Path;//权限点资源对应所在页面的虚拟路径
+                            point.Action = act;//定义的操作
+                            point.Control = FindControlInContainer(pattr.Name);//运行时加入控件实例
+                            points.Add(point);
+                        }
                     }
                 }
+            }
         }
 
         /// <summary>
@@ -284,7 +271,7 @@ namespace CrystalWall.Web
                 //没有使用母版页
                 return FindControlInContainerWithNoMastPage(page, controlIDInPointName);
             }
-            while(top.Master != null)
+            while (top.Master != null)
             {
                 //找到最顶层模板页
                 top = top.Master;
@@ -311,72 +298,28 @@ namespace CrystalWall.Web
             return parent;
         }
 
-        /// <summary>
-        /// 只接受ControlEventContextObject对象
-        /// </summary>
-        public override PermissionPoint GetPoint(object context)
-        {
-           ControlEventContextObject controlContext = context as ControlEventContextObject;
-            if (controlContext == null)
-                return PermissionPoint.EMPTY_PERMISSION_POINT;//传入的对象不是ControlEventContextObject
-            else
-            {
-                PermissionPoint p  = this.GetPoint(controlContext.fullPath, controlContext.eventName); 
-                if (p == null)
-                {
-                     //如果以上都找不到权限点，则在资源清单中查找权限点
-                    p = base.GetPoint(context);
-                }
-                return p;   
-            }
-        }
+        ///// <summary>
+        ///// 只接受ControlEventContextObject对象
+        ///// </summary>
+        //public override PermissionPoint GetPoint(object context)
+        //{
+        //    ControlEventContextObject controlContext = context as ControlEventContextObject;
+        //    if (controlContext == null)
+        //        return PermissionPoint.EMPTY_PERMISSION_POINT;//传入的对象不是ControlEventContextObject
+        //    else
+        //    {
+        //        PermissionPoint p = this.GetPoint(controlContext.fullPath, controlContext.eventName);
+        //        return p;
+        //    }
+        //}
 
-        protected override string GetCurrentName()
-        {
-            //TODO:从MemberShip中获取当前用户名
-
-            return "admin";
-        }
-
-        /// <summary>
-        /// 子类可以重写的获取冲突解决方案对象的方法。
-        /// 默认返回null不使用反向权限需要的冲突解决器
-        /// </summary>
-        protected virtual Elect ConfuseElect 
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// 用于控制页面控件权限的决定者
-        /// </summary>
-        private  class ControlDecider : AbstractDecider
-        {
-            private PageSecurityContext context;
-
-            public ControlDecider(PageSecurityContext context)
-            {
-                this.context = context;
-            }
-            public override Elect GetElect()
-            {
-                return context.ConfuseElect;
-            }
-
-            public override AbstractSecurityContext GetContext()
-            {
-                return context;
-            }
-        }
     }
+
 
     /// <summary>
     /// 用于封装当前正在执行某控件上某事件的上下文对象
     /// </summary>
-    internal class ControlEventContextObject
+    internal class ControlEventContextObject: IPermissionPointProvider
     {
         internal Control control;
 
@@ -384,11 +327,19 @@ namespace CrystalWall.Web
 
         internal string fullPath;//完整路径
 
-        internal ControlEventContextObject(string fullPath, Control control, string eventName)
+        private PageSecurityContext context;
+
+        internal ControlEventContextObject(string fullPath, PageSecurityContext context, Control control, string eventName)
         {
             this.fullPath = fullPath;
             this.control = control;
             this.eventName = eventName;
+            this.context = context;
+        }
+
+        public PermissionPoint[] GetPoint()
+        {
+            return new PermissionPoint[] { context.GetPoint(fullPath, eventName) };
         }
     }
 

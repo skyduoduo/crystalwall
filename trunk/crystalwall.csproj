@@ -54,14 +54,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractDecider.cs" />
+    <Compile Include="AbstractDecider.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="AbstractPricipalToken.cs" />
-    <Compile Include="AbstractSecurityContext.cs" />
     <Compile Include="AccessException.cs" />
     <Compile Include="Auths\AccessDecision.cs" />
     <Compile Include="Auths\AnonyPrincipalToken.cs" />
     <Compile Include="Auths\MemeryPrincipalTokenProvider.cs" />
     <Compile Include="Auths\UserPasswordPrincipalToken.cs" />
+    <Compile Include="DynamicPermissionPoint.cs" />
+    <Compile Include="IPermissionPointProvider.cs" />
+    <Compile Include="IPointResolveStrategy.cs" />
+    <Compile Include="IPrincipalTokenStorage.cs" />
+    <Compile Include="PrincipalTokenHolder.cs" />
     <Compile Include="Utils\Debug\DebugTextWriter.cs" />
     <Compile Include="Utils\Logging\CallbackOnDispose.cs" />
     <Compile Include="Config\ConfigurationException.cs" />
