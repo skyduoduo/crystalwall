@@ -43,6 +43,9 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="aspectdng">
+      <HintPath>lib\aspectdng.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -59,6 +62,10 @@
     </Compile>
     <Compile Include="AbstractPricipalToken.cs" />
     <Compile Include="AccessException.cs" />
+    <Content Include="Attr\PermissionMethodAttribute.cs.txt" />
+    <Compile Include="Aop\StaticAspectPermissionInterceptor.cs" />
+    <Compile Include="Attr\DeciderAttribute.cs" />
+    <Compile Include="Attr\PermissionPointAttribute.cs" />
     <Compile Include="Auths\AccessDecision.cs" />
     <Compile Include="Auths\AnonyPrincipalToken.cs" />
     <Compile Include="Auths\MemeryPrincipalTokenProvider.cs" />
@@ -104,7 +111,6 @@
     <Compile Include="Web\ControlPermissionInfo.cs" />
     <Compile Include="Web\ControlPermissionPoint.cs" />
     <Compile Include="Web\PageSecurityContext.cs" />
-    <Compile Include="Web\PermissionPointAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -115,6 +121,9 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>aspectdng.dll CrystalWall.dll</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

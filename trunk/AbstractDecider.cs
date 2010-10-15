@@ -9,7 +9,7 @@ namespace CrystalWall
     /// <summary>
     /// 权限控制执行上下文
     /// </summary>
-    public abstract class AbstractDecider : IAccessDecider
+    public  class Decider : IAccessDecider
     {
 
         public event EventHandler<AccessExceptionEventArgs> AccessDenyed;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 
 namespace CrystalWall
 {
@@ -33,6 +34,31 @@ namespace CrystalWall
         {
             get { return action; }
             set { action = value; }
+        }
+
+        private object context;//定义权限点的对象
+
+        public object Context
+        {
+            get { return context; }
+            set { context = value; }
+        }
+
+        private MemberInfo member;//定义的字段、属性、方法、事件等
+
+        public MemberInfo Member
+        {
+            get { return member; }
+            set { member = value; }
+        }
+
+        //执行方法时的参数列表
+        private object[] args;
+
+        public object[] Args
+        {
+            get { return args; }
+            set { args = value; }
         }
 
         public abstract PermissionInfo NewPermission();

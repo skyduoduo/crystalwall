@@ -30,7 +30,7 @@ namespace CrystalWall.Web
     /// 渲染事件上添加一个事件，这个事件对应action中的原始事件，每次执行原始事件时，都将调用对应的PageControlDecider检测权限
     /// 注意：如果PermissionPoint定义的控件id是在其他容器控件的子控件，请使用$符号分隔，例如panel1$panel2$labelId
     /// </summary>
-    public class PageSecurityContext : AbstractDecider
+    public class PageSecurityContext : Decider
     {
         //当控件没有可见权限时触发的自定义事件处理
         public event HideControl HiddenControl;
