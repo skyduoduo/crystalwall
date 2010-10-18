@@ -5,6 +5,8 @@ using System.Text;
 using DotNetGuru.AspectDNG.Config;
 using DotNetGuru.AspectDNG.Joinpoints;
 using CrystalWall.Attr;
+using System.Web.UI;
+using CrystalWall.Web;
 
 namespace CrystalWall.Aop
 {
@@ -59,6 +61,18 @@ namespace CrystalWall.Aop
             decider.Decide(PrincipalTokenHolder.CurrentPrincipal, new ConstPointProvider(points));
             //权限通过，正常执行
             return jp.Proceed();
+        }
+
+        /// <summary>
+        /// 添加ASP.NET页面权限修饰
+        /// TODO:test
+        /// </summary>
+        [AroundCall("* Page::.ctor(*)")]
+        public static object AccessASPPage(JoinPoint jp)
+        {
+            Page page = (Page)jp.Proceed();
+            new PageSecurityContext(page);
+            return page;
         }
 
         private class ConstPointProvider : IPermissionPointProvider

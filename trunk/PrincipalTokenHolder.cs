@@ -45,6 +45,13 @@ namespace CrystalWall
                 }
                 return new AnonyPrincipalToken(AnonyPrincipalPermission);
             }
+            set
+            {
+                if (Storage != null)
+                {
+                    Storage.SetCurrentToken(value);
+                }
+            }
         }
 
         /// <summary>
