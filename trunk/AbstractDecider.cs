@@ -9,7 +9,7 @@ namespace CrystalWall
     /// <summary>
     /// 权限控制执行上下文
     /// </summary>
-    public  class Decider : IAccessDecider
+    public abstract  class AbstractDecider : IAccessDecider
     {
 
         public event EventHandler<AccessExceptionEventArgs> AccessDenyed;
@@ -25,13 +25,15 @@ namespace CrystalWall
             set { confuseElect = value; }
         }
 
-        private IList<IPointResolveStrategy> pointResolves = new List<IPointResolveStrategy>();
+        //private IList<IPointResolveStrategy> pointResolves = new List<IPointResolveStrategy>();
 
-        public IList<IPointResolveStrategy> PointResolves
-        {
-            get { return pointResolves; }
-            set { pointResolves = value; }
-        }
+        //public IList<IPointResolveStrategy> PointResolves
+        //{
+        //    get { return pointResolves; }
+        //    set { pointResolves = value; }
+        //}
+
+        public abstract IList<IPointResolveStrategy> GetPointResolves();
 
         /// <summary>
         ///  授权不通过，则执行不通过时的事件处理
@@ -54,7 +56,7 @@ namespace CrystalWall
             }
             try
             {
-                IPointResolveStrategy strategy = PointResolves.First(ps =>
+                IPointResolveStrategy strategy = GetPointResolves().First(ps =>
                 {
                     if (ps.Support(context.GetType()))
                         return true;
@@ -68,26 +70,56 @@ namespace CrystalWall
             }
         }
 
+        private void CheckPermission(PermissionInfoCollection pc, PermissionInfo pinfo, object checkObject)
+        {
+            if (!pc.Contains(pinfo))
+            {
+                AccessException ae = new AccessException("there is no access for " + PrincipalTokenHolder.CurrentPrincipal.Name);
+                ae.CheckObject = checkObject;
+                throw ae;
+            }
+        }
 
         public void Decide(IPrincipalToken principal, object check)
         {
             PermissionInfoCollection pc = principal.GetGrandedPermission();
             if (ConfuseElect != null)
                 pc.ElectVisitor = ConfuseElect;
-            //资源上没有配置当前权限点指定的权限，则不允许任何人访问
-            PermissionPoint[] point = GetPoint(check);
-            if (point == null)
-                return;//程序没有定义权限点，不做任何权限控制！
-            foreach (PermissionPoint p in point)
-            {//在当前对象上定义了多个权限点，每一个都需要进行权限检测
-                PermissionInfo checkPermission = p.NewPermission();
-                if (!pc.Contains(checkPermission))
-                {
-                    AccessException ae = new AccessException("there is no access for " + PrincipalTokenHolder.CurrentPrincipal.Name);
-                    ae.CheckObject = check;
-                    throw ae;
+            if (check is PermissionInfo)
+            {
+                CheckPermission(pc, (PermissionInfo)check, check);
+            }
+            else
+            {
+                //资源上没有配置当前权限点指定的权限，则不允许任何人访问
+                PermissionPoint[] point = GetPoint(check);
+                if (point == null)
+                    return;//程序没有定义权限点，不做任何权限控制！
+                foreach (PermissionPoint p in point)
+                {//在当前对象上定义了多个权限点，每一个都需要进行权限检测
+                    PermissionInfo checkPermission = p.NewPermission();
+                    CheckPermission(pc, checkPermission, check);
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// 决定者的默认实现，他支持容器依赖注入的特性
+    /// </summary>
+    public class DefaultDecider : AbstractDecider
+    {
+        private IList<IPointResolveStrategy> pointResolves = new List<IPointResolveStrategy>();
+
+        public IList<IPointResolveStrategy> PointResolves
+        {
+            get { return pointResolves; }
+            set { pointResolves = value; }
+        }
+
+        public override IList<IPointResolveStrategy> GetPointResolves()
+        {
+            return PointResolves;
         }
     }
 
@@ -111,7 +143,5 @@ namespace CrystalWall
             this.principal = principal;
             this.check = check;
         }
-
-
     }
 }

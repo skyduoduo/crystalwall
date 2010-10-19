@@ -52,7 +52,7 @@ namespace CrystalWall.Aop
             IAccessDecider decider;
             DeciderAttribute[] deciderAttr = (DeciderAttribute[])jp.RealTarget.GetType().GetCustomAttributes(typeof(DeciderAttribute), true);
             if (deciderAttr == null || deciderAttr.Length == 0)
-                decider = new Decider();//使用默认的权限决定器
+                decider = new DefaultDecider();//使用默认的权限决定器
             else
             {
                 decider = (IAccessDecider)Type.GetType(deciderAttr[0].Type).GetConstructor(new Type[0]).Invoke(new object[0]);

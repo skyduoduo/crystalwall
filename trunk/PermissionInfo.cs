@@ -16,14 +16,14 @@ namespace CrystalWall
 
         protected string name;
 
-        public string Name
+        public virtual string Name
         {
             get { return name; }
         }
 
         protected string action;
 
-        public string Action
+        public virtual string Action
         {
             get { return action; }
         }
@@ -50,7 +50,7 @@ namespace CrystalWall
             if (other is PermissionInfo)
             {
                 PermissionInfo p = (PermissionInfo)other;
-                return this.name.Equals(p.name) && this.action.Equals(p.action);
+                return Name.Equals(p.name) && Action.Equals(p.action);
             }
             else
             {
@@ -60,7 +60,7 @@ namespace CrystalWall
 
         public override int GetHashCode()
         {
-            return this.name.GetHashCode() ^ action.GetHashCode();
+            return Name.GetHashCode() ^ Action.GetHashCode();
         }
 
         /// <summary>
@@ -89,7 +89,56 @@ namespace CrystalWall
             }
         }
 
+        /// <summary>
+        /// 权限判断操作符，系统支持使用两个感叹号!!操作符进行判断当前用户是否具有此权限
+        /// </summary>
+        public static PermissionInfo operator ! (PermissionInfo pinfo)
+        {
+            PermissionInfoOperatorWrapper pw = pinfo as PermissionInfoOperatorWrapper;
+            if (pw == null)
+            {
+                //一次感叹号操作符，将pinfo包装
+                pw = new PermissionInfoOperatorWrapper(pinfo);
+                return pw;
+            }
+            else
+            {
+                //使用了至少两次!!操作符，判断当前用户是否具有此权限，否则抛出Access异常
+                AbstractDecider decider = new DefaultDecider();
+                decider.Decide(PrincipalTokenHolder.CurrentPrincipal, pw.wrapered);
+                return pw.wrapered;
+            }
+        }
+
         public static readonly EmptyPermissionInfo EMPTY_PERMISSIONINFO = new EmptyPermissionInfo();
+    }
+
+    /// <summary>
+    /// 用于权限信息中运算符!!重载的打包器对象，外部不要调用
+    /// </summary>
+    internal class PermissionInfoOperatorWrapper : PermissionInfo
+    {
+        internal PermissionInfo wrapered;
+
+        public PermissionInfoOperatorWrapper(PermissionInfo wrapered)
+        {
+            this.wrapered = wrapered;
+        }
+
+        public override string Name
+        {
+            get { return this.wrapered.Name; }
+        }
+
+        public override string Action
+        {
+            get { return this.wrapered.Action; }
+        }
+
+        public override bool Contains(PermissionInfo permission)
+        {
+            return this.wrapered.Contains(permission);
+        }
     }
     
     /// <summary>
