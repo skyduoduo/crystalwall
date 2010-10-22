@@ -58,5 +58,11 @@ namespace  CrystalWall.Auths
             else
                 return PermissionInfoCollection.EMPTY_PERMISSIONINFO_COLLECTION;
         }
+
+
+        public void InitData(System.Xml.XmlNode element, string attribute, object data)
+        {
+           //DO NOTHING
+        }
     }
 }
