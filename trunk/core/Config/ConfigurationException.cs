@@ -10,9 +10,19 @@ namespace  CrystalWall.Config
     /// </summary>
     public class ConfigurationException: ApplicationException
     {
-        public ConfigurationException(string message)
+        private string node;//配置节点名称
+
+        public string Node
+        {
+            set { node = value; }
+        }
+
+        public ConfigurationException(string node, string message)
             : base(message)
         {
+            this.node = node;
         }
+
+
     }
 }

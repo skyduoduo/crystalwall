@@ -41,7 +41,7 @@ namespace  CrystalWall.Config
         {
             if (parent == null)
             {
-                throw new ConfigurationException("xml configuration element's parent must not be null");
+                throw new ConfigurationException(null, "xml configuration element's parent must not be null");
             }
             this.reader = reader;
             this.owner = parent;
@@ -57,7 +57,7 @@ namespace  CrystalWall.Config
         {
             if (parent == null)
             {
-                throw new ConfigurationException("xml configuration element's parent must not be null");
+                throw new ConfigurationException(null, "xml configuration element's parent must not be null");
             }
             this.reader = reader;
             this.parent = parent;
@@ -150,7 +150,7 @@ namespace  CrystalWall.Config
             catch (Exception e)
             {
                 ServiceManager.LoggingService.Error("加载程序集时出现错误！", e);
-                throw new ConfigurationException(string.Format("创建属性{0}指定的对象时发生程序集加载错误", propertyName));
+                throw new ConfigurationException(null, string.Format("创建属性{0}指定的对象时发生程序集加载错误", propertyName));
             }
         }
 

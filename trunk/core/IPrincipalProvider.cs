@@ -10,7 +10,7 @@ namespace CrystalWall
     /// 授权信息集的提供者，权限框架可以根据此身份提供者获取对应身份名的授权信息。例如可以根据以下配置文件获取授权信息;
     /// <code>
     ///    <principal-providers>
-    ///       <provider class="SQLServerDBPrincipalProvider" assembly="程序集文件名">
+    ///       <provider class="DBPrincipalProvider" assembly="程序集文件名">
     ///         <connection>Data Source=**;Initial Catalog=***;User ID=sa;Password=***;</connection>
     ///       </privider>
     ///       <provider class="LDAPPrincipalProvider"/>

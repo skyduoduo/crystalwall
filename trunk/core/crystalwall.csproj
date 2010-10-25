@@ -62,6 +62,7 @@
     </Compile>
     <Compile Include="AbstractPricipalToken.cs" />
     <Compile Include="AccessException.cs" />
+    <Compile Include="Auths\DBPrincipalProviders.cs" />
     <Compile Include="Config\PrincipalProviderSectionHandler.cs" />
     <Compile Include="Web\WebPrincipalTokenStorage.cs" />
     <Content Include="Attr\PermissionMethodAttribute.cs.txt" />
@@ -113,11 +114,13 @@
     <Compile Include="Web\ControlPermissionInfo.cs" />
     <Compile Include="Web\ControlPermissionPoint.cs" />
     <Compile Include="Web\PageSecurityContext.cs" />
+    <Content Include="lib\aspectdng.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="doc\CrystalWall权限系统开发者指南.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
