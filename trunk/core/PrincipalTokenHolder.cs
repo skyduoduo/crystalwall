@@ -35,6 +35,27 @@ namespace CrystalWall
             set { anonyPrincipalPermission = value; }
         }
 
+        //缓存（应该使用定时情况的缓存）
+        private static IDictionary<string, IPrincipalToken> tokenCache = new Dictionary<string, IPrincipalToken>();
+
+        /// <summary>
+        /// 获取指定标识的令牌，他将遍历提供者列表，因此是一个耗时的操作
+        /// </summary>
+        public static IPrincipalToken GetPrincipal(string indentity) 
+        {
+            if (tokenCache[indentity] != null)
+                return tokenCache[indentity];
+            foreach (IPrincipalProvider provider in PrincipalProviders)
+            {
+                if (provider.HasPrincipal(indentity))
+                {
+                    tokenCache[indentity] = provider[indentity];
+                    return tokenCache[indentity];
+                }
+            }
+            return null;
+        }
+
         public static IPrincipalToken CurrentPrincipal
         {
             get

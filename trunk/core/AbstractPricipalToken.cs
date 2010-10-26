@@ -80,7 +80,16 @@ namespace CrystalWall
         {
             if (permissions != null)
                 return (PermissionInfoCollection)permissions.Clone();
-            return provider.GetPermissions(this.name);
+            else
+            {
+                PermissionInfoCollection p = provider.GetPermissions(this.name);
+                if ( p != null)//非空则缓存
+                    permissions = p;
+                else
+                    permissions = PermissionInfoCollection.EMPTY_PERMISSIONINFO_COLLECTION;
+                return permissions;
+            }
+
         }
 
         public override bool Equals(object o)

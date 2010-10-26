@@ -21,7 +21,7 @@ namespace CrystalWall
         IPrincipalToken GetCurrentToken();
 
         /// <summary>
-        /// 清除当前使用系统的身份令牌（用户推出系统时调用）
+        /// 清除当前使用系统的身份令牌（用户退出系统时调用）
         /// </summary>
         void ClearToken();
     }

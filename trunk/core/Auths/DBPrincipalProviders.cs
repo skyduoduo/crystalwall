@@ -6,26 +6,32 @@ using System.Xml;
 using CrystalWall.Config;
 using System.Data;
 using System.Data.Common;
+using System.Reflection;
+using CrystalWall.Utils;
 
 namespace CrystalWall.Auths
 {
     /// <summary>
     /// 基于数据库的身份提供者实现，他指定存储身份令牌的表、权限表、外键、身份名称字段。
-    /// 子类可以根据自己的数据库设计重写。DB身份提供者配置必须按照如下方式配置：
+    /// 其中表的主键必须id字段，且主键必须为36位的唯一字符串。身份表必须具有name字段，
+    /// 权限表必须具有name、action和class字段。子类可以根据自己的数据库设计重写。
+    /// DB身份提供者配置必须按照如下方式配置：
     /// <code>
     /// <principal-providers>
     ///       <provider class="DBPrincipalProvider" assembly="程序集文件名">
     ///         <connection>Data Source=**;Initial Catalog=***;User ID=sa;Password=***;</connection>
     ///         <conn-provider>数据提供者名称</conn-provider>（可选，默认为sql server提供者）
-    ///         <principal-table>User</principal-table>
+    ///         <principal-table>user</principal-table>
     ///         <user-indentity>name</user-indentity>（可选，默认为name）
-    ///         <permission-table>Permission</permission-table>
-    ///         <foreign-key>user_per_id</foreign-key>
+    ///         <permission-table>permission</permission-table>
+    ///         <!--以下可选，关联表默认为身份表_权限表-->
+    ///         <foreign-table name="user_permission">
+    ///           <foreign-user>user_id</foreign-user>
+    ///           <foreign-permission>permission_id</foreign-permission>
+    ///         </foreign-table>
     ///       </privider>
     /// </principal-providers>
     /// </code>
-    /// 其中表的主键必须id字段，且主键必须为36位的唯一字符串。User表必须具有name字段，permission表必须具有name、
-    /// action字段
     /// </summary>
     public class DBPrincipalProviders : IPrincipalProvider
     {
@@ -37,9 +43,19 @@ namespace CrystalWall.Auths
 
         public  const string ELE_PERMISSION_TABLE = "permission-table";
 
-        public  const string ELE_FOREIGN_KEY = "foreign-key";
+        public  const string ELE_FOREIGN_TABLE = "foreign-table";//外键表名
+
+        public const string ELE_FOREIGN_USER = "foreign-user";//外键user id列
+
+        public const string ELE_FOREIGN_PERMISSION = "foreign-permission";//外键permission id列
 
         public  const string ELE_USER_INDENTITY_COLUMN = "user-indentity";//唯一标识用户的列
+
+        public const string PERMISSION_NAME_COLUMN = "name";//权限表名称字段
+
+        public const string PERMISSION_ACTION_COLUMN = "action";//权限表动作字段
+
+        public const string PERMISSION_TYPE_COLUMN = "class";//权限表类型字段（包括程序集的全限定名称）
 
         private string connectionString;
 
@@ -47,9 +63,13 @@ namespace CrystalWall.Auths
 
         private string userIndentity = "name";//唯一标识用户的列
 
-        private string permissiontable;
+        private string permissiontable = "permission";
 
-        private string foreignkey;
+        private string foreigntable = "user_permission";
+
+        private string foreignuser = "user_id";
+
+        private string foreignpermission = "permission_id";
 
         private string connProvider = "System.Data.SqlClient"; //数据提供者名称
 
@@ -115,7 +135,7 @@ namespace CrystalWall.Auths
                 DbDataAdapter adapter = Factory.CreateDataAdapter();
                 adapter.SelectCommand = initCommand(sql);
                 DataSet ds = new DataSet();
-                adapter.Fill(ds, ELE_PRINCIPAL_TABLE);
+                adapter.Fill(ds);
                 return ds;
             }
         }
@@ -150,7 +170,7 @@ namespace CrystalWall.Auths
         /// </summary>
         protected virtual string GetPrincipalSelectCause()
         {
-            return "select * from " + principaltable + " where " + ELE_USER_INDENTITY_COLUMN + "=@name"; 
+            return "select * from " + principaltable + " where " + userIndentity + "=@name"; 
         }
 
         /// <summary>
@@ -159,8 +179,8 @@ namespace CrystalWall.Auths
         /// </summary>
         protected virtual IPrincipalToken CreatePrincipalToken(DataSet principalSet)
         {
-            DataTable ptable = principalSet.Tables[ELE_PRINCIPAL_TABLE];
-            return new UserPasswordPrincipalToken((string)ptable.Rows[0][ELE_USER_INDENTITY_COLUMN], (string)ptable.Rows[0]["password"], this);
+            DataTable ptable = principalSet.Tables[0];
+            return new UserPasswordPrincipalToken((string)ptable.Rows[0][userIndentity], (string)ptable.Rows[0]["password"], this);
         }
 
         public virtual void InitData(XmlNode element, string attribute, object data)
@@ -178,27 +198,92 @@ namespace CrystalWall.Auths
                     case ELE_PERMISSION_TABLE:
                         permissiontable = node.InnerText;
                         break;
-                    case ELE_FOREIGN_KEY:
-                        foreignkey = node.InnerText;
-                        break;
                     case ELE_CONN_PROVIDER:
                         connProvider = node.InnerText;
                         break;
                     case ELE_USER_INDENTITY_COLUMN:
                         userIndentity = node.InnerText;
                         break;
+                    case ELE_FOREIGN_TABLE:
+                        foreigntable = node.Attributes["name"].Value;
+                        for (int i = 0; i < node.ChildNodes.Count; i++)
+                        {
+                            switch (node.ChildNodes[i].Name)
+                            {
+                                case ELE_FOREIGN_USER:
+                                    foreignuser = node.ChildNodes[i].InnerText;
+                                    break;
+                                case ELE_FOREIGN_PERMISSION:
+                                    foreignpermission = node.ChildNodes[i].InnerText;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        break;
                     default:
                         break;
                 }
             }
-            if (connectionString == null || principaltable == null || permissiontable == null || foreignkey == null)
-                throw new ConfigurationException(element.Name, "基于数据库的身份提供者的配置错误，你必须配置connection/principal-table/permission-table/foreign-key元素。");
+            if (connectionString == null || principaltable == null || permissiontable == null)
+                throw new ConfigurationException(element.Name, "基于数据库的身份提供者的配置错误，你必须配置connection/principal-table/permission-table元素。");
+            if (foreigntable == null)
+            {
+                foreigntable = principaltable + "_" + permissiontable;//默认中间表
+                foreignuser = principaltable + "_id";//默认身份表id外键
+                foreignpermission = permissiontable + "_id";//默认权限表外键id
+            }
+            else if (foreignuser == null)
+            {
+                foreignuser = principaltable + "_id";//默认身份表id外键
+            }
+            else if (foreignpermission == null)
+            {
+                foreignpermission = permissiontable + "_id";//默认权限表外键id
+            }
         }
 
         public virtual PermissionInfoCollection GetPermissions(string name)
         {
-            //TODO:编写获取指定身份的权限集的代码
-            throw new NotImplementedException();
+            string sql = GetPermissionSelectCause();
+            DataSet ds = ExecuteQuery(sql, s =>
+            {
+                DbCommand command = connection.CreateCommand();
+                DbParameter parameter = command.CreateParameter();
+                parameter.ParameterName = "name";
+                parameter.DbType = DbType.String;
+                parameter.Value = name;
+                command.CommandText = s;
+                command.Parameters.Add(parameter);
+                return command;
+            });
+            PermissionInfoCollection pcoll = new PermissionInfoCollection();
+            try
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    ConstructorInfo constructor = Type.GetType((string)dr[PERMISSION_TYPE_COLUMN]).GetConstructor(new Type[] { typeof(string), typeof(string) });
+                    PermissionInfo permission = (PermissionInfo)constructor.Invoke(new object[] { dr[PERMISSION_NAME_COLUMN], dr[PERMISSION_ACTION_COLUMN] });
+                    pcoll.Add(permission);
+                }
+                return pcoll;
+            }
+            catch (Exception e)
+            {
+                ServiceManager.LoggingService.Fatal("权限信息无法构造无法使用name和action参数构造，无法获取指定身份" + name + "的授权集合", e);
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// 获取查询permission权限信息的select语句子类可以根据需要重写，但重写时，sql语句中必须具有@name参数
+        /// </summary>
+        protected virtual string GetPermissionSelectCause()
+        {
+            return "select * from " + permissiontable + " as ppermission left join " + foreigntable + " as uuser_permission on " 
+                       + "uuser_permission." + foreignpermission + "=ppsermission.id"
+                       + " left join " + principaltable + "as uuser on uuser.id=uuser_permission." + foreignuser 
+                       + " where uuser." + userIndentity + "=@name"; 
         }
     }
 }
