@@ -33,7 +33,7 @@ namespace CrystalWall.Auths
     /// </principal-providers>
     /// </code>
     /// </summary>
-    public class DBPrincipalProviders : IPrincipalProvider
+    public class DBPrincipalProvider : IPrincipalProvider
     {
         public  const string ELE_CONNECTION = "connection";
 
@@ -59,19 +59,83 @@ namespace CrystalWall.Auths
 
         private string connectionString;
 
+        /// <summary>
+        /// 仅用于测试目的
+        /// </summary>
+        public string ConnectionString
+        {
+            get { return connectionString; }
+        }
+
         private string principaltable;
+
+        /// <summary>
+        /// 仅用于测试目的
+        /// </summary>
+        public string Principaltable
+        {
+            get { return principaltable; }
+        }
 
         private string userIndentity = "name";//唯一标识用户的列
 
+        /// <summary>
+        /// 仅用于测试目的
+        /// </summary>
+        public string UserIndentity
+        {
+            get { return userIndentity; }
+        }
+
         private string permissiontable = "permission";
+
+        /// <summary>
+        /// 仅用于测试目的
+        /// </summary>
+        public string Permissiontable
+        {
+            get { return permissiontable; }
+        }
 
         private string foreigntable = "user_permission";
 
+        /// <summary>
+        /// 仅用于测试目的
+        /// </summary>
+        public string Foreigntable
+        {
+            get { return foreigntable; }
+        }
+
         private string foreignuser = "user_id";
+
+        /// <summary>
+        /// 仅用于测试目的
+        /// </summary>
+        public string Foreignuser
+        {
+            get { return foreignuser; }
+        }
 
         private string foreignpermission = "permission_id";
 
+        /// <summary>
+        /// 仅用于测试目的
+        /// </summary>
+        public string Foreignpermission
+        {
+            get { return foreignpermission; }
+        }
+
         private string connProvider = "System.Data.SqlClient"; //数据提供者名称
+
+        /// <summary>
+        /// 仅用于测试目的
+        /// </summary>
+        public string ConnProvider
+        {
+            get { return connProvider; }
+        }
 
         private DbConnection connection;
 
@@ -187,6 +251,8 @@ namespace CrystalWall.Auths
         {
             foreach (XmlNode node in element.ChildNodes)
             {
+                if (node.NodeType == XmlNodeType.Comment)
+                    continue;
                 switch(node.Name)
                 {
                     case ELE_CONNECTION:

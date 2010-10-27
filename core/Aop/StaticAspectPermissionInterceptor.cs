@@ -63,17 +63,17 @@ namespace CrystalWall.Aop
             return jp.Proceed();
         }
 
-        /// <summary>
-        /// 添加ASP.NET页面权限修饰
-        /// TODO:test
-        /// </summary>
-        [AroundCall("* Page::.ctor(*)")]
-        public static object AccessASPPage(JoinPoint jp)
-        {
-            Page page = (Page)jp.Proceed();
-            new PageSecurityContext(page);
-            return page;
-        }
+        ///// <summary>
+        ///// 添加ASP.NET页面权限修饰
+        ///// TODO:test
+        ///// </summary>
+        //[AroundCall("* Page::.ctor(*)")]
+        //public static object AccessASPPage(JoinPoint jp)
+        //{
+        //    Page page = (Page)jp.Proceed();
+        //    new PageSecurityContext(page);
+        //    return page;
+        //}
 
         private class ConstPointProvider : IPermissionPointProvider
         {
