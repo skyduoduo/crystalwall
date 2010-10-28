@@ -3,8 +3,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Xml;
 using CrystalWall.Auths;
+using CrystalWall;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Reflection;
 
-namespace test
+namespace Crystalwall.Test
 {
     /// <summary>
     ///这是 PrincipalProviderSectionHandlerTest 的测试类，旨在
@@ -95,20 +99,57 @@ namespace test
         [TestMethod()]
         public void CreateTest()
         {
+
             PrincipalProviderSectionHandler target = new PrincipalProviderSectionHandler();
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xml);
             XmlNode section = doc.DocumentElement.ChildNodes[0];
-            Assert.AreEqual("provider", section.Name, "节点名称不为provider");
-            Assert.AreEqual(1, section.Attributes.Count, "节点属性数目超过1");
-            Assert.AreEqual("class", section.Attributes[0].Name, "节点属性名称不为class");
-            Assert.AreEqual("CrystalWall.Auths.DBPrincipalProvider", section.Attributes[0].Value, "节点class属性的值不为CrystalWall.Auths.DBPrincipalProvider");
+            //Assert.AreEqual("provider", section.Name, "节点名称不为provider");
+            //Assert.AreEqual(1, section.Attributes.Count, "节点属性数目超过1");
+            //Assert.AreEqual("class", section.Attributes[0].Name, "节点属性名称不为class");
+            //Assert.AreEqual("CrystalWall.Auths.DBPrincipalProvider", section.Attributes[0].Value, "节点class属性的值不为CrystalWall.Auths.DBPrincipalProvider");
 
-            object actual = target.Create(new object(), new object(), section);
+            object actual = target.Create(null, null, section);
             Assert.IsNotNull(actual, "提供者不为null");
             Assert.IsInstanceOfType(actual, typeof(DBPrincipalProvider), "提供者不为DBPrincipalProvider类型");
 
             DBPrincipalProvider provider = (DBPrincipalProvider)actual;
+            Assert.IsNotNull(provider.ConnectionString, "连接字符串未获取到");
+            Assert.AreEqual("Data Source=**;Initial Catalog=***;User ID=sa;Password=***;", provider.ConnectionString, "连接字符串不是期望的");
+
+            Assert.IsNotNull(provider.Principaltable, "身份表未获取");
+            Assert.AreEqual("user", provider.Principaltable, "身份字符不是期望的");
+
+            Assert.IsNotNull(provider.ConnProvider, "默认连接提供者为null");
+            Assert.AreEqual("System.Data.SqlClient", provider.ConnProvider, "默认连接提供者不是默认的System.Data.SqlClient");
+
+            Assert.IsNotNull(provider.Foreignpermission, "默认身份权限中间表权限外键为null");
+            Assert.AreEqual("permission_id", provider.Foreignpermission, "默认身份权限中间表权限外键名不是默认的permission_id");
+
+            Assert.IsNotNull(provider.Foreignuser, "默认身份权限中间表身份外键为null");
+            Assert.AreEqual("user_id", provider.Foreignuser, "默认身份权限中间表身份外键名不是默认的user_id");
+
+            Assert.IsNotNull(provider.Foreigntable, "默认身份权限中间表为null");
+            Assert.AreEqual("user_permission", provider.Foreigntable, "默认身份权限中间表名不是默认的user_permission");
+
+            Assert.IsNotNull(provider.Permissiontable, "权限表名未获取到");
+            Assert.AreEqual("permission", provider.Permissiontable, "权限表名不是permission");
+
+            Assert.IsNotNull(provider.UserIndentity, "默认身份表的标识列未获取到");
+            Assert.AreEqual("name", provider.UserIndentity, "默认身份表的标识列不是默认的name");
+        }
+
+        [TestMethod]
+        public void GetProviderTest()
+        {
+            string path = Assembly.GetAssembly(typeof(IPrincipalProvider)).Location;
+            ConfigurationFile configuration = new ConfigurationFile(path);
+            Assert.IsNotNull(configuration, "获取配置文件出错");
+
+            IPrincipalProvider iprovider = (IPrincipalProvider)configuration.GetSection("principal-providers/provider", new PrincipalProviderSectionHandler());
+            Assert.IsInstanceOfType(iprovider, typeof(DBPrincipalProvider), "提供者不为DBPrincipalProvider类型");
+
+            DBPrincipalProvider provider = (DBPrincipalProvider)iprovider;
             Assert.IsNotNull(provider.ConnectionString, "连接字符串未获取到");
             Assert.AreEqual("Data Source=**;Initial Catalog=***;User ID=sa;Password=***;", provider.ConnectionString, "连接字符串不是期望的");
 
