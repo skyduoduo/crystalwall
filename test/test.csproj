@@ -46,6 +46,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -55,7 +56,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auths\TestPermissionInfo.cs" />
     <Compile Include="Config\PrincipalProviderSectionHandlerTest.cs" />
+    <Compile Include="Auths\DBPrincipalProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +67,10 @@
       <Name>crystalwall</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Shadow Include="测试引用\CrystalWall.accessor" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

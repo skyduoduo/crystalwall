@@ -94,17 +94,28 @@ namespace CrystalWall
 
         public override bool Equals(object o)
         {
+            if (this == o)
+                return true;
             if (o is IPrincipalToken)
             {
                 IPrincipalToken p = (IPrincipalToken)o;
-                if (this.name.Equals(p.Name) && this.Certificate.Equals(p.Certificate))
-                    return true;
+                if (!this.name.Equals(p.Name) || !this.Certificate.Equals(p.Certificate))
+                    return false;
+                if (this.GetGrandedPermission() != null)
+                {
+                    if (this.GetGrandedPermission().Equals(p.GetGrandedPermission()))
+                        return true;
+                }
+                else
+                    return p.GetGrandedPermission() == null;    
             }
             return false;
         }
 
         public override int GetHashCode()
         {
+            if (GetGrandedPermission() != null)
+                return this.name.GetHashCode() ^ this.Certificate.GetHashCode() ^ GetGrandedPermission().GetHashCode();
             return this.name.GetHashCode() ^ this.Certificate.GetHashCode();
         }
     }

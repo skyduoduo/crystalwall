@@ -77,7 +77,7 @@ namespace CrystalWall.Auths
             get { return principaltable; }
         }
 
-        private string userIndentity = "name";//唯一标识用户的列
+        private string userIndentity = "pname";//唯一标识用户的列
 
         /// <summary>
         /// 仅用于测试目的
@@ -97,7 +97,7 @@ namespace CrystalWall.Auths
             get { return permissiontable; }
         }
 
-        private string foreigntable = "user_permission";
+        private string foreigntable = "principal_permission";
 
         /// <summary>
         /// 仅用于测试目的
@@ -107,7 +107,7 @@ namespace CrystalWall.Auths
             get { return foreigntable; }
         }
 
-        private string foreignuser = "user_id";
+        private string foreignuser = "principal_id";
 
         /// <summary>
         /// 仅用于测试目的
@@ -153,7 +153,7 @@ namespace CrystalWall.Auths
 
         public virtual bool HasPrincipal(string name)
         {
-            string sql = "select  count(*) from " + principaltable + " where " +  ELE_USER_INDENTITY_COLUMN+ "=@name";
+            string sql = "select  count(*) from " + principaltable + " where " +  userIndentity + "=@name";
             initConnection();
             return ExecuteBool(sql, s =>
             {
@@ -178,6 +178,7 @@ namespace CrystalWall.Auths
             if (connection.State == ConnectionState.Broken || connection.State == ConnectionState.Closed)
             {
                 //重新打开连接
+                connection.ConnectionString = connectionString;
                 connection.Open();
             }
         }
@@ -214,6 +215,7 @@ namespace CrystalWall.Auths
             get 
             {
                 string sql = GetPrincipalSelectCause();
+                initConnection();
                 return CreatePrincipalToken(ExecuteQuery(sql, s =>
                 {
                     DbCommand command = connection.CreateCommand();
@@ -244,6 +246,8 @@ namespace CrystalWall.Auths
         protected virtual IPrincipalToken CreatePrincipalToken(DataSet principalSet)
         {
             DataTable ptable = principalSet.Tables[0];
+            if (ptable.Rows.Count == 0)
+                return FactoryServices.ANONY_PRINCIPAL_TOKEN;//返回匿名用户
             return new UserPasswordPrincipalToken((string)ptable.Rows[0][userIndentity], (string)ptable.Rows[0]["password"], this);
         }
 
@@ -312,6 +316,7 @@ namespace CrystalWall.Auths
         public virtual PermissionInfoCollection GetPermissions(string name)
         {
             string sql = GetPermissionSelectCause();
+            initConnection();
             DataSet ds = ExecuteQuery(sql, s =>
             {
                 DbCommand command = connection.CreateCommand();
@@ -323,9 +328,11 @@ namespace CrystalWall.Auths
                 command.Parameters.Add(parameter);
                 return command;
             });
-            PermissionInfoCollection pcoll = new PermissionInfoCollection();
+            if (ds.Tables[0].Rows.Count == 0)
+                return PermissionInfoCollection.EMPTY_PERMISSIONINFO_COLLECTION;
             try
             {
+                PermissionInfoCollection pcoll = new PermissionInfoCollection();
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     ConstructorInfo constructor = Type.GetType((string)dr[PERMISSION_TYPE_COLUMN]).GetConstructor(new Type[] { typeof(string), typeof(string) });
@@ -346,10 +353,10 @@ namespace CrystalWall.Auths
         /// </summary>
         protected virtual string GetPermissionSelectCause()
         {
-            return "select * from " + permissiontable + " as ppermission left join " + foreigntable + " as uuser_permission on " 
-                       + "uuser_permission." + foreignpermission + "=ppsermission.id"
-                       + " left join " + principaltable + "as uuser on uuser.id=uuser_permission." + foreignuser 
-                       + " where uuser." + userIndentity + "=@name"; 
+            return "select * from " + permissiontable + " as ppermission left join " + foreigntable + " as pprincipal_permission on "
+                       + "pprincipal_permission." + foreignpermission + "=ppermission.id"
+                       + " left join " + principaltable + " as pprincipal on pprincipal.id=pprincipal_permission." + foreignuser
+                       + " where pprincipal." + userIndentity + "=@name"; 
         }
     }
 }

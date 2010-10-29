@@ -33,6 +33,9 @@ namespace CrystalWall
             this.name = name;
         }
 
+        /// <summary>
+        /// 此构造在子类中必须重载
+        /// </summary>
         public PermissionInfo(string name, string action)
         {
             this.name = name;
@@ -45,6 +48,8 @@ namespace CrystalWall
 
         public override bool Equals(object other)
         {
+            if (other == this)
+                return true;
             if (other is EmptyPermissionInfo)
                 return true;//所有权限都包含空权限！！！！
             if (other is PermissionInfo)
@@ -162,6 +167,14 @@ namespace CrystalWall
             set { electVisitor = value; }
         }
 
+        public PermissionInfo this[int index]
+        {
+            get
+            {
+                return permissions[index];
+            }
+        }
+
         public PermissionInfoCollection()
             : base()
         {
@@ -266,6 +279,41 @@ namespace CrystalWall
                 code ^= per.GetHashCode();
             }
             return code;
+        }
+
+        /// <summary>
+        /// 性能较低。通常权限集不进行相等比较
+        /// </summary>
+        public bool Equals(object other)
+        {
+            if (other == this)
+                return true;
+            PermissionInfoCollection c = other as PermissionInfoCollection;
+            if (c == null)
+                return false;
+            if (this.Count != c.Count)
+                return false;
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (!EqualsInOther(this[i], c))
+                    return false;
+            }
+            if (electVisitor != null)
+                return electVisitor.Equals(c.electVisitor);
+            else
+                return c.electVisitor == null;
+        }
+
+        private bool EqualsInOther(PermissionInfo per, PermissionInfoCollection collection)
+        {
+            foreach (PermissionInfo p in collection)
+            {
+                if (p.Equals(per))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static readonly EmptyPermissionInfoCollection EMPTY_PERMISSIONINFO_COLLECTION = new EmptyPermissionInfoCollection();
