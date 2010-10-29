@@ -146,7 +146,7 @@ namespace Crystalwall.Test
             ConfigurationFile configuration = new ConfigurationFile(path);
             Assert.IsNotNull(configuration, "获取配置文件出错");
 
-            IPrincipalProvider iprovider = (IPrincipalProvider)configuration.GetSection("principal-providers/provider", new PrincipalProviderSectionHandler());
+            IPrincipalProvider iprovider = (IPrincipalProvider)configuration.GetSection("principal-providers/provider");
             Assert.IsInstanceOfType(iprovider, typeof(DBPrincipalProvider), "提供者不为DBPrincipalProvider类型");
 
             DBPrincipalProvider provider = (DBPrincipalProvider)iprovider;
