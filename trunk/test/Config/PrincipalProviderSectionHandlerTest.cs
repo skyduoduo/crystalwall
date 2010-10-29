@@ -50,12 +50,12 @@ namespace Crystalwall.Test
                                         + "<provider class=\"CrystalWall.Auths.DBPrincipalProvider\">"
                                         + "<connection>Data Source=**;Initial Catalog=***;User ID=sa;Password=***;</connection>"
                                         + "<!--<conn-provider>数据提供者名称</conn-provider>（可选，默认为sql server提供者）-->"
-                                        + "<principal-table>user</principal-table>"
-                                        + "<!--<user-indentity>name</user-indentity>（可选，默认为name）-->"
+                                        + "<principal-table>principal</principal-table>"
+                                        + "<!--<user-indentity>pname</user-indentity>（可选，默认为pname）-->"
                                         + "<permission-table>permission</permission-table>"
                                         + "<!--以下可选，关联表默认为身份表_权限表"
-                                        + "<foreign-table name=\"user_permission\">"
-                                        + "  <foreign-user>user_id</foreign-user>"
+                                        + "<foreign-table name=\"principal_permission\">"
+                                        + "  <foreign-user>principal_id</foreign-user>"
                                         + "  <foreign-permission>permission_id</foreign-permission>"
                                         + "</foreign-table>-->"
                                         + "</provider>"
@@ -118,7 +118,7 @@ namespace Crystalwall.Test
             Assert.AreEqual("Data Source=**;Initial Catalog=***;User ID=sa;Password=***;", provider.ConnectionString, "连接字符串不是期望的");
 
             Assert.IsNotNull(provider.Principaltable, "身份表未获取");
-            Assert.AreEqual("user", provider.Principaltable, "身份字符不是期望的");
+            Assert.AreEqual("principal", provider.Principaltable, "身份字符不是期望的");
 
             Assert.IsNotNull(provider.ConnProvider, "默认连接提供者为null");
             Assert.AreEqual("System.Data.SqlClient", provider.ConnProvider, "默认连接提供者不是默认的System.Data.SqlClient");
@@ -127,16 +127,16 @@ namespace Crystalwall.Test
             Assert.AreEqual("permission_id", provider.Foreignpermission, "默认身份权限中间表权限外键名不是默认的permission_id");
 
             Assert.IsNotNull(provider.Foreignuser, "默认身份权限中间表身份外键为null");
-            Assert.AreEqual("user_id", provider.Foreignuser, "默认身份权限中间表身份外键名不是默认的user_id");
+            Assert.AreEqual("principal_id", provider.Foreignuser, "默认身份权限中间表身份外键名不是默认的user_id");
 
             Assert.IsNotNull(provider.Foreigntable, "默认身份权限中间表为null");
-            Assert.AreEqual("user_permission", provider.Foreigntable, "默认身份权限中间表名不是默认的user_permission");
+            Assert.AreEqual("principal_permission", provider.Foreigntable, "默认身份权限中间表名不是默认的user_permission");
 
             Assert.IsNotNull(provider.Permissiontable, "权限表名未获取到");
             Assert.AreEqual("permission", provider.Permissiontable, "权限表名不是permission");
 
             Assert.IsNotNull(provider.UserIndentity, "默认身份表的标识列未获取到");
-            Assert.AreEqual("name", provider.UserIndentity, "默认身份表的标识列不是默认的name");
+            Assert.AreEqual("pname", provider.UserIndentity, "默认身份表的标识列不是默认的pname");
         }
 
         [TestMethod]
@@ -154,7 +154,7 @@ namespace Crystalwall.Test
             Assert.AreEqual("Data Source=**;Initial Catalog=***;User ID=sa;Password=***;", provider.ConnectionString, "连接字符串不是期望的");
 
             Assert.IsNotNull(provider.Principaltable, "身份表未获取");
-            Assert.AreEqual("user", provider.Principaltable, "身份字符不是期望的");
+            Assert.AreEqual("principal", provider.Principaltable, "身份字符不是期望的");
 
             Assert.IsNotNull(provider.ConnProvider, "默认连接提供者为null");
             Assert.AreEqual("System.Data.SqlClient", provider.ConnProvider, "默认连接提供者不是默认的System.Data.SqlClient");
@@ -163,16 +163,16 @@ namespace Crystalwall.Test
             Assert.AreEqual("permission_id", provider.Foreignpermission, "默认身份权限中间表权限外键名不是默认的permission_id");
 
             Assert.IsNotNull(provider.Foreignuser, "默认身份权限中间表身份外键为null");
-            Assert.AreEqual("user_id", provider.Foreignuser, "默认身份权限中间表身份外键名不是默认的user_id");
+            Assert.AreEqual("principal_id", provider.Foreignuser, "默认身份权限中间表身份外键名不是默认的principal_id");
 
             Assert.IsNotNull(provider.Foreigntable, "默认身份权限中间表为null");
-            Assert.AreEqual("user_permission", provider.Foreigntable, "默认身份权限中间表名不是默认的user_permission");
+            Assert.AreEqual("principal_permission", provider.Foreigntable, "默认身份权限中间表名不是默认的principal_permission");
 
             Assert.IsNotNull(provider.Permissiontable, "权限表名未获取到");
             Assert.AreEqual("permission", provider.Permissiontable, "权限表名不是permission");
 
             Assert.IsNotNull(provider.UserIndentity, "默认身份表的标识列未获取到");
-            Assert.AreEqual("name", provider.UserIndentity, "默认身份表的标识列不是默认的name");
+            Assert.AreEqual("pname", provider.UserIndentity, "默认身份表的标识列不是默认的pname");
         }
 
     }
