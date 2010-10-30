@@ -103,13 +103,11 @@ namespace Crystalwall.Test
             PrincipalProviderSectionHandler target = new PrincipalProviderSectionHandler();
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xml);
-            XmlNode section = doc.DocumentElement.ChildNodes[0];
-            //Assert.AreEqual("provider", section.Name, "节点名称不为provider");
-            //Assert.AreEqual(1, section.Attributes.Count, "节点属性数目超过1");
-            //Assert.AreEqual("class", section.Attributes[0].Name, "节点属性名称不为class");
-            //Assert.AreEqual("CrystalWall.Auths.DBPrincipalProvider", section.Attributes[0].Value, "节点class属性的值不为CrystalWall.Auths.DBPrincipalProvider");
-
-            object actual = target.Create(null, null, section);
+            XmlNode section = doc.DocumentElement;
+            IList<IPrincipalProvider> providers = target.Create(null, null, section) as IList<IPrincipalProvider>;
+            if (providers == null || providers.Count ==0)
+                Assert.Fail("提供者不能为空");
+            object actual = providers[0];
             Assert.IsNotNull(actual, "提供者不为null");
             Assert.IsInstanceOfType(actual, typeof(DBPrincipalProvider), "提供者不为DBPrincipalProvider类型");
 
@@ -146,7 +144,7 @@ namespace Crystalwall.Test
             ConfigurationFile configuration = new ConfigurationFile(path);
             Assert.IsNotNull(configuration, "获取配置文件出错");
 
-            IPrincipalProvider iprovider = (IPrincipalProvider)configuration.GetSection("principal-providers/provider");
+            IPrincipalProvider iprovider = (IPrincipalProvider)((IList<IPrincipalProvider>)configuration.GetSection("principal-providers"))[0];
             Assert.IsInstanceOfType(iprovider, typeof(DBPrincipalProvider), "提供者不为DBPrincipalProvider类型");
 
             DBPrincipalProvider provider = (DBPrincipalProvider)iprovider;

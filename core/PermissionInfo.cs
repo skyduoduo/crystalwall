@@ -95,55 +95,45 @@ namespace CrystalWall
         }
 
         /// <summary>
-        /// 权限判断操作符，系统支持使用两个感叹号!!操作符进行判断当前用户是否具有此权限
+        /// 权限判断操作符，系统支持使用++操作符进行判断当前用户是否具有此权限
         /// </summary>
         public static PermissionInfo operator ++(PermissionInfo pinfo)
         {
-            PermissionInfoOperatorWrapper pw = pinfo as PermissionInfoOperatorWrapper;
-            if (pw == null)
-            {
-                //一次感叹号操作符，将pinfo包装
-                pw = new PermissionInfoOperatorWrapper(pinfo);
-                return pw;
-            }
-            else
-            {
-                //使用了至少两次!!操作符，判断当前用户是否具有此权限，否则抛出Access异常
-                FactoryServices.DEFAULT_DECIDER.Decide(PrincipalTokenHolder.CurrentPrincipal, pw.wrapered);
-                return pw.wrapered;
-            }
+            //判断当前用户是否具有此权限，否则抛出Access异常
+            FactoryServices.DEFAULT_DECIDER.Decide(PrincipalTokenHolder.CurrentPrincipal, pinfo);
+            return pinfo;
         }
 
         public static readonly EmptyPermissionInfo EMPTY_PERMISSIONINFO = new EmptyPermissionInfo();
     }
 
-    /// <summary>
-    /// 用于权限信息中运算符!!重载的打包器对象，外部不要调用
-    /// </summary>
-    internal class PermissionInfoOperatorWrapper : PermissionInfo
-    {
-        internal PermissionInfo wrapered;
+    ///// <summary>
+    ///// 用于权限信息中运算符!!重载的打包器对象，外部不要调用
+    ///// </summary>
+    //internal class PermissionInfoOperatorWrapper : PermissionInfo
+    //{
+    //    internal PermissionInfo wrapered;
 
-        public PermissionInfoOperatorWrapper(PermissionInfo wrapered)
-        {
-            this.wrapered = wrapered;
-        }
+    //    public PermissionInfoOperatorWrapper(PermissionInfo wrapered)
+    //    {
+    //        this.wrapered = wrapered;
+    //    }
 
-        public override string Name
-        {
-            get { return this.wrapered.Name; }
-        }
+    //    public override string Name
+    //    {
+    //        get { return this.wrapered.Name; }
+    //    }
 
-        public override string Action
-        {
-            get { return this.wrapered.Action; }
-        }
+    //    public override string Action
+    //    {
+    //        get { return this.wrapered.Action; }
+    //    }
 
-        public override bool Contains(PermissionInfo permission)
-        {
-            return this.wrapered.Contains(permission);
-        }
-    }
+    //    public override bool Contains(PermissionInfo permission)
+    //    {
+    //        return this.wrapered.Contains(permission);
+    //    }
+    //}
     
     /// <summary>
     /// 此选举委托用于对权限集是否包含指定的权限进行投票

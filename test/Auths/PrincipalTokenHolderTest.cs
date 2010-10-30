@@ -126,7 +126,7 @@ namespace Crystalwall.Test
             try
             {
                 p++;
-                Assert.Inconclusive("代码必须运行到这里表示当前用户具有test权限");
+                Assert.IsTrue(true, "代码必须运行到这里表示当前用户具有test权限");
             }
             catch (Exception e)
             {
