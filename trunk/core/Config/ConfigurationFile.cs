@@ -28,6 +28,9 @@ namespace CrystalWall.Config
             configFile = configuration.FilePath;
         }
 
+        /// <summary>
+        /// 注意，此方法的section只能一个，如果具有多个将抛出System.Configuration.ConfigurationErrorsException异常
+        /// </summary>
         public object GetSection(string sectionPath)
         {
             sectionPath = Normalize(sectionPath);
@@ -72,7 +75,7 @@ namespace CrystalWall.Config
             XmlDocument doc = new XmlDocument();
             doc.Load(configFile);
             XmlNode configSectionNode = doc.DocumentElement.ChildNodes[0];//获取configSections节点
-            string[] paths = path.Split('/');
+            string[] paths = path.Contains("/") ? path.Split('/') : new string[1] {path};
             XmlNode finded = configSectionNode;
             for (int i = 0; i < paths.Length; i++)
             {
