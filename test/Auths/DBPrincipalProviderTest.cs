@@ -97,13 +97,6 @@ namespace Crystalwall.Test.Auths
         [DeploymentItem("CrystalWall.dll")]
         public void GetPermissionsTest()
         {
-            //DBPrincipalProvider target = new DBPrincipalProvider(); // TODO: 初始化为适当的值
-            //string name = string.Empty; // TODO: 初始化为适当的值
-            //PermissionInfoCollection expected = null; // TODO: 初始化为适当的值
-            //PermissionInfoCollection actual;
-            //actual = target.GetPermissions(name);
-            //Assert.AreEqual(expected, actual);
-            //Assert.Inconclusive("验证此测试方法的正确性。");
             PermissionInfoCollection collections = target.GetPermissions("admin");
             Assert.IsNotNull(collections, "admin的权限集不为空");
             Assert.AreEqual(2, collections.Count, "admin应该具有两个权限信息");
@@ -130,13 +123,6 @@ namespace Crystalwall.Test.Auths
         [DeploymentItem("CrystalWall.dll")]
         public void HasPrincipalTest()
         {
-            //DBPrincipalProvider target = new DBPrincipalProvider(); // TODO: 初始化为适当的值
-            //string name = string.Empty; // TODO: 初始化为适当的值
-            //bool expected = false; // TODO: 初始化为适当的值
-            //bool actual;
-            //actual = target.HasPrincipal(name);
-            //Assert.AreEqual(expected, actual);
-            //Assert.Inconclusive("验证此测试方法的正确性。");
             bool actual = target.HasPrincipal("admin");
             Assert.IsTrue(actual, "db中应该具有admin身份");
 
