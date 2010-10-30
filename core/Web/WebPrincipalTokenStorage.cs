@@ -14,7 +14,7 @@ namespace CrystalWall.Web
         //[ThreadStatic]
         //private static IPrincipalToken CurrentToken;
 
-        public static string __CURRENT_USER_KEY__ ="__CURRENT_USER_KEY__";
+        public const string __CURRENT_USER_KEY__ ="__CURRENT_USER_KEY__";
 
         public void SetCurrentToken(IPrincipalToken token)
         {

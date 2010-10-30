@@ -6,8 +6,7 @@ using CrystalWall;
 
 namespace Crystalwall.Test.Auths
 {
-    
-    
+
     /// <summary>
     ///这是 DBPrincipalProviderTest 的测试类，旨在
     ///包含所有 DBPrincipalProviderTest 单元测试

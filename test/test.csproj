@@ -57,8 +57,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auths\TestPermissionInfo.cs" />
+    <Compile Include="Auths\TestPrincipalTokenStorage.cs" />
     <Compile Include="Config\PrincipalProviderSectionHandlerTest.cs" />
     <Compile Include="Auths\DBPrincipalProviderTest.cs" />
+    <Compile Include="Auths\PrincipalTokenHolderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

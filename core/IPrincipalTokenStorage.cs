@@ -11,12 +11,12 @@ namespace CrystalWall
     public interface IPrincipalTokenStorage
     {
         /// <summary>
-        /// 设置当前使用系统的身份令牌
+        /// 设置当前使用系统的身份令牌,如果令牌为null，则设置当前用户为匿名用户令牌
         /// </summary>
         void SetCurrentToken(IPrincipalToken token);
 
         /// <summary>
-        /// 获取当前使用系统的身份令牌
+        /// 获取当前使用系统的身份令牌，如果当前没有设置令牌，则返回null
         /// </summary>
         IPrincipalToken GetCurrentToken();
 
