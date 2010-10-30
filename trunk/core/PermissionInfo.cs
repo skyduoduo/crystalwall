@@ -97,7 +97,7 @@ namespace CrystalWall
         /// <summary>
         /// 权限判断操作符，系统支持使用两个感叹号!!操作符进行判断当前用户是否具有此权限
         /// </summary>
-        public static PermissionInfo operator ! (PermissionInfo pinfo)
+        public static PermissionInfo operator ++(PermissionInfo pinfo)
         {
             PermissionInfoOperatorWrapper pw = pinfo as PermissionInfoOperatorWrapper;
             if (pw == null)
@@ -109,8 +109,7 @@ namespace CrystalWall
             else
             {
                 //使用了至少两次!!操作符，判断当前用户是否具有此权限，否则抛出Access异常
-                AbstractDecider decider = new DefaultDecider();
-                decider.Decide(PrincipalTokenHolder.CurrentPrincipal, pw.wrapered);
+                FactoryServices.DEFAULT_DECIDER.Decide(PrincipalTokenHolder.CurrentPrincipal, pw.wrapered);
                 return pw.wrapered;
             }
         }

@@ -7,7 +7,7 @@ namespace CrystalWall
 {
 
     /// <summary>
-    /// 权限控制执行上下文
+    /// 抽象权限决定者，他包含一个冲突解决器处理冲突的权限
     /// </summary>
     public abstract  class AbstractDecider : IAccessDecider
     {

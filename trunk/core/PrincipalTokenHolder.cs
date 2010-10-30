@@ -27,29 +27,30 @@ namespace CrystalWall
           set { PrincipalTokenHolder.storage = value; }
         }
 
-        private static IList<PermissionInfo> anonyPrincipalPermission;
+        //private static IList<PermissionInfo> anonyPrincipalPermission;
 
-        public static IList<PermissionInfo> AnonyPrincipalPermission
-        {
-            get { return anonyPrincipalPermission; }
-            set { anonyPrincipalPermission = value; }
-        }
+        //public static IList<PermissionInfo> AnonyPrincipalPermission
+        //{
+        //    get { return anonyPrincipalPermission; }
+        //    set { anonyPrincipalPermission = value; }
+        //}
 
-        //缓存（应该使用定时情况的缓存）
+        //缓存（应该使用定时清空的缓存）
         private static IDictionary<string, IPrincipalToken> tokenCache = new Dictionary<string, IPrincipalToken>();
 
         /// <summary>
         /// 获取指定标识的令牌，他将遍历提供者列表，因此是一个耗时的操作
+        /// TODO:应当做适当的缓存，缓存机制将来版本会加强
         /// </summary>
         public static IPrincipalToken GetPrincipal(string indentity) 
         {
-            if (tokenCache[indentity] != null)
+            if (tokenCache.ContainsKey(indentity) && tokenCache[indentity] != null)
                 return tokenCache[indentity];
             foreach (IPrincipalProvider provider in PrincipalProviders)
             {
                 if (provider.HasPrincipal(indentity))
                 {
-                    tokenCache[indentity] = provider[indentity];
+                    tokenCache.Add(indentity, provider[indentity]);
                     return tokenCache[indentity];
                 }
             }
@@ -64,7 +65,7 @@ namespace CrystalWall
                 {
                     return Storage.GetCurrentToken();
                 }
-                return new AnonyPrincipalToken(AnonyPrincipalPermission);
+                return FactoryServices.ANONY_PRINCIPAL_TOKEN;
             }
             set
             {

@@ -11,7 +11,7 @@ namespace CrystalWall
     /// </summary>
     public static class FactoryServices
     {
-        public static IPermissionFactory PermissionFactory = null; //TODO:编写权限工厂实现
+        public static readonly IPermissionFactory PermissionFactory = null; //TODO:编写权限工厂实现
 
         public static AnonyPrincipalToken ANONY_PRINCIPAL_TOKEN
         {
@@ -19,6 +19,18 @@ namespace CrystalWall
             {
                 //TODO:添加从配置中读取匿名用户的权限
                 return new AnonyPrincipalToken(null);
+            }
+        }
+
+        /// <summary>
+        /// 默认的权限决定者
+        /// </summary>
+        public static  IAccessDecider DEFAULT_DECIDER 
+        {
+            get
+            {
+                return  new DefaultDecider();
+                //TODO:从应用程序启动配置中获取默认权限决定者的IPointResolveStrategy解析器配置设置到默认决定者中
             }
         }
 
@@ -37,6 +49,6 @@ namespace CrystalWall
         //    }
         //}
 
-        public static IResourceRegistry ResourceRegistry = null;//TODO:编写资源注册表实现
+        public static readonly IResourceRegistry ResourceRegistry = null;//TODO:编写资源注册表实现
     }
 }
