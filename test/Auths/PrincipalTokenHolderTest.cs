@@ -3,6 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using CrystalWall.Auths;
 using Crystalwall.Test.Auths;
+using System.Collections.Generic;
+using System.Reflection;
+using CrystalWall.Web;
 
 namespace Crystalwall.Test
 {
@@ -58,10 +61,13 @@ namespace Crystalwall.Test
         }
         //
         //使用 ClassCleanup 在运行完类中的所有测试后再运行代码
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
+        [ClassCleanup()]
+        public static void MyClassCleanup()
+        {
+            PrincipalTokenHolder.Storage = null;
+            PrincipalTokenHolder.PrincipalProviders.Clear();
+            PrincipalTokenHolder.ClearCurrentToken();
+        }
         //
         //使用 TestInitialize 在运行每个测试前先运行代码
         //[TestInitialize()]
@@ -144,6 +150,26 @@ namespace Crystalwall.Test
                 Assert.IsInstanceOfType(e, typeof(AccessException), "当前抛出的异常不是AccessException");
             }
             PrincipalTokenHolder.ClearCurrentToken();//清除当前用户
+        }
+
+        /// <summary>
+        /// 测试Init初始化方法
+        /// </summary>
+        [TestMethod()]
+        public void InitTest()
+        {
+            IPrincipalTokenStorage old_storage = PrincipalTokenHolder.Storage;
+            IList<IPrincipalProvider> old_provider = PrincipalTokenHolder.PrincipalProviders;
+            IPrincipalToken old_token = PrincipalTokenHolder.CurrentPrincipal;
+
+            PrincipalTokenHolder.Init(Assembly.GetAssembly(typeof(IPrincipalProvider)).Location);
+            Assert.IsInstanceOfType(PrincipalTokenHolder.Storage, typeof(WebPrincipalTokenStorage));
+            Assert.AreEqual(2, PrincipalTokenHolder.PrincipalProviders.Count);
+
+            PrincipalTokenHolder.Storage = old_storage;
+            PrincipalTokenHolder.PrincipalProviders = old_provider;
+            PrincipalTokenHolder.CurrentPrincipal = old_token;
+
         }
     }
 }

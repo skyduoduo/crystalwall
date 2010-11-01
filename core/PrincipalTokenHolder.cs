@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CrystalWall.Auths;
+using CrystalWall.Config;
+using CrystalWall.Utils;
+using System.Web.Configuration;
 
 namespace CrystalWall
 {
@@ -25,6 +28,62 @@ namespace CrystalWall
         {
           get { return PrincipalTokenHolder.storage; }
           set { PrincipalTokenHolder.storage = value; }
+        }
+
+        private static  ConfigurationFile configFile;
+
+        public static ConfigurationFile ConfigFile
+        {
+            get
+            {
+                return configFile;
+            }
+        }
+
+        public const string PRINCIPAL_PROVIDERS_SECTION = "principal-providers";
+
+        public const string PRINCIPAL_TOKEN_STORAGE_SECTION = "principal-storage";
+
+        /// <summary>
+        /// 使用普通配置文件初始化的方法，此方法只能在整个应用程序中被调用一次
+        /// </summary>
+        /// <param name="configPath">程序集路径</param>
+        public static void Init(string configPath)
+        {
+            if (configFile != null)
+                throw new ConfigurationException("", "系统已经初始化，不能再次进行初始化");
+            configFile = new ConfigurationFile(configPath);
+            InitProviderAndStorage();
+        }
+
+        private static void InitProviderAndStorage()
+        {
+            try
+            {
+                IList<IPrincipalProvider> ps = configFile.GetSection(PRINCIPAL_PROVIDERS_SECTION) as IList<IPrincipalProvider>;
+                if (ps == null || ps.Count == 0)
+                    throw new ConfigurationException(PRINCIPAL_PROVIDERS_SECTION, "身份提供者必须配置，请检查配置文件是否配置正确");
+                PrincipalProviders = ps;
+                PrincipalTokenStorageSection storageSection = configFile.Configuration.GetSection(PRINCIPAL_TOKEN_STORAGE_SECTION) as PrincipalTokenStorageSection;
+                if (storageSection != null)
+                    Storage = storageSection.GetExecutingObject() as IPrincipalTokenStorage;
+            }
+            catch (Exception e)
+            {
+                ServiceManager.LoggingService.Fatal("获取身份提供者配置或者当前身份存储配置错误，请仔细检查配置是否正确！");
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// 使用web根配置文件初始化的方法，此方法只能被整个应用程序调用一次
+        /// </summary>
+        public static void InitWeb()
+        {
+            if (configFile != null)
+                throw new ConfigurationException("", "系统已经初始化，不能再次进行初始化");
+            configFile = new ConfigurationFile(WebConfigurationManager.OpenWebConfiguration(null));
+            InitProviderAndStorage();
         }
 
         //private static IList<PermissionInfo> anonyPrincipalPermission;

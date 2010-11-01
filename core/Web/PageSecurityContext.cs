@@ -26,7 +26,7 @@ namespace CrystalWall.Web
     ///   .....
     /// }
     /// </code>
-    /// 此权限上下文读取当前页面上（配置文件中资源id为页面路径）所有使用以上point标注的控件，将检查控件的是否隐藏，各种事件的action等解析为PagePermissionInfo，然后在控件的相应
+    /// 此权限上下文读取当前页面上所有使用以上point标注的控件，将检查控件的是否隐藏，各种事件的action等解析为PagePermissionInfo，然后在控件的相应
     /// 渲染事件上添加一个事件，这个事件对应action中的原始事件，每次执行原始事件时，都将调用对应的PageControlDecider检测权限
     /// 注意：如果PermissionPoint定义的控件id是在其他容器控件的子控件，请使用$符号分隔，例如panel1$panel2$labelId
     /// </summary>
@@ -224,7 +224,7 @@ namespace CrystalWall.Web
                         string[] action;
                         if (pattr.Action.Contains(","))
                         {
-                            //TODO:解析以逗号分隔的action列表
+                            //解析以逗号分隔的action列表
                             action = pattr.Action.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                         }
                         else

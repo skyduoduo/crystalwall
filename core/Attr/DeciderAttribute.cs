@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CrystalWall.Attr
 {
-    //设置决定者类型的元属性
+    //设置决定者类型以及的元属性
     public class DeciderAttribute: Attribute
     {
         private string type;
@@ -13,13 +13,16 @@ namespace CrystalWall.Attr
         public string Type
         {
             get { return type; }
+            set { type = value; }
         }
 
-        public DeciderAttribute(string type)
+        private string electType;
+
+        public string ElectType
         {
-            this.type = type;
+            get { return electType; }
+            set { electType = value; }
         }
-
 
     }
 }

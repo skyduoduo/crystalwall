@@ -55,6 +55,7 @@ namespace CrystalWall.Aop
         //        decider = new DefaultDecider();//使用默认的权限决定器
         //    else
         //    {
+        //        //TODO:添加冲突解决者的构造
         //        decider = (IAccessDecider)Type.GetType(deciderAttr[0].Type).GetConstructor(new Type[0]).Invoke(new object[0]);
         //    }
         //    //检查权限
