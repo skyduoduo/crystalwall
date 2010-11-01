@@ -12,24 +12,42 @@ namespace CrystalWall.Config
     /// 封装一个配置文件的类，他的GetSection方法将使用IConfigurationSectionHandler获取相应的对象。
     /// 注意：此类只是为了解决微软弃用IConfigurationSectionHandler的问题，但crystalwall认为IConfigurationSectionHandler
     /// 接口的形式更加灵活，使用SectionElement元注释的方式虽然简单，但必须强制继承关系。因此，此类只用于使用
-    /// IConfigurationSectionHandler获取节点对应的对象的情况，如果你使用继承元注释的ConfigurationSection，请不要使用此类！！
+    /// IConfigurationSectionHandler获取节点对应的对象的情况，如果你使用继承元注释的ConfigurationSection，可以使用内部的
+    /// Configuration对象进行获取。
     /// </summary>
     public class ConfigurationFile
     {
         private Configuration configuration;
 
+        //暴露给客户端调用
+        public Configuration Configuration
+        {
+            get { return configuration; }
+        }
+
         private string configFile;
 
         private IDictionary<string, ConfigSection> configSections = new Dictionary<string, ConfigSection>();//section定义的缓存，key为路径
 
+        /// <summary>
+        /// 程序集路径下构造配置文件
+        /// </summary>
+        /// <param name="path">程序集路径</param>
         public ConfigurationFile(string path)
         {
             configuration = ConfigurationManager.OpenExeConfiguration(path);
             configFile = configuration.FilePath;
         }
 
+        public ConfigurationFile(Configuration configuration)
+        {
+            this.configuration = configuration;
+            configFile = configuration.FilePath;
+        }
+
         /// <summary>
-        /// 注意，此方法的section只能一个，如果具有多个将抛出System.Configuration.ConfigurationErrorsException异常
+        /// 注意，此方法的section只能一个，如果具有多个将抛出System.Configuration.ConfigurationErrorsException异常。
+        /// 如果配置节不存在或无法构建都将抛出Exception异常
         /// </summary>
         public object GetSection(string sectionPath)
         {

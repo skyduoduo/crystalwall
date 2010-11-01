@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CrystalWall.Utils;
 
 namespace CrystalWall
 {
@@ -56,6 +57,8 @@ namespace CrystalWall
             }
             try
             {
+                if (GetPointResolves() == null)
+                    return null;
                 IPointResolveStrategy strategy = GetPointResolves().First(ps =>
                 {
                     if (ps.Support(context.GetType()))
@@ -66,6 +69,7 @@ namespace CrystalWall
             }
             catch (InvalidOperationException e)
             {
+                ServiceManager.LoggingService.Info("找不到支持的point解析器");
                 return null;
             }
         }

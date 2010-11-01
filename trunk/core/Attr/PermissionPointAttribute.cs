@@ -6,7 +6,13 @@ using System.Text;
 namespace CrystalWall
 {
     /// <summary>
-    /// 用于定义权限点的元特性
+    /// 用于定义权限点的元特性，他可以用在类中的域及方法之上：
+    /// <code>
+    /// public class YouClass {
+    ///   [PermissionPoint(type="权限点全限定名称", resource="控制的资源id", name="权限名"， action="执行方法或类域代表的动作")]
+    ///   private Button button;
+    /// }
+    /// </code>
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Method)]
     public class PermissionPointAttribute : Attribute

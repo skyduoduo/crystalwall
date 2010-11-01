@@ -23,6 +23,12 @@ namespace  CrystalWall.Config
             this.node = node;
         }
 
+        public ConfigurationException(string node, string message, Exception e)
+            : base(message, e)
+        {
+            this.node = node;
+        }
+
 
     }
 }
