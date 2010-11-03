@@ -1,4 +1,19 @@
-﻿using System;
+﻿/*
+ * Copyright 2008-2010 the original author or authors.
+ *
+ * Licensed under the Eclipse Public License v1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +45,7 @@ namespace CrystalWall.Web
     /// 渲染事件上添加一个事件，这个事件对应action中的原始事件，每次执行原始事件时，都将调用对应的PageControlDecider检测权限
     /// 注意：如果PermissionPoint定义的控件id是在其他容器控件的子控件，请使用$符号分隔，例如panel1$panel2$labelId
     /// </summary>
+    /// <author>vincent valenlee</author>
     public class PageSecurityContext : DefaultDecider
     {
         //当控件没有可见权限时触发的自定义事件处理

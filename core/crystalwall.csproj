@@ -107,7 +107,6 @@
     <Compile Include="IAccessDecider.cs" />
     <Compile Include="IPrincipalProvider.cs" />
     <Compile Include="IPermissionFactory.cs" />
-    <Compile Include="IResourceRegistry.cs" />
     <Compile Include="PermissionInfo.cs" />
     <Compile Include="PermissionInfoException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

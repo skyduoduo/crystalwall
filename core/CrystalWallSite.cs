@@ -1,4 +1,19 @@
-﻿using System;
+﻿/*
+ * Copyright 2008-2010 the original author or authors.
+ *
+ * Licensed under the Eclipse Public License v1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +24,44 @@ using CrystalWall.Utils;
 namespace CrystalWall
 {
     /// <summary>
+    /// 配置文件中的sites配置节，包括site配置元素集合
+    /// </summary>
+    /// <author>vincent valenlee</author>
+    public class CrystalWallSites : ConfigurationSection
+    {
+        [ConfigurationProperty("sites", IsDefaultCollection = false, IsRequired = true)]
+        [ConfigurationCollection(typeof(CrystalWallSiteCollection), AddItemName = "site")]
+        public CrystalWallSiteCollection Sites
+        {
+            get
+            {
+                return (CrystalWallSiteCollection)base["sites"];
+            }
+        }
+    }
+
+    /// <summary>
+    /// sites配置节中的site元素集合
+    /// </summary>
+    /// <author>vincent valenlee</author>
+    public class CrystalWallSiteCollection : ConfigurationElementCollection
+    {
+        protected override ConfigurationElement CreateNewElement()
+        {
+            return new CrystalWallSite();
+        }
+
+        protected override object GetElementKey(ConfigurationElement element)
+        {
+            return ((CrystalWallSite)element).Class;
+        }
+    }
+
+    /// <summary>
     /// 组装权限检查的上下文对象以及decider配置的对象，系统根据此对象获取对应的decider进行权限判断：
     /// <code>
     /// CrystalWallSite site = CrystalWallSite.Find(object context);
-    /// site.Init();//可选
+    /// site.InitSite();//可选
     /// site.Decider.decider(principal, context);
     /// </code>
     /// 此对象可以用于静态AOP和动态代理框架中将权限检查插入到IL代码中，通常如果使用AOP注入，则context对象
@@ -31,10 +80,10 @@ namespace CrystalWall
     ///   </site>
     ///   <!--其他site配置-->
     /// </sites>
-    /// 
     /// </code>
     /// </summary>
-    public  class CrystalWallSite : ConfigurationSection
+    /// <author>vincent valenlee</author>
+    public class CrystalWallSite : ConfigurationElement
     {
         private static IDictionary<Type, CrystalWallSite> sites = new Dictionary<Type, CrystalWallSite>();
 
@@ -43,7 +92,7 @@ namespace CrystalWall
         static CrystalWallSite()
         {
             CrystalWallSite defaultSite = new CrystalWallSite();
-            defaultSite.decider = new DefaultDecider();
+            defaultSite.decider = FactoryServices.DEFAULT_DECIDER;
             defaultSite.Context = null;
             defaultSite.DeciderSection = null;
             defaultSite.Class = "CrystalWall.CrystalWallSite, CrystalWall, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
@@ -114,15 +163,16 @@ namespace CrystalWall
         }
 
         /// <summary>
-        /// 如果参数为null，则返回默认的Site，此默认的site返回默认的decider
+        /// 如果参数为null或者配置中没有配置sites或者找不到匹配上下文类型的sites，则返回默认的Site。
         /// </summary>
         public static CrystalWallSite Find(object context)
         {
-            if (context == null)
+            CrystalWallSites sitesSection = PrincipalTokenHolder.ConfigFile.Configuration.Sections["sites"] as CrystalWallSites;
+            if (context == null || sitesSection == null)
                 return DEFAULT_SITE;
             if (sites.Keys.Contains(context.GetType()))
                 return sites[context.GetType()];
-            foreach (CrystalWallSite section in PrincipalTokenHolder.ConfigFile.Configuration.SectionGroups[CONFIG_SITES_GROUP].Sections)
+            foreach (CrystalWallSite section in sitesSection.Sites)
             {
                 if (Type.GetType(section.Context) == context.GetType())
                 {
@@ -139,7 +189,7 @@ namespace CrystalWall
                     return real;
                 }
             }
-            return null;
+            return DEFAULT_SITE;//找不到能够解析context的sites，则返回默认的sites
         }
 
         /// <summary>

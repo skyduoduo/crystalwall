@@ -15,6 +15,7 @@ namespace CrystalWall.Aop
     /// 为所有包含InAccessControl的方法。这要求开发者在加入[PermissionPoint]元注释的方法按照惯例***InAccessControl命名！
     /// 当然，开发者也可以通过aspectdng.xml配置文件修改
     /// </summary>
+    /// <author>vincent valenlee</author>
     public class StaticAspectPermissionInterceptor
     {
         ////const string Target = "xpath: //Type[@FullName='Base.TestAroundCall']/Methods/*/Body/Instructions/*";
