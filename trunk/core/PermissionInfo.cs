@@ -1,4 +1,19 @@
-﻿using System;
+﻿/*
+ * Copyright 2008-2010 the original author or authors.
+ *
+ * Licensed under the Eclipse Public License v1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +25,7 @@ namespace CrystalWall
     /// 权限是具有包含关系的，例如edit编辑权限就包含了view查看权限。是否具有包含关系，也由实现决定。
     /// 权限信息是可以合并的,可以将同类型的小权限合并为一个大权限
     /// </summary>
+    /// <author>vincent valenlee</author>
     [Serializable]
     public abstract class PermissionInfo: ICloneable
     {
