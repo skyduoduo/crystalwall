@@ -37,6 +37,11 @@ namespace CrystalWall
         public abstract IList<IPointResolveStrategy> GetPointResolves();
 
         /// <summary>
+        /// 提供给子类调用的动态加入解析器的方法
+        /// </summary>
+        protected internal abstract void AddPointResolve(IPointResolveStrategy resolve);
+
+        /// <summary>
         ///  授权不通过，则执行不通过时的事件处理
         /// </summary>
         protected void OnAccessException(IPrincipalToken principal, object check)
@@ -59,13 +64,14 @@ namespace CrystalWall
             {
                 if (GetPointResolves() == null)
                     return null;
-                IPointResolveStrategy strategy = GetPointResolves().First(ps =>
-                {
-                    if (ps.Support(context.GetType()))
-                        return true;
-                    return false;
-                });
-                return strategy.Resolve(context);
+               IList<PermissionPoint> points = new List<PermissionPoint>();
+               foreach (IPointResolveStrategy strategy in GetPointResolves())
+               {
+                   PermissionPoint point = strategy.Resolve(context);
+                   if (point != null)
+                       points.Add(point);
+               }
+               return points.ToArray< PermissionPoint>();
             }
             catch (InvalidOperationException e)
             {
@@ -99,10 +105,23 @@ namespace CrystalWall
                 PermissionPoint[] point = GetPoint(check);
                 if (point == null)
                     return;//程序没有定义权限点，不做任何权限控制！
-                foreach (PermissionPoint p in point)
-                {//在当前对象上定义了多个权限点，每一个都需要进行权限检测
-                    PermissionInfo checkPermission = p.NewPermission();
-                    CheckPermission(pc, checkPermission, check);
+                bool isThrow = true;
+                try
+                {
+                    foreach (PermissionPoint p in point)
+                    {//在当前对象上定义了多个权限点，每一个都需要进行权限检测
+                        PermissionInfo checkPermission = p.NewPermission();
+                        CheckPermission(pc, checkPermission, check);
+                    }
+                    isThrow = false;
+                }
+                finally
+                {
+                    if (isThrow)
+                    {
+                        //权限检查抛出异常则执行事件，执行此事件但异常继续抛出
+                        OnAccessException(principal, check);
+                    }
                 }
             }
         }
@@ -124,6 +143,12 @@ namespace CrystalWall
         public override IList<IPointResolveStrategy> GetPointResolves()
         {
             return PointResolves;
+        }
+
+        protected internal override void AddPointResolve(IPointResolveStrategy resolve)
+        {
+            if (resolve !=null)
+                PointResolves.Add(resolve);
         }
     }
 

@@ -67,9 +67,11 @@
     <Compile Include="AccessException.cs" />
     <Compile Include="Auths\DBPrincipalProviders.cs" />
     <Compile Include="Config\ConfigurationFile.cs" />
+    <Compile Include="Config\DeciderSection.cs" />
     <Compile Include="Config\IExecutingElement.cs" />
     <Compile Include="Config\PrincipalProviderSectionHandler.cs" />
     <Compile Include="Config\PrincipalTokenStorageSection.cs" />
+    <Compile Include="CrystalWallSite.cs" />
     <Compile Include="Web\WebPrincipalTokenStorage.cs" />
     <Content Include="Attr\PermissionMethodAttribute.cs.txt" />
     <Compile Include="Aop\StaticAspectPermissionInterceptor.cs" />

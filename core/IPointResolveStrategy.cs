@@ -12,14 +12,8 @@ namespace CrystalWall
     {
         /// <summary>
         /// 解析传入对象表示的当前运行状态的权限点
+        /// 注意：此方法获取权限点期间需要自己处理异常，如果无法获取则返回null
         /// </summary>
-        PermissionPoint[] Resolve(object context);
-
-        /// <summary>
-        /// 是否支持指定运行状态对象
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        bool Support(Type type);
+        PermissionPoint Resolve(object context);
     }
 }
