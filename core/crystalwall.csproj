@@ -44,9 +44,8 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="aspectdng, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\aspectdng.dll</HintPath>
+    <Reference Include="Castle.Core">
+      <HintPath>lib\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -65,6 +64,8 @@
     </Compile>
     <Compile Include="AbstractPricipalToken.cs" />
     <Compile Include="AccessException.cs" />
+    <Compile Include="Aop\DynamicProxyAccessControlInterceptor.cs" />
+    <Compile Include="Aop\DynamicProxyMethodPointResolver.cs" />
     <Compile Include="Auths\DBPrincipalProviders.cs" />
     <Compile Include="Config\ConfigurationFile.cs" />
     <Compile Include="Config\DeciderSection.cs" />

@@ -136,7 +136,10 @@ namespace CrystalWall
             }
         }
 
-        [ConfigurationProperty("decider", DefaultValue = "false", IsRequired = true)]
+        /// <summary>
+        /// 没有配置decider，则为默认的decider
+        /// </summary>
+        [ConfigurationProperty("decider", DefaultValue = "false", IsRequired = false)]
         public virtual DeciderSection DeciderSection
         {
             get
@@ -149,6 +152,9 @@ namespace CrystalWall
             }
         }
 
+        /// <summary>
+        /// 用于指定Site的子类型，如果不存在，则直接返回此超类
+        /// </summary>
         [ConfigurationProperty("class", DefaultValue = "false", IsRequired = false)]
         public virtual string Class
         {
@@ -194,7 +200,7 @@ namespace CrystalWall
 
         /// <summary>
         /// 如果需要额外的初始化，默认只从Decider配置节中获取Decider实例，
-        /// 子类应该根据需要重写
+        /// 如果DeciderSection没有配置，则为默认的decider。子类应该根据需要重写
         /// </summary>
         public virtual void InitSite()
         {
@@ -202,7 +208,10 @@ namespace CrystalWall
             {
                 try
                 {
-                    decider = (IAccessDecider)DeciderSection.GetExecutingObject();
+                    if (DeciderSection == null)
+                        decider = FactoryServices.DEFAULT_DECIDER;
+                    else 
+                        decider = (IAccessDecider)DeciderSection.GetExecutingObject();
                     isInit = true;
                 }
                 catch
