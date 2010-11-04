@@ -83,16 +83,24 @@ namespace CrystalWall
                IList<PermissionPoint> points = new List<PermissionPoint>();
                foreach (IPointResolveStrategy strategy in GetPointResolves())
                {
-                   PermissionPoint point = strategy.Resolve(context);
-                   if (point != null)
-                       points.Add(point);
+                   PermissionPoint[] point = strategy.Resolve(context);
+                   if (point != null && point.Length > 0)
+                       AddAllPoints(point, points);
                }
-               return points.ToArray< PermissionPoint>();
+               return points.ToArray<PermissionPoint>();
             }
             catch (InvalidOperationException e)
             {
                 ServiceManager.LoggingService.Info("找不到支持的point解析器");
                 return null;
+            }
+        }
+
+        private void AddAllPoints(PermissionPoint[] point, IList<PermissionPoint> points)
+        {
+            foreach (PermissionPoint p in point)
+            {
+                points.Add(p);
             }
         }
 
@@ -119,7 +127,7 @@ namespace CrystalWall
             {
                 //资源上没有配置当前权限点指定的权限，则不允许任何人访问
                 PermissionPoint[] point = GetPoint(check);
-                if (point == null)
+                if (point == null || point.Length == 0)
                     return;//程序没有定义权限点，不做任何权限控制！
                 bool isThrow = true;
                 try

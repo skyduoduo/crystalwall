@@ -329,7 +329,7 @@ namespace CrystalWall.Property
                         }
                         writer.WriteEndElement();
                     }
-                    else if (TypeDescriptor.GetConverter(val).CanConvertFrom(typeof(string)))
+                    else if (System.ComponentModel.TypeDescriptor.GetConverter(val).CanConvertFrom(typeof(string)))
                     {
                         //值如果能转换为字符串
                         writer.WriteStartElement(entry.Key);
@@ -371,7 +371,7 @@ namespace CrystalWall.Property
                 }
                 else
                 {
-                    TypeConverter c = TypeDescriptor.GetConverter(val.GetType());
+                    System.ComponentModel.TypeConverter c = System.ComponentModel.TypeDescriptor.GetConverter(val.GetType());
                     writer.WriteAttributeString("value", c.ConvertToInvariantString(val));
                 }
             }
@@ -440,7 +440,7 @@ namespace CrystalWall.Property
                 if (o is string && typeof(T) != typeof(string))
                 {
                     //属性值为字符，但T不是字符型，则转换为不变字符存入
-                    TypeConverter c = TypeDescriptor.GetConverter(typeof(T));
+                    System.ComponentModel.TypeConverter c = System.ComponentModel.TypeDescriptor.GetConverter(typeof(T));
                     try
                     {
                         o = c.ConvertFromInvariantString(o.ToString());
@@ -458,7 +458,7 @@ namespace CrystalWall.Property
                     ArrayList list = (ArrayList)o;
                     Type elementType = typeof(T).GetElementType();
                     Array arr = System.Array.CreateInstance(elementType, list.Count);
-                    TypeConverter c = TypeDescriptor.GetConverter(elementType);
+                    System.ComponentModel.TypeConverter c = System.ComponentModel.TypeDescriptor.GetConverter(elementType);
                     try
                     {
                         for (int i = 0; i < arr.Length; ++i)
@@ -480,7 +480,7 @@ namespace CrystalWall.Property
                 else if (!(o is string) && typeof(T) == typeof(string))
                 {
                     //属性值不为字符，但T为字符，则获取T的转换器转换属性值为字符
-                    TypeConverter c = TypeDescriptor.GetConverter(typeof(T));
+                    System.ComponentModel.TypeConverter c = System.ComponentModel.TypeDescriptor.GetConverter(typeof(T));
                     if (c.CanConvertTo(typeof(string)))
                     {
                         o = c.ConvertToInvariantString(o);

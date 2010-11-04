@@ -28,8 +28,8 @@ namespace CrystalWall
     {
         /// <summary>
         /// 解析传入对象表示的当前运行状态的权限点
-        /// 注意：此方法获取权限点期间需要自己处理异常，如果无法获取则返回null
+        /// 注意：此方法获取权限点期间需要自己处理异常，如果无法获取则返回null或者空数组
         /// </summary>
-        PermissionPoint Resolve(object context);
+        PermissionPoint[] Resolve(object context);
     }
 }

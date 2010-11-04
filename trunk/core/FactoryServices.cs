@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CrystalWall.Auths;
+using CrystalWall.Aop;
 
 namespace CrystalWall
 {
@@ -45,8 +46,12 @@ namespace CrystalWall
         {
             get
             {
-                return  new DefaultDecider();
+                DefaultDecider decider =  new DefaultDecider();
                 //TODO:从应用程序启动配置中获取默认权限决定者的IPointResolveStrategy解析器配置设置到默认决定者中
+                //目前只添加使用Castle动态代理的IInvocation对象解析出源方法上定义的权限点的解析器。但此时获取对象
+                //需要使用Castle的动态代理方式生成对象
+                decider.AddPointResolve(new DynamicProxyMethodPointResolver());
+                return decider;
             }
         }
 
