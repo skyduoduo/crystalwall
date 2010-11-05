@@ -33,9 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="aspectdng">
-      <HintPath>..\core\lib\aspectdng.dll</HintPath>
-    </Reference>
+    <Reference Include="Castle.Core, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -57,10 +55,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auths\TestPermissionInfo.cs" />
+    <Compile Include="Auths\TestPermissionInfoPoint.cs" />
     <Compile Include="Auths\TestPrincipalTokenStorage.cs" />
     <Compile Include="Config\PrincipalProviderSectionHandlerTest.cs" />
     <Compile Include="Auths\DBPrincipalProviderTest.cs" />
     <Compile Include="Auths\PrincipalTokenHolderTest.cs" />
+    <Compile Include="CrystalwallDynamicProxyorTest.cs" />
+    <Compile Include="CrystalWallSiteTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

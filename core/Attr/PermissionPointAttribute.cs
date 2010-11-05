@@ -33,7 +33,6 @@ namespace CrystalWall
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Method)]
     public class PermissionPointAttribute : Attribute
     {
-        //将创建的PermissionInfo的类型
         private string type;
 
         public string Type

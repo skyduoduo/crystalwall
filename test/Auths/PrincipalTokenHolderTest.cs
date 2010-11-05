@@ -64,6 +64,7 @@ namespace Crystalwall.Test
         [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext)
         {
+            PrincipalTokenHolder.Clear();//首先清空
             tokenStorage = new TestPrincipalTokenStorage();
             target = new DBPrincipalProvider_Accessor();
             target.connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=Test;User ID=sa;Password=123456;";
@@ -75,15 +76,14 @@ namespace Crystalwall.Test
             PrincipalTokenHolder.Storage = tokenStorage;
             PrincipalTokenHolder.PrincipalProviders.Add((DBPrincipalProvider)target.Target);
         }
+
         //
         //使用 ClassCleanup 在运行完类中的所有测试后再运行代码
-        [ClassCleanup()]
-        public static void MyClassCleanup()
-        {
-            PrincipalTokenHolder.Storage = null;
-            PrincipalTokenHolder.PrincipalProviders.Clear();
-            PrincipalTokenHolder.ClearCurrentToken();
-        }
+        //[ClassCleanup()]
+        //public static void MyClassCleanup()
+        //{
+        //    PrincipalTokenHolder.Clear();
+        //}
         //
         //使用 TestInitialize 在运行每个测试前先运行代码
         //[TestInitialize()]
@@ -132,7 +132,6 @@ namespace Crystalwall.Test
         {
             PrincipalTokenHolder.CurrentPrincipal = PrincipalTokenHolder.GetPrincipal("admin");
             Assert.AreSame(PrincipalTokenHolder.CurrentPrincipal, PrincipalTokenHolder.Storage.GetCurrentToken());
-
             PrincipalTokenHolder.ClearCurrentToken();
             Assert.IsNull(PrincipalTokenHolder.Storage.GetCurrentToken(), "存储中当前的用户应该不存在");
         }
@@ -182,6 +181,7 @@ namespace Crystalwall.Test
             Assert.IsInstanceOfType(PrincipalTokenHolder.Storage, typeof(WebPrincipalTokenStorage));
             Assert.AreEqual(2, PrincipalTokenHolder.PrincipalProviders.Count);
 
+            PrincipalTokenHolder.Clear();
             PrincipalTokenHolder.Storage = old_storage;
             PrincipalTokenHolder.PrincipalProviders = old_provider;
             PrincipalTokenHolder.CurrentPrincipal = old_token;

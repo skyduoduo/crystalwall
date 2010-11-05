@@ -165,7 +165,7 @@ namespace Crystalwall.Test
 
             DBPrincipalProvider provider = (DBPrincipalProvider)iprovider;
             Assert.IsNotNull(provider.ConnectionString, "连接字符串未获取到");
-            Assert.AreEqual("Data Source=**;Initial Catalog=***;User ID=sa;Password=***;", provider.ConnectionString, "连接字符串不是期望的");
+            Assert.AreEqual(@"Data Source=.\\SQLEXPRESS;Initial Catalog=Test;User ID=sa;Password=123456;", provider.ConnectionString.Trim(), "连接字符串不是期望的");
 
             Assert.IsNotNull(provider.Principaltable, "身份表未获取");
             Assert.AreEqual("principal", provider.Principaltable, "身份字符不是期望的");

@@ -61,6 +61,17 @@ namespace CrystalWall
         public const string PRINCIPAL_TOKEN_STORAGE_SECTION = "principal-storage";
 
         /// <summary>
+        /// 清除数据，用于测试目的
+        /// </summary>
+        public static void Clear()
+        {
+            Storage = null;
+            PrincipalProviders.Clear();
+            ClearCurrentToken();
+            configFile = null;
+        }
+
+        /// <summary>
         /// 使用普通配置文件初始化的方法，此方法只能在整个应用程序中被调用一次
         /// </summary>
         /// <param name="configPath">程序集路径</param>
