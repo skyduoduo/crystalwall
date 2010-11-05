@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="AbstractPricipalToken.cs" />
     <Compile Include="AccessException.cs" />
+    <Compile Include="Aop\CrystalwallDynamicProxyor.cs" />
     <Compile Include="Aop\DynamicProxyAccessControlInterceptor.cs" />
     <Compile Include="Aop\DynamicProxyMethodPointResolver.cs" />
     <Compile Include="Auths\DBPrincipalProviders.cs" />

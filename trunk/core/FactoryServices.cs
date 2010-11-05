@@ -40,7 +40,7 @@ namespace CrystalWall
         }
 
         /// <summary>
-        /// 默认的权限决定者
+        /// 默认的权限决定者，实际每次都将返回一个新的对象
         /// </summary>
         public static  IAccessDecider DEFAULT_DECIDER 
         {

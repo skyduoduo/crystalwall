@@ -28,7 +28,7 @@ namespace CrystalWall.Config
     /// <author>vincent valenlee</author>
     public class DeciderSection : ConfigurationElement, IExecutingElement
     {
-        [ConfigurationProperty("class", DefaultValue = "false", IsRequired = false)]
+        [ConfigurationProperty("class", DefaultValue = "CrystalWall.DefaultDecider, CrystalWall, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", IsRequired = false)]
         public string Class
         {
             get
@@ -41,13 +41,12 @@ namespace CrystalWall.Config
             }
         }
 
-        [ConfigurationProperty("resolves", IsDefaultCollection = false, IsRequired=false)]
-        [ConfigurationCollection(typeof(PointResolvesCollection), AddItemName="resolve")]
+        [ConfigurationProperty("", IsDefaultCollection = true, IsRequired=false)]
         public PointResolvesCollection Resolves
         {
             get
             {
-                 return (PointResolvesCollection)base["resolves"];
+                 return (PointResolvesCollection)base[""];
             }
         }
       
@@ -140,6 +139,38 @@ namespace CrystalWall.Config
         protected override object GetElementKey(ConfigurationElement element)
         {
             return ((PointResolveElement)element).Class;
+        }
+
+        public override ConfigurationElementCollectionType CollectionType
+        {
+            get
+            {
+                return ConfigurationElementCollectionType.BasicMap;
+            }
+        }
+
+        protected override string ElementName
+        {
+            get
+            {
+                return "resolve";
+            }
+        }
+
+        public PointResolveElement this[int index]
+        {
+            get
+            {
+                return (PointResolveElement)BaseGet(index);
+            }
+            set
+            {
+                if (BaseGet(index) != null)
+                {
+                    BaseRemoveAt(index);
+                }
+                BaseAdd(index, value);
+            }
         }
     }
 

@@ -20,6 +20,7 @@ using System.Text;
 using System.Configuration;
 using CrystalWall.Config;
 using CrystalWall.Utils;
+using System.Collections.ObjectModel;
 
 namespace CrystalWall
 {
@@ -29,13 +30,12 @@ namespace CrystalWall
     /// <author>vincent valenlee</author>
     public class CrystalWallSites : ConfigurationSection
     {
-        [ConfigurationProperty("sites", IsDefaultCollection = false, IsRequired = true)]
-        [ConfigurationCollection(typeof(CrystalWallSiteCollection), AddItemName = "site")]
+        [ConfigurationProperty("", IsDefaultCollection = true)]
         public CrystalWallSiteCollection Sites
         {
             get
             {
-                return (CrystalWallSiteCollection)base["sites"];
+                return (CrystalWallSiteCollection)base[""];
             }
         }
     }
@@ -53,7 +53,39 @@ namespace CrystalWall
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((CrystalWallSite)element).Class;
+            return ((CrystalWallSite)element).Context;
+        }
+
+        public override ConfigurationElementCollectionType CollectionType
+        {
+            get
+            {
+                return ConfigurationElementCollectionType.BasicMap;
+            }
+        }
+
+        protected override string ElementName
+        {
+            get
+            {
+                return "site";
+            }
+        }
+
+        public CrystalWallSite this[int index]
+        {
+            get
+            {
+                return (CrystalWallSite)BaseGet(index);
+            }
+            set
+            {
+                if (BaseGet(index) != null)
+                {
+                    BaseRemoveAt(index);
+                }
+                BaseAdd(index, value);
+            }
         }
     }
 
@@ -82,10 +114,22 @@ namespace CrystalWall
     /// </sites>
     /// </code>
     /// </summary>
+    /// 注意：此类由于是配置元素，获取此类的实例不要使用new构造函数而应该调用静态的Find方法！
     /// <author>vincent valenlee</author>
     public class CrystalWallSite : ConfigurationElement
     {
         private static IDictionary<Type, CrystalWallSite> sites = new Dictionary<Type, CrystalWallSite>();
+
+        /// <summary>
+        /// 仅用于测试目的，返回的集合时只读的
+        /// </summary>
+        public ICollection<CrystalWallSite> Sites
+        {
+            get
+            {
+                return new ReadOnlyCollection<CrystalWallSite>(sites.Values.ToList<CrystalWallSite>());
+            }
+        }
 
         public readonly static CrystalWallSite DEFAULT_SITE;
 
@@ -93,9 +137,10 @@ namespace CrystalWall
         {
             CrystalWallSite defaultSite = new CrystalWallSite();
             defaultSite.decider = FactoryServices.DEFAULT_DECIDER;
-            defaultSite.Context = null;
-            defaultSite.DeciderSection = null;
-            defaultSite.Class = "CrystalWall.CrystalWallSite, CrystalWall, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
+            //不能设置
+            //defaultSite.Context = null;
+            //defaultSite.DeciderSection = null;
+            //defaultSite.Class = "CrystalWall.CrystalWallSite, CrystalWall, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
             defaultSite.isInit = true;
             DEFAULT_SITE = defaultSite;
         }
@@ -123,8 +168,10 @@ namespace CrystalWall
 
         public const string CONFIG_SITE = "site";
 
-        [ConfigurationProperty("context", DefaultValue = "false", IsRequired = true)]
-        public virtual string Context
+        public const string DEFAULT_SITE_CLASS = "CrystalWall.CrystalWallSite, CrystalWall, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
+
+        [ConfigurationProperty("context",  IsRequired = true)]
+        public  string Context
         {
             get
             {
@@ -139,8 +186,8 @@ namespace CrystalWall
         /// <summary>
         /// 没有配置decider，则为默认的decider
         /// </summary>
-        [ConfigurationProperty("decider", DefaultValue = "false", IsRequired = false)]
-        public virtual DeciderSection DeciderSection
+        [ConfigurationProperty("decider", IsRequired = false)]
+        public  DeciderSection DeciderSection
         {
             get
             {
@@ -155,8 +202,8 @@ namespace CrystalWall
         /// <summary>
         /// 用于指定Site的子类型，如果不存在，则直接返回此超类
         /// </summary>
-        [ConfigurationProperty("class", DefaultValue = "false", IsRequired = false)]
-        public virtual string Class
+        [ConfigurationProperty("class", DefaultValue = DEFAULT_SITE_CLASS, IsRequired = false)]
+        public  string Class
         {
             get
             {
@@ -173,17 +220,19 @@ namespace CrystalWall
         /// </summary>
         public static CrystalWallSite Find(object context)
         {
-            CrystalWallSites sitesSection = PrincipalTokenHolder.ConfigFile.Configuration.Sections["sites"] as CrystalWallSites;
+            CrystalWallSites sitesSection = PrincipalTokenHolder.ConfigFile.Configuration.GetSection("sites") as CrystalWallSites;
             if (context == null || sitesSection == null)
                 return DEFAULT_SITE;
             if (sites.Keys.Contains(context.GetType()))
                 return sites[context.GetType()];
             foreach (CrystalWallSite section in sitesSection.Sites)
             {
-                if (Type.GetType(section.Context) == context.GetType())
+                Type t = Type.GetType(section.Context);
+                Type ct = context.GetType();
+                if (t.IsAssignableFrom(ct))
                 {
                     CrystalWallSite real;
-                    if (section.Class == null)
+                    if (section.Class == null || section.Class.Trim().Equals(DEFAULT_SITE_CLASS))
                     {
                         real = section;
                     }
@@ -208,7 +257,7 @@ namespace CrystalWall
             {
                 try
                 {
-                    if (DeciderSection == null)
+                    if (DeciderSection == null || DeciderSection.GetType() == typeof(DeciderSection))
                         decider = FactoryServices.DEFAULT_DECIDER;
                     else 
                         decider = (IAccessDecider)DeciderSection.GetExecutingObject();
@@ -227,6 +276,8 @@ namespace CrystalWall
         /// </summary>
         public virtual void Update()
         {
+            if (isInit == false)
+                return;
         }
 
         /// <summary>
