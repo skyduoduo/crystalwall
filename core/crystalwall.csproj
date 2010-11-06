@@ -129,7 +129,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="doc\CrystalWall权限系统开发者指南.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
