@@ -74,6 +74,9 @@
     <Compile Include="Config\PrincipalProviderSectionHandler.cs" />
     <Compile Include="Config\PrincipalTokenStorageSection.cs" />
     <Compile Include="CrystalWallSite.cs" />
+    <Compile Include="Web\AccessControlHttpHandlerFactory.cs" />
+    <Compile Include="Web\ASPNetPageCrystalWallSite.cs" />
+    <Compile Include="Web\AspPageDecider.cs" />
     <Compile Include="Web\WebPrincipalTokenStorage.cs" />
     <Content Include="Attr\PermissionMethodAttribute.cs.txt" />
     <Compile Include="Aop\StaticAspectPermissionInterceptor.cs" />

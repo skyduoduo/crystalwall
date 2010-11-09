@@ -25,7 +25,7 @@ using System.Collections.ObjectModel;
 namespace CrystalWall
 {
     /// <summary>
-    /// 配置文件中的sites配置节，包括site配置元素集合
+    /// 配置文件中的sites配置节，包括site配置元素集合。Site子类必须具有默认的无参构造函数
     /// </summary>
     /// <author>vincent valenlee</author>
     public class CrystalWallSites : ConfigurationSection
@@ -147,12 +147,16 @@ namespace CrystalWall
 
         private IAccessDecider decider;
 
-        public IAccessDecider Decider
+        public virtual IAccessDecider Decider
         {
             get
             {
                 InitSite();
                 return decider;
+            }
+            internal set
+            {
+                decider = value;
             }
         }
 
@@ -228,8 +232,7 @@ namespace CrystalWall
             foreach (CrystalWallSite section in sitesSection.Sites)
             {
                 Type t = Type.GetType(section.Context);
-                Type ct = context.GetType();
-                if (t.IsAssignableFrom(ct))
+                if (t.IsAssignableFrom(context.GetType()))
                 {
                     CrystalWallSite real;
                     if (section.Class == null || section.Class.Trim().Equals(DEFAULT_SITE_CLASS))

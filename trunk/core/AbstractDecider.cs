@@ -114,7 +114,7 @@ namespace CrystalWall
             }
         }
 
-        public void Decide(IPrincipalToken principal, object check)
+        public virtual void Decide(IPrincipalToken principal, object check)
         {
             PermissionInfoCollection pc = principal.GetGrandedPermission();
             if (ConfuseElect != null)
