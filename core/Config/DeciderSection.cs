@@ -28,7 +28,9 @@ namespace CrystalWall.Config
     /// <author>vincent valenlee</author>
     public class DeciderSection : ConfigurationElement, IExecutingElement
     {
-        [ConfigurationProperty("class", DefaultValue = "CrystalWall.DefaultDecider, CrystalWall, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", IsRequired = false)]
+        public  const string DEFAULT_DECIDER_CLASS = "CrystalWall.DefaultDecider, CrystalWall, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
+        
+        [ConfigurationProperty("class", DefaultValue = DEFAULT_DECIDER_CLASS, IsRequired = false)]
         public string Class
         {
             get
