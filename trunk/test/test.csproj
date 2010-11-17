@@ -62,6 +62,7 @@
     <Compile Include="Auths\PrincipalTokenHolderTest.cs" />
     <Compile Include="CrystalwallDynamicProxyorTest.cs" />
     <Compile Include="CrystalWallSiteTest.cs" />
+    <Compile Include="PathMatcherTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

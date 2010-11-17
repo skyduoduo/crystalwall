@@ -68,7 +68,7 @@ namespace CrystalWall
                 return true;
             if (other is EmptyPermissionInfo)
                 return true;//所有权限都包含空权限！！！！
-            if (other is PermissionInfo)
+            if (this.GetType().IsAssignableFrom(other.GetType()))
             {
                 PermissionInfo p = (PermissionInfo)other;
                 return Name.Equals(p.name) && Action.Equals(p.action);
