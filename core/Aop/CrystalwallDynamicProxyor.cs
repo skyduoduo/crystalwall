@@ -1,4 +1,19 @@
-﻿using System;
+﻿/*
+ * Copyright 2008-2010 the original author or authors.
+ *
+ * Licensed under the Eclipse Public License v1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +26,7 @@ namespace CrystalWall.Aop
     /// （方法中具有PermissionPoint元特性定义的对象）都必须使用此工具类生成实例（使用动态植入方式，
     /// 静态植入方式除外）
     /// </summary>
+    /// <author>vincent valenlee</author>
     public static class CrystalwallDynamicProxyor
     {
         private static readonly ProxyGenerator generator = new ProxyGenerator();

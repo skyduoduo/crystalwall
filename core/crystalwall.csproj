@@ -74,6 +74,9 @@
     <Compile Include="Config\PrincipalProviderSectionHandler.cs" />
     <Compile Include="Config\PrincipalTokenStorageSection.cs" />
     <Compile Include="CrystalWallSite.cs" />
+    <Compile Include="Permissions\FilePermissionException.cs" />
+    <Compile Include="Permissions\PathMatcher.cs" />
+    <Compile Include="Permissions\FilePermissionInfo.cs" />
     <Compile Include="Web\AccessControlHttpHandlerFactory.cs" />
     <Compile Include="Web\ASPNetPageCrystalWallSite.cs" />
     <Compile Include="Web\AspPageDecider.cs" />
@@ -133,9 +136,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
