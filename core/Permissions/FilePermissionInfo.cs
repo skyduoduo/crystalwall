@@ -37,27 +37,30 @@ namespace CrystalWall.Permissions
     /// <li>/xyz/mn/**/*.exe匹配文件/xyz/mn/pqr/xy.exe</li>
     /// <li>/xyz/mn/**/pqr/x*.exe匹配文件/xyz/mn/op/etc/pqr/xy.exe</li>
     /// </br>
-    /// 文件权限也采用linux的对于动作的结构，动作的字符用4个位表示："crwx"
+    /// 文件权限也采用linux的对于动作的结构，动作的字符用5个位表示："crwxd"
     /// <list type="li">
     /// <listheader>位数</listheader>
     /// <item>第1位c表示创建</item>
     /// <item>第2位r表示读取</item>
     /// <item>第3位w表示写入</item>
     /// <item>第4位x表示运行</item>
+    /// <item>第5位d表示删除</item>
     /// </list>
-    /// 如果不具有某动作的权限，则只需要在此动作位设置为字符“-"即可，例如：不具有可写权限则为："cr-x";
+    /// 如果不具有某动作的权限，则只需要在此动作位设置为字符“-"即可，例如：不具有可写权限则为："cr-xd";
     /// 具体动作的”含义“由应用程序解释
     /// </summary>
     /// <author>vincent valenlee</author>
     public class FilePermissionInfo: PermissionInfo
     {
-        public const int CREATE = 0x0001;//创建
+        public const int CREATE = 0x1;//创建
 
-        public const int READ = 0x0002;//读取
+        public const int READ = 0x2;//读取
 
-        public const int WRITE = 0x0004;//写入
+        public const int WRITE = 0x4;//写入
 
-        public const int EXCUTE = 0x0008;//运行
+        public const int EXCUTE = 0x8;//运行
+
+        public const int DELETE = 0x10;//删除
 
         public const int NO_ACTION = 0;
 
@@ -69,6 +72,8 @@ namespace CrystalWall.Permissions
 
         public const char EXECUTE_CHAR = 'x';
 
+        public const char DELETE_CHAR = 'd';
+
         public const char NO_ACTION_CHAR = '-';
 
         private int fileAction = NO_ACTION;//文件权限动作
@@ -78,7 +83,7 @@ namespace CrystalWall.Permissions
             get { return fileAction; }
         }
 
-        private void ResolveFileAction(string action)
+        protected void ResolveFileAction(string action)
         {
             char[] act = action.ToCharArray();
             foreach (char ac in act)
@@ -98,6 +103,9 @@ namespace CrystalWall.Permissions
                     case EXECUTE_CHAR:
                         fileAction |= EXCUTE;
                         break;
+                    case DELETE_CHAR:
+                        fileAction |= DELETE;
+                        break;
                     default:
                         break;
                 }
@@ -110,7 +118,7 @@ namespace CrystalWall.Permissions
         /// <exception cref="FilePermissionException">如果动作格式不符合规范，则抛出此异常</exception>
         protected void CheckAction(string action)
         {
-            if (action.Length != 4)
+            if (action.Length != 5)
             {
                 throw new FilePermissionException(Name, action, "文件权限动作字符长度必须为4");
             }
@@ -118,7 +126,8 @@ namespace CrystalWall.Permissions
             if ((act[0] != '-' && act[0] != CREATE_CHAR)
                  || (act[1] != '-' && act[1] != READ_CHAR)
                  || (act[2] != '-' && act[2] != WRITE_CHAR)
-                 || (act[3] != '-' && act[3] != EXECUTE_CHAR))
+                 || (act[3] != '-' && act[3] != EXECUTE_CHAR)
+                 || (act[4] != '-' && act[4] != DELETE_CHAR))
                 throw new FilePermissionException(Name, action, "文件的动作字符不符合规范！");
         }
 
