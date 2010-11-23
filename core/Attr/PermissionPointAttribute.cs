@@ -35,6 +35,9 @@ namespace CrystalWall
     {
         private string type;
 
+        /// <summary>
+        /// 此type可以为权限点的全名，也可以直接为PermissionInfo的全名
+        /// </summary>
         public string Type
         {
             get { return type; }
