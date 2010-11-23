@@ -57,6 +57,8 @@ Public void Delete() {.....}
 
 每一种类型的权限点，都能根据自己的条件生成PermissionInfo对象，例如上例中Crystalwall.FilePermissionPoint将生成FilePermissionInfo权限信息对象。具体生成何种类型，完全由PermissionPoint子类决定
 
+实际上，权限点中的type字符属性也可以直接指定PermissionInfo具体子类的类型，crystalwall框架会自动判断你定义的类型是权限点类型还是直接的PermissionInfo！
+
 【注：crystall目前支持（开发版）动态权限点定义，即定义权限点时的name、resource、action属性可以定义成动态的方法形式，这个方法是权限点被定义的实例类中的方法。例如，在delete方法中，资源的路径是动态获取的，你可以这样定义：
 
 Public class MyAction {
