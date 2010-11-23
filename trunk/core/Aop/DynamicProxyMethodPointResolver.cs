@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using Castle.DynamicProxy;
 using CrystalWall.Utils;
+using CrystalWall.Auths;
 
 namespace CrystalWall.Aop
 {
@@ -28,6 +29,16 @@ namespace CrystalWall.Aop
     /// </summary>
     public class DynamicProxyMethodPointResolver: IPointResolveStrategy
     {
+        private PermissionPoint BuildPoint(PermissionPointAttribute attr)
+        {
+                Type t  = Type.GetType(attr.Type);
+                if (typeof(PermissionInfo).IsAssignableFrom(t))
+                {
+                    return new DefaultPermissionPoint(t);
+                }
+                return (PermissionPoint)t.GetConstructor(new Type[0]).Invoke(new object[0]);
+        }
+
         public PermissionPoint[] Resolve(object context)
         {
             IInvocation invocation = context as IInvocation;
@@ -42,8 +53,7 @@ namespace CrystalWall.Aop
             {
                 try
                 {
-                    Type t = Type.GetType(attr.Type);
-                    PermissionPoint point = (PermissionPoint)t.GetConstructor(new Type[0]).Invoke(new object[0]);
+                    PermissionPoint point = BuildPoint(attr);
                     point.Name = attr.Name;
                     point.Resource = attr.Resource;
                     point.Action = attr.Action;
@@ -66,6 +76,7 @@ namespace CrystalWall.Aop
                                                                               + "[type:"
                                                                               + attr.Type
                                                                               + "] 错误，无法获得类型或调用无惨构造函数构造!");
+                    throw new PointDefineException(attr, invocation.Proxy.GetType().FullName, "在类上" + invocation.Proxy.GetType().FullName + "的权限点定义发生错误，请仔细检测定义是否正确");
                 }
             }
             return points;
