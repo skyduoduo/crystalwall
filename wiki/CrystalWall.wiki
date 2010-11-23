@@ -196,7 +196,7 @@
  
 		}
  
-		在PermissionPoint属性定义中，你只需要定义权限名称、action列表以及此PermissionPoint的具体类型全名。
+		在PermissionPoint属性定义中，你只需要定义权限名称、action列表以及此PermissionPoint的具体类型全名。（实际上，权限点中的type字符属性也可以直接指定PermissionInfo具体子类的类型，crystalwall框架会自动判断你定义的类型是权限点类型还是直接的PermissionInfo！）
  
 		PermissionPoint是一个抽象类，他有一个抽象方法：
  
