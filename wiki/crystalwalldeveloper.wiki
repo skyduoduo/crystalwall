@@ -1,8 +1,8 @@
-#labels Phase-Design,Phase-Support,Phase-Implementation,开发者指南,基本概念
+#labels Phase-Design,Phase-Support,Phase-Implementation,开发者指南,基本概念,.NET权限框架,C权限框架,权限框架,权限系统
 #sidebar DEVTableOfContent
-=CrystalWall权限系统开发者指南Version1.0---基本概念=
+=CrystalWall .NET权限框架开发者指南Version1.0---基本概念=
 
-==权限系统组成==
+==.NET权限框架组成==
 
 对于任何一个权限系统来说，基本上都分为两个部分。
 
@@ -26,7 +26,7 @@ l 授权：对用户声称的身份能够访问的资源进行控制
 
 ==PermissionInfo类==
 
-这个类是CrystalWall权限系统的核心类。通过以上分析，PermissionInfo封装了对某种资源的某种访问。实际上，这种“访问”也具有相关的关系！
+这个类是CrystalWall权限框架的核心类。通过以上分析，PermissionInfo封装了对某种资源的某种访问。实际上，这种“访问”也具有相关的关系！
 
 例如：对磁盘上某个文件进行的“编辑”操作，就隐含表示了对这个文件可以进行“读取查看”操作，而对这个文件的”删除“操作，就不一定包含”读取“操作。为了表示这种在权限之间的”包含关系“，PermissionInfo类中也具有一个方法：Contains。但这个方法是抽象的，需要开发者根据具体的权限类自己进行扩充。
 
