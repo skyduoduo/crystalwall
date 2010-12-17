@@ -1,9 +1,9 @@
-#labels Phase-Implementation,Phase-Support,用户指南
+#labels Phase-Implementation,Phase-Support,用户指南,.NET权限框架,C权限框架,权限框架
 <h1> 
-	CrystalWall权限系统用户指南Version1.0</h1><div><h2> 
+	CrystalWall .NET权限框架用户指南Version1.0</h1><div><h2> 
 		概述</h2>
  
-		本指南是如何使用Cyrstalwall的用户指南，主要针对使用crystalwall进行权限控制的用户。建议阅读本指南之前，首先阅读《Crystalwall权限系统开发者指南--基本概念》<h2> 
+		本指南是如何使用Cyrstalwall的用户指南，主要针对使用crystalwall进行权限控制的用户。建议阅读本指南之前，首先阅读《Crystalwall .NET权限框架开发者指南--基本概念》<h2> 
 		身份提供者PrincipalProvider</h2>
  
 		使用crystalwall之前，首先需要配置身份提供者实现。Crystalwall v1.0版本中已经实现了一个默认的DBPrincipalProvider，这个身份提供者可以在App.config配置文件中按照如下方式配置：
@@ -293,7 +293,7 @@
  
 		5、如果需要，可以在配置文件例如App.config中重新定义site、provider等定义（此步骤可选，crystalwall提供了很多默认选项，除非你的应用想要改变默认的设定）
  
-		通过以上的方式，crystalwall使得开发人员从”如何判断权限“、”何时判断权限“等细节中解脱出来，开发人员只要专心定义”身份需要什么权限“就可以了（即编写PermissionInfo的子类）
+		通过以上的方式，crystalwall使得开发人员从”如何判断权限“、”何时判断权限“等细节中解脱出来，开发人员只要专注于定义”身份需要什么权限“就可以了（即编写PermissionInfo的子类）
  
 		 
  
