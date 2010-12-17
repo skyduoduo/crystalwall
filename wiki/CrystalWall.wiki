@@ -1,4 +1,4 @@
-#labels Phase-Implementation,Phase-Support,用户指南,.NET权限框架,Csharp权限框架,权限框架,.NET权限,Csharp权限,权限
+#labels Phase-Implementation,Phase-Support,用户指南,.NET权限框架,Csharp权限框架,权限框架,.NET权限,Csharp权限,权限,开源权限,开源权限框架,.NET开源权限框架
 <h1> 
 	CrystalWall .NET权限框架用户指南Version1.0</h1><div><h2> 
 		概述</h2>
