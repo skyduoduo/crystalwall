@@ -1,4 +1,4 @@
-#labels Phase-Design,Phase-Support,Phase-Implementation,开发者指南,基本概念,.NET权限框架,Csharp权限框架,权限框架,权限系统,.NET权限,Csharp权限,权限
+#labels Phase-Design,Phase-Support,Phase-Implementation,开发者指南,基本概念,.NET权限框架,Csharp权限框架,权限框架,权限系统,.NET权限,Csharp权限,权限,开源权限,开源权限框架,.NET开源权限框架
 #sidebar DEVTableOfContent
 =CrystalWall .NET权限框架开发者指南Version1.0---基本概念=
 
