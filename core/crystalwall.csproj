@@ -67,6 +67,7 @@
     <Compile Include="Aop\CrystalwallDynamicProxyor.cs" />
     <Compile Include="Aop\DynamicProxyAccessControlInterceptor.cs" />
     <Compile Include="Aop\DynamicProxyMethodPointResolver.cs" />
+    <Compile Include="Attr\LogicPermissionPointAttribute.cs" />
     <Compile Include="Auths\DBPrincipalProviders.cs" />
     <Compile Include="Auths\DefaultPermissionPoint.cs" />
     <Compile Include="Config\ConfigurationFile.cs" />
@@ -75,9 +76,13 @@
     <Compile Include="Config\PrincipalProviderSectionHandler.cs" />
     <Compile Include="Config\PrincipalTokenStorageSection.cs" />
     <Compile Include="CrystalWallSite.cs" />
+    <Compile Include="IContainsVisitor.cs" />
+    <Compile Include="Permissions\DefaultPermissionInfo.cs" />
     <Compile Include="Permissions\FilePermissionException.cs" />
+    <Compile Include="Permissions\LogicPermissionInfo.cs" />
     <Compile Include="Permissions\PathMatcher.cs" />
     <Compile Include="Permissions\FilePermissionInfo.cs" />
+    <Compile Include="Permissions\VisitablePermissionInfo.cs" />
     <Compile Include="PointDefineException.cs" />
     <Compile Include="Web\AccessControlHttpHandlerFactory.cs" />
     <Compile Include="Web\ASPNetPageCrystalWallSite.cs" />

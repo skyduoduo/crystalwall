@@ -31,12 +31,7 @@ namespace CrystalWall.Aop
     {
         private PermissionPoint BuildPoint(PermissionPointAttribute attr)
         {
-                Type t  = Type.GetType(attr.Type);
-                if (typeof(PermissionInfo).IsAssignableFrom(t))
-                {
-                    return new DefaultPermissionPoint(t);
-                }
-                return (PermissionPoint)t.GetConstructor(new Type[0]).Invoke(new object[0]);
+            return attr.NewPoint();
         }
 
         public PermissionPoint[] Resolve(object context)
@@ -55,7 +50,7 @@ namespace CrystalWall.Aop
                 {
                     PermissionPoint point = BuildPoint(attr);
                     point.Name = attr.Name;
-                    point.Resource = attr.Resource;
+                    //point.Resource = attr.Resource;
                     point.Action = attr.Action;
                     point.Context = invocation.Proxy;//TODO:需测试代理目标对象
                     point.Member = invocation.MethodInvocationTarget;

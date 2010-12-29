@@ -67,7 +67,7 @@ namespace Crystalwall.Test
             PrincipalTokenHolder.Clear();//首先清空
             tokenStorage = new TestPrincipalTokenStorage();
             target = new DBPrincipalProvider_Accessor();
-            target.connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=Test;User ID=sa;Password=123456;";
+            target.connectionString = "Data Source=.;Initial Catalog=CrystalwallTest;User ID=sa;Password=123456;";
             target.principaltable = "principal";
             target.permissiontable = "permission";
             target.foreigntable = "principal_permission";
