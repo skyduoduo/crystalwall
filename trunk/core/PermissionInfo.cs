@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CrystalWall.Permissions;
 
 namespace CrystalWall
 {
@@ -181,6 +182,11 @@ namespace CrystalWall
             }
         }
 
+        public int Index(PermissionInfo p)
+        {
+            return permissions.IndexOf(p);
+        }
+
         public PermissionInfoCollection()
             : base()
         {
@@ -229,9 +235,36 @@ namespace CrystalWall
         /// </summary>
         public virtual bool Contains(PermissionInfo item)
         {
-            if (ElectVisitor != null)
-                return ElectVisitor(this);
-            return DefaultContains(item);
+            //if (ElectVisitor != null)
+            //    return ElectVisitor(this);
+            //return DefaultContains(item);
+            VisitablePermissionInfo vp = item as VisitablePermissionInfo;
+            if (vp != null)
+            {
+                //使用扩展接口访问集合中的每个元素
+                IContainsVisitor visitor = vp.GetVisitor(this);
+                if (visitor != null)
+                {
+                    this.Accept((v) =>
+                    {
+                        foreach (PermissionInfo p in this)
+                        {
+                            v.Visit(p, item);
+                        }
+                    }, visitor);
+                    return visitor.Result;
+                }
+            }
+            if (DefaultContains(item))
+            {
+                return true;
+            }
+            return ElectVisitor != null ? ElectVisitor(this) : false;
+        }
+
+        protected virtual void Accept(Action<IContainsVisitor> action, IContainsVisitor visitor)
+        {
+            action(visitor);
         }
 
         public virtual void CopyTo(PermissionInfo[] array, int arrayIndex)

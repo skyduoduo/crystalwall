@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CrystalWall.Auths;
 
 namespace CrystalWall
 {
@@ -38,7 +39,7 @@ namespace CrystalWall
         /// <summary>
         /// 此type可以为权限点的全名，也可以直接为PermissionInfo的全名
         /// </summary>
-        public string Type
+        public virtual string Type
         {
             get { return type; }
             set { type = value; }
@@ -52,14 +53,14 @@ namespace CrystalWall
             set { name = value; }
         }
 
-        //资源id
-        private string resource;
+        ////资源id
+        //private string resource;
 
-        public string Resource
-        {
-            get { return resource; }
-            set { resource = value; }
-        }
+        //public string Resource
+        //{
+        //    get { return resource; }
+        //    set { resource = value; }
+        //}
 
         private string action;
 
@@ -69,6 +70,32 @@ namespace CrystalWall
             set { action = value; }
         }
 
+        public  PermissionPoint NewPoint()
+        {
+            if (this.Type != null)
+            {
+                System.Type t = System.Type.GetType(type);
+                if (typeof(PermissionInfo).IsAssignableFrom(t))
+                {
+                    return new DefaultPermissionPoint(t);
+                }
+                return (PermissionPoint)t.GetConstructor(new System.Type[0]).Invoke(new object[0]);
+            }
+            else
+            {
+                return InternalPoint();
+            }
+        }
+
+        /// <summary>
+        /// 如果没有显式定义type属性，则子类应该重写此方法自己返回Point对象
+        /// 在此方法中，应该将PermissionPointAttribute中除name，action，resource之外
+        /// 的额外属性设置到新构建的PermissionPoint中
+        /// </summary>
+        protected virtual PermissionPoint InternalPoint()
+        {
+            return PermissionPoint.EMPTY_PERMISSION_POINT;
+        }
 
     }
 }
