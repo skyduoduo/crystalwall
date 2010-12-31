@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using System.Collections.Specialized;
 
 namespace CrystalWall.Permissions
 {
@@ -26,7 +27,7 @@ namespace CrystalWall.Permissions
     /// 因为他不实现接收name和action的构造函数！
     /// TODO:将来补充接收name和action的构造函数！
     /// </summary>
-    public class LogicPermissionInfo: VisitablePermissionInfo
+    public class LogicPermissionInfo : VisitablePermissionInfo
     {
         public LogicPoint LogicPoint = LogicPoint.AND;
 
@@ -66,27 +67,33 @@ namespace CrystalWall.Permissions
 
         public override IContainsVisitor GetVisitor(PermissionInfoCollection pc)
         {
-            if (LogicPoint == LogicPoint.AND)
-                return new AndVisitor(this, pc);
-            else
-                return new OrVisitor(this, pc);
+            return new LogicVisitor(this, pc, LogicPoint);
         }
 
-        public class AndVisitor : IContainsVisitor
+        public class LogicVisitor : IContainsVisitor
         {
-            public static BitArray TRUE = new BitArray(new bool[] { true, true });
+            public static BitVector32 TRUE = new BitVector32(0x0003);
 
             private LogicPermissionInfo lp;
 
-            private BitArray bits;
+            private BitVector32 bits;
 
             private PermissionInfoCollection pc;
 
-            public AndVisitor(LogicPermissionInfo lp, PermissionInfoCollection pc)
+            private LogicPoint logic;
+
+            private int leftmask;
+
+            private int rightmask;
+
+            public LogicVisitor(LogicPermissionInfo lp, PermissionInfoCollection pc, LogicPoint logic)
             {
                 this.lp = lp;
                 this.pc = pc;
-                bits = new BitArray(2);
+                bits = new BitVector32(0);
+                rightmask = BitVector32.CreateMask();
+                leftmask = BitVector32.CreateMask(rightmask);
+                this.logic = logic;
             }
 
             public void Visit(PermissionInfo contain, PermissionInfo contained)
@@ -95,9 +102,9 @@ namespace CrystalWall.Permissions
                 if (index != -1)
                 {
                     if (contain.Contains(lp.Left))
-                        bits.Set(0, true);//设置左权限
+                        bits[leftmask] = true;//设置左权限
                     else if (contain.Contains(lp.Right))
-                        bits.Set(1, true);//设置右权限
+                        bits[rightmask] = true;//设置右权限
                 }
             }
 
@@ -105,57 +112,13 @@ namespace CrystalWall.Permissions
             {
                 get 
                 {
-                    BitArray and = bits.And(TRUE);
-                    int[] b = new int[and.Length];
-                    and.CopyTo(b, 0);
-                    if (b[0] == 3)
-                        return true;
-                    return false;
+                    if (logic == LogicPoint.OR)
+                        return (bits.Data | TRUE.Data) == TRUE.Data;
+                    else
+                        return (bits.Data & TRUE.Data) == TRUE.Data;
                 }
             }
         }
-
-        public class OrVisitor : IContainsVisitor
-        {
-            //public static BitArray TRUE = new BitArray(new bool[] { false, false });
-
-            public bool success = false;
-
-            private LogicPermissionInfo lp;
-
-            private BitArray bits;
-
-            private PermissionInfoCollection pc;
-
-            public OrVisitor(LogicPermissionInfo lp, PermissionInfoCollection pc)
-            {
-                this.lp = lp;
-                this.pc = pc;
-                bits = new BitArray(2);
-            }
-
-            public void Visit(PermissionInfo contain, PermissionInfo contained)
-            {
-                int index = pc.Index(contain);
-                if (index != -1)
-                {
-                    if (contain.Contains(lp.Left) || contain.Contains(lp.Right))
-                    {
-                        success = true;
-                        return;
-                    }
-                }
-            }
-
-            public bool Result
-            {
-                get
-                {
-                    return success;
-                }
-            }
-        }
-
     }
 
     public class LogicPermissionPoint : PermissionPoint
