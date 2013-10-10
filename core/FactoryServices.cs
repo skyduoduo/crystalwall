@@ -23,7 +23,8 @@ using CrystalWall.Aop;
 namespace CrystalWall
 {
     /// <summary>
-    /// 提供各种抽象工厂的服务类，他是系统所有工厂、常数对象的访问入口。外部客户端应该使用此静态服务获取各种需要的工厂接口
+    /// 提供各种抽象工厂的服务类，他是系统所有工厂、常数对象的访问入口,在程序启动时，需要调用相关Set方法
+    /// 设置初始值。外部客户端应该使用此静态服务获取各种需要的工厂接口
     /// </summary>
     /// <author>vincent valenlee</author>
     public static class FactoryServices
@@ -71,5 +72,21 @@ namespace CrystalWall
         //}
 
         //public static readonly IResourceRegistry ResourceRegistry = null;//TODO:编写资源注册表实现
+
+        private static IPrincipalTokenStorageFactory principalStorageFactory;
+
+        public static IPrincipalTokenStorageFactory PrincipalStorageFactory
+        {
+            get 
+            { 
+                return FactoryServices.principalStorageFactory; 
+            }
+            set 
+            {
+                if (FactoryServices.principalStorageFactory != null)
+                    throw new ArgumentException("身份存储工厂已经设置且不允许改变！");
+                FactoryServices.principalStorageFactory = value; 
+            }
+        }
     }
 }

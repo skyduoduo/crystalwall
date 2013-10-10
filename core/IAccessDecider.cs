@@ -31,8 +31,10 @@ namespace CrystalWall
         /// </summary>
         /// <param name="principal">指定的身份令牌</param>
         /// <param name="cntext">请求访问的对象</param>
+        /// <param name="result">如果权限通过则为true，否则为false</param>
+        /// <param name="throwException">如果为true，则权限不通过是抛出异常，否则不抛出异常。默认为true</param>
         /// <exception cref="AccessException">如果不允许访问资源则抛出</exception>
-        void Decide(IPrincipalToken principal, object cntext);
+        void Decide(IPrincipalToken principal, object cntext, out bool result, bool throwException = true);
 
     }
 }

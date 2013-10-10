@@ -76,14 +76,19 @@ namespace CrystalWall.Permissions
 
         public const char NO_ACTION_CHAR = '-';
 
-        private int fileAction = NO_ACTION;//文件权限动作
+        //private int fileAction = NO_ACTION;//文件权限动作
 
-        public int FileAction
+        //public int FileAction
+        //{
+        //    get { return fileAction; }
+        //}
+
+        public override object Clone()
         {
-            get { return fileAction; }
+            return new FilePermissionInfo((string)this.name.Clone(), (string)this.Action.Clone());
         }
 
-        protected void ResolveFileAction(string action)
+        protected override int ResolveAction(string action)
         {
             char[] act = action.ToCharArray();
             foreach (char ac in act)
@@ -92,24 +97,25 @@ namespace CrystalWall.Permissions
                 switch (lac)
                 {
                     case CREATE_CHAR:
-                        fileAction |= CREATE;
+                        RealAction |= CREATE;
                         break;
                     case READ_CHAR:
-                        fileAction |= READ;
+                        RealAction |= READ;
                         break;
                     case WRITE_CHAR:
-                        fileAction |= WRITE;
+                        RealAction |= WRITE;
                         break;
                     case EXECUTE_CHAR:
-                        fileAction |= EXCUTE;
+                        RealAction |= EXCUTE;
                         break;
                     case DELETE_CHAR:
-                        fileAction |= DELETE;
+                        RealAction |= DELETE;
                         break;
                     default:
                         break;
                 }
             }
+            return RealAction;
         }
 
         /// <summary>
@@ -159,7 +165,7 @@ namespace CrystalWall.Permissions
                 this.action = "----";
             }
             CheckAction(action);
-            ResolveFileAction(this.action);
+            ResolveAction(this.action);
         }
 
         public override bool Contains(PermissionInfo permission)
@@ -173,7 +179,7 @@ namespace CrystalWall.Permissions
             if (target.Match(this.Name, permission.Name))
             {
                 //路径匹配，则检查动作
-                if ((this.FileAction & fp.FileAction) == fp.FileAction)
+                if ((this.RealAction & fp.RealAction) == fp.RealAction)
                     return true;
             }
             return false;

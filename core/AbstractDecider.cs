@@ -104,24 +104,30 @@ namespace CrystalWall
             }
         }
 
-        private void CheckPermission(PermissionInfoCollection pc, PermissionInfo pinfo, object checkObject)
+        private void CheckPermission(PermissionInfoCollection pc, PermissionInfo pinfo, object checkObject, out bool result, bool throwException = true)
         {
+            result = true;
             if (!pc.Contains(pinfo))
             {
-                AccessException ae = new AccessException("there is no access for " + PrincipalTokenHolder.CurrentPrincipal.Name);
-                ae.CheckObject = checkObject;
-                throw ae;
+                result = false;
+                if (throwException)
+                {
+                    AccessException ae = new AccessException("there is no access for " + FactoryServices.PrincipalStorageFactory.GetStorage().GetCurrentToken().Name);
+                    ae.CheckObject = checkObject;
+                    throw ae;
+                }
             }
         }
 
-        public virtual void Decide(IPrincipalToken principal, object check)
+        public virtual void Decide(IPrincipalToken principal, object check, out bool result, bool throwException = true)
         {
+            result = true;
             PermissionInfoCollection pc = principal.GetGrandedPermission();
             if (ConfuseElect != null)
                 pc.ElectVisitor = ConfuseElect;
             if (check is PermissionInfo)
             {
-                CheckPermission(pc, (PermissionInfo)check, check);
+                CheckPermission(pc, (PermissionInfo)check, check, out result, throwException);
             }
             else
             {
@@ -135,9 +141,10 @@ namespace CrystalWall
                     foreach (PermissionPoint p in point)
                     {//在当前对象上定义了多个权限点，每一个都需要进行权限检测
                         PermissionInfo checkPermission = p.NewPermission();
-                        CheckPermission(pc, checkPermission, check);
+                        CheckPermission(pc, checkPermission, check, out result, throwException);
                     }
-                    isThrow = false;
+                    if (result)
+                        isThrow = false;
                 }
                 finally
                 {

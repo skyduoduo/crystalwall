@@ -43,7 +43,8 @@ namespace CrystalWall.Aop
             site.InitSite();
             //使用DynamicProxyMethodPointResolver解析invocation动态拦截的代理方法上定义的权限点
             //并根据site对象上配置的decider判断权限
-            site.Decider.Decide(PrincipalTokenHolder.CurrentPrincipal, invocation);
+            bool result = true;
+            site.Decider.Decide(PrincipalTokenHolder.CurrentPrincipal, invocation, out result);
             //权限通过，继续执行原方法
             invocation.Proceed();
         }

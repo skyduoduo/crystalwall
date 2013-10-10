@@ -42,10 +42,10 @@ namespace CrystalWall.Web
             this.viewDecider = viewDecider;
         }
 
-        public override void Decide(IPrincipalToken principal, object check)
+        public override void Decide(IPrincipalToken principal, object check, out bool result, bool throwException = true)
         {
-            viewDecider.Decide(principal, check);
-            eventDecider.Decide(principal, check);
+            viewDecider.Decide(principal, check, out result, throwException);
+            eventDecider.Decide(principal, check, out result, throwException);
         }
 
     }
@@ -62,8 +62,10 @@ namespace CrystalWall.Web
         /// <summary>
         /// 在页面的指定事件中添加事件哨兵进行权限检查
         /// </summary>
-        public override void Decide(IPrincipalToken principal, object check)
+        public override void Decide(IPrincipalToken principal, object check, out bool result, bool throwException = true)
         {
+            result = true;
+            bool r = result;
             Page page = check as Page;
             if (page == null)
                 return;
@@ -84,7 +86,7 @@ namespace CrystalWall.Web
                         //加入权限检查事件
                         EventHandler deciderMethod = (s, ee) =>
                         {
-                            base.Decide(principal, new ControlEventContextObject(point.Name, point, c, point.EventName));
+                            base.Decide(principal, new ControlEventContextObject(point.Name, point, c, point.EventName), out r, throwException);
                         };
                         //无法动态创建委托！
                         //Delegate d = Delegate.CreateDelegate(eventInfo.EventHandlerType, deciderMethod.Method);
@@ -116,6 +118,7 @@ namespace CrystalWall.Web
                     ServiceManager.LoggingService.Error("检查页面：" + page.Request.Url + "中事件的权限时出错");
                 }
             };
+            result = r;
         }
 
     }
@@ -144,8 +147,10 @@ namespace CrystalWall.Web
         /// 添加init事件， 页面加载事件中检测具有visiable的权限点的控件，如果当前用户不具有此权限，将其visiable设置为false
         /// </summary>
         /// <param name="check">必须为Page对象</param>
-        public override void Decide(IPrincipalToken principal, object check)
+        public override void Decide(IPrincipalToken principal, object check, out bool result, bool throwException = true)
         {
+            result = true;
+            bool r = result;
             Page page = check as Page;
             if (page == null)
                 return;
@@ -165,7 +170,7 @@ namespace CrystalWall.Web
                         Control c = ASPNetPageCrystalWallSite.FindControlInContainer(page, point.Name);
                         try
                         {
-                            base.Decide(principal, new ControlEventContextObject(point.Name, point, c, point.EventName));
+                            base.Decide(principal, new ControlEventContextObject(point.Name, point, c, point.EventName), out r, throwException);
                         }
                         catch (AccessException ae)
                         {
@@ -179,8 +184,10 @@ namespace CrystalWall.Web
                     ServiceManager.LoggingService.Error("检查页面：" + page.Request.Url + "中对象的可见权限时出错");
                 }
             };
+            result = r;
         }
     }
+
 
     internal class ControlEventContextObject : IPermissionPointProvider
     {

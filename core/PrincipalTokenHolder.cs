@@ -28,6 +28,7 @@ namespace CrystalWall
     /// 获取当前用户以及存储身份令牌提供者的持有器
     /// </summary>
     /// <author>vincent valenlee</author>
+    [Obsolete("此类已废弃，获取当前身份请使用IPrincipalTokenStorageFactory工厂类")]
     public static class PrincipalTokenHolder
     {
         private static IList<IPrincipalProvider> principalProviders = new List<IPrincipalProvider>();
