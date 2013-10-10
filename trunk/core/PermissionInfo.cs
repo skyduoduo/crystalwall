@@ -44,6 +44,19 @@ namespace CrystalWall
         public virtual string Action
         {
             get { return action; }
+            set 
+            { 
+                action = value;
+                realAction = ResolveAction(action);
+            }
+        }
+
+        private int realAction = 0x0;
+
+        public virtual int RealAction
+        {
+            get { return realAction; }
+            set { realAction = value; }
         }
 
         public PermissionInfo(string name)
@@ -58,11 +71,19 @@ namespace CrystalWall
         {
             this.name = name;
             this.action = action;
+            realAction = ResolveAction(action);
         }
 
         public PermissionInfo():this("", "")
         { 
         }
+
+        /// <summary>
+        /// 子类必须重写从字符串解析成实际action的方法
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        protected abstract int ResolveAction(string action);
 
         public override bool Equals(object other)
         {
@@ -110,16 +131,43 @@ namespace CrystalWall
             {
                 return false;
             }
+
+            protected override int ResolveAction(string action)
+            {
+                return 0;
+            }
         }
 
         /// <summary>
-        /// 权限判断操作符，系统支持使用++操作符进行判断当前用户是否具有此权限
+        /// 权限判断操作符，系统支持使用++操作符进行判断当前用户是否具有此权限。
+        /// 此方法当权限不满足时，抛出异常。如需不抛出异常版本，请使用Check方法
         /// </summary>
         public static PermissionInfo operator ++(PermissionInfo pinfo)
         {
             //判断当前用户是否具有此权限，否则抛出Access异常
-            FactoryServices.DEFAULT_DECIDER.Decide(PrincipalTokenHolder.CurrentPrincipal, pinfo);
+            bool result = true;
+            FactoryServices.DEFAULT_DECIDER.Decide(FactoryServices.PrincipalStorageFactory.GetStorage().GetCurrentToken(), pinfo, out result);
             return pinfo;
+        }
+
+        public class Result 
+        {
+            private bool value;
+
+            public bool Value
+            {
+              get { return value; }
+              set { this.value = value; }
+            }
+        }
+        /// <summary>
+        /// 判断当前用户是否具有此权限。如需抛出异常版本，请使用一元++操作符 
+        /// </summary>
+        public bool Check()
+        {
+            bool r = true;
+            FactoryServices.DEFAULT_DECIDER.Decide(FactoryServices.PrincipalStorageFactory.GetStorage().GetCurrentToken(), this, out r, false);
+            return r;
         }
 
         public static readonly EmptyPermissionInfo EMPTY_PERMISSIONINFO = new EmptyPermissionInfo();

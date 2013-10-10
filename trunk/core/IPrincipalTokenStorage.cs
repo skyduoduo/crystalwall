@@ -41,4 +41,17 @@ namespace CrystalWall
         /// </summary>
         void ClearToken();
     }
+
+    /// <summary>
+    /// 获取身份令牌存储的工厂
+    /// </summary>
+    public interface IPrincipalTokenStorageFactory
+    {
+        /// <summary>
+        /// 获取指定名称的身份令牌存储器
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        IPrincipalTokenStorage GetStorage(string name = "");
+    }
 }

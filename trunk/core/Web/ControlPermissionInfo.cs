@@ -134,5 +134,10 @@ namespace CrystalWall.Web
         {
             return false;
         }
+
+        protected override int ResolveAction(string action)
+        {
+            return 0;
+        }
     }
 }

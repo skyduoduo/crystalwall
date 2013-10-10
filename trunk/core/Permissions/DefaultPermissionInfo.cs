@@ -32,7 +32,12 @@ namespace CrystalWall.Permissions
 
         public override bool Contains(PermissionInfo permission)
         {
-            return this.Name == permission.Name && this.Action == permission.Action && this.GetType() == permission.GetType();
+            return this.Name == permission.Name && this.RealAction == permission.RealAction && this.GetType() == permission.GetType();
+        }
+
+        protected override int ResolveAction(string action)
+        {
+            return 0;
         }
     }
 }

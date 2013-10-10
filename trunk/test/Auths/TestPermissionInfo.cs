@@ -62,5 +62,10 @@ namespace Crystalwall.Test.Auths
             else
                 return this.Action.Equals(permission.Action);
         }
+
+        protected override int ResolveAction(string action)
+        {
+            return 0;
+        }
     }
 }

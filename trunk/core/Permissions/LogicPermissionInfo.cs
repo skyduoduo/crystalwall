@@ -119,6 +119,11 @@ namespace CrystalWall.Permissions
                 }
             }
         }
+
+        protected override int ResolveAction(string action)
+        {
+            return 0;
+        }
     }
 
     public class LogicPermissionPoint : PermissionPoint

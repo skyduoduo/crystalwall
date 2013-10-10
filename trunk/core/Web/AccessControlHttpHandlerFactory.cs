@@ -52,7 +52,8 @@ namespace CrystalWall.Web
             CrystalWallSite site = CrystalWallSite.Find(page);
             site.InitSite();//可选
             //这里将判断权限，默认将控件可见权限和事件权限加入页面事件中，而并不立即执行检查
-            site.Decider.Decide(PrincipalTokenHolder.CurrentPrincipal, context);
+            bool result = true;
+            site.Decider.Decide(PrincipalTokenHolder.CurrentPrincipal, context, out result);
             return page;
         }
 
